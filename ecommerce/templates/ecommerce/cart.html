@@ -37,7 +37,6 @@
                         {% else %}
                         <a data-toggle="modal" href="#delete-cart-item"><i class="fas fa-minus mr-2"></i></a>
                         {% endif %}
-                        test
                         {{ item.quantity }}
                         <form name="addCart-{{item.item.id}}" action="{% url 'ecommerce:add-to-cart' item.item.id 2 %}" method="POST" class="d-inline">
                           {% csrf_token %}
