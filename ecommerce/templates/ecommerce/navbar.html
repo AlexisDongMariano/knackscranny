@@ -1,4 +1,4 @@
-<!-- load cart_template_tags HERE -->
+{% load cart_items_count %}
 
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
     <div class="container">
@@ -36,11 +36,8 @@
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <!-- below should be href url 'core:order-summary -->
             <a href="{% url 'ecommerce:cart' %}" class="nav-link waves-effect">
-              <!-- use below after adding the template tag cart_template_tags, OKAY? -->
-              <!-- <span class="badge red z-depth-1 mr-1">  request.user|cart_item_count </span> -->
-              <span class="badge red z-depth-1 mr-1"> {{ request.user }} </span>
+              <span class="badge red z-depth-1 mr-1"> {{ request.user|cart_items_count }} </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
             </a>
