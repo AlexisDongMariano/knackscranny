@@ -1,0 +1,117 @@
+{% extends "ecommerce/base.html" %}
+{% block content %}
+<main class="mt-5 pt-4">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              
+              <div class="table-responsive text-nowrap">
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Item</th>
+                      <th scope="col">Item Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col" class="th-cart">Quantity</th>
+                      <th scope="col" class="th-cart">Total</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in items %}
+                    <tr>
+                      <th scope="row" class="th-summary-img"><img style="width:100px" src="{{ item.item.variationimage_set.first.image.url }}"></th>
+                      <td class="td-cart">{{ item.item.item.name }} ({{ item.item.name }})</td>
+                      <td>${{ item.item.price }} {{ item.item.id }}</td>
+                      <td>
+                        {% if item.quantity > 1%}
+                        <form name="minusCart-{{item.item.id}}" action="{% url 'ecommerce:minus-from-cart' item.item.id %}" method="POST" class="d-inline">
+                          {% csrf_token %}
+                          <a onClick="document.forms['minusCart-{{item.item.id}}'].submit();" href="#"><i class="fas fa-minus mr-2"></i></a>
+                        </form>
+                        {% else %}
+                        <a data-toggle="modal" href="#delete-cart-item"><i class="fas fa-minus mr-2"></i></a>
+                        {% endif %}
+                        
+                        {{ item.quantity }}
+                        <form name="addCart-{{item.item.id}}" action="{% url 'ecommerce:add-to-cart' item.item.id 2 %}" method="POST" class="d-inline">
+                          {% csrf_token %}
+                          <a onClick="document.forms['addCart-{{item.item.id}}'].submit();" href="#"><i class="fas fa-plus ml-2"></i></a>
+                        </form>
+                      </td>
+                      <td>${{ item.get_total }}</td>
+                      <td>
+                        <a data-toggle="modal" href="#delete-cart-item" style='color: red;'>
+                          <i class="fas fa-trash float-right"></i>
+                        </a>
+                      </td>
+                    </tr>
+
+                    <!-- Item Delete Modal -->
+                    <div class="modal fade" id="delete-cart-item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove Item</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Do you want to remove the item from the cart?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <form action="{% url 'ecommerce:delete-cart-item' item.item.id %}" method="POST" class="d-inline">
+                              {% csrf_token %}
+                              <button class="btn btn-danger" type="submit">Remove</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                      <td class="text-warning">Cart is empty.</td>
+                    
+                    </tr>
+
+                    {% endfor %}
+                    {% if items %}
+                    <tr>
+                      <td colspan="3"></td>
+                      <td><strong>Total Items: {{ order.get_cart_items }}</strong></td>
+                      <td><strong>Order Total: ${{ order.get_cart_total }}</strong></td>
+                      <td></td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+             
+              
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="float-right mt-3">
+          <a class="btn btn-primary" href="{% url 'ecommerce:home' %}">Continue shopping</a>
+          {% if items %}
+          <a class="btn btn-warning" href="#">Proceed to checkout</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+</main>
+{% endblock content %}
+
+
