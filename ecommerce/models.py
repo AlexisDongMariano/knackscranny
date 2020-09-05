@@ -153,3 +153,11 @@ class OrderItem(models.Model):
 
 #     def __str__(self):
 #         return self.name
+
+# to do:
+# 1. check or get the sessions value for the anonymous user
+# 2. update the items when the anonymous is promoted as a registered user
+# 3. check the usage of signals upon authentication
+# https://stackoverflow.com/questions/925456/giving-anonymous-users-the-same-functionality-as-registered-ones
+# https://stackoverflow.com/questions/60065854/how-to-keep-track-of-users-who-are-not-logged-in-django
+# https://stackoverflow.com/questions/36263857/calling-a-method-when-the-user-login-django
