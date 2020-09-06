@@ -101,7 +101,7 @@
         <div class="float-right mt-3">
           <a class="btn btn-primary" href="{% url 'ecommerce:home' %}">Continue shopping</a>
           {% if items %}
-          <a class="btn btn-warning" href="#">Proceed to checkout</a>
+          <a class="btn btn-warning" href="{% url 'ecommerce:checkout' %}">Proceed to checkout</a>
           {% endif %}
         </div>
       </div>
