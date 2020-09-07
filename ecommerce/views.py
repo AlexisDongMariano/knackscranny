@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models import F
 from django.shortcuts import redirect, render
+from .forms import CheckoutForm
 from .models import Item, Variation, VariationImage, Order, OrderItem
 
 
@@ -111,19 +112,29 @@ def delete_cart_item(request, variation_id):
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user #request.user.customer in dennis
-        order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
- 
-    context = {
-        'items': items,
-        'order': order,
-        }
-    return render(request, 'ecommerce/checkout.html', context)
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+
+        if form.is_valid():
+            print('form is valid')
+
+    elif request.method == 'GET':
+        form = CheckoutForm()
+
+        if request.user.is_authenticated:
+            customer = request.user #request.user.customer in dennis
+            order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+            items = order.orderitem_set.all()
+        else:
+            items = []
+            order = {'get_cart_total': 0, 'get_cart_items': 0}
+    
+        context = {
+            'items': items,
+            'order': order,
+            'form': form,
+            }
+        return render(request, 'ecommerce/checkout.html', context)
 
 
 

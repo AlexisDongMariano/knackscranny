@@ -9,9 +9,67 @@
         <div class="col-md-8 mb-4">
           <div class="card">
             <form class="card-body">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
               <div class="md-form mb-5">
-                <input type="text" id="address" class="form-control" placeholder="1234 Main St">
-                <label for="address" class="">Address</label>
+                {{ form.street_address.errors }}
+                {{ form.street_address }}
+                <label for="{{ form.street_address.id_for_label }}">Address</label>
+              </div>
+              <div class="md-form mb-5">
+                {{ form.apartment_address.errors }}
+                {{ form.apartment_address }}
+                <label for="{{ form.apartment_address.id_for_label }}">Address 2 (optional)</label>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4">
+                  
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  {{ form.zip_code.errors }}
+                  <label for="{{ form.zip_code.id_for_label }}">Zip</label>
+                  {{ form.zip_code }}
+                </div>
+              </div>
+              <hr>
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_same_billing_address.errors }}
+                {{ form.chk_same_billing_address }}
+                <label class="custom-control-label" for="{{ form.chk_same_billing_address.id_for_label }}">Shipping address is the same as my billing address</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_save_info.errors }}
+                {{ form.chk_save_info }}
+                <label class="custom-control-label" for="{{ form.chk_save_info.id_for_label }}">Save this information for next time</label>
+              </div>
+              <hr>
+
+
+              <div class="d-block my-5">
+                {{ form.payment_option.errors }}
+
+
+
+                {% for payment in form.payment_option %}
+                <div class="custom-control custom-radio">
+                  {{ payment.tag }}
+                    <label for="{{ payment.id_for_label }}" class="custom-control-label">
+                        {{ payment.choice_label }}
+                        
+                    </label>
+                </div>
+                {% endfor %}
+              </div>
+              
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            </form>
+
+
+            <form class="card-body">
+              <div class="md-form mb-5">
+                <input type="text" id="xxx" class="form-control" placeholder="1234 Main St">
+                <label for="xxx" class="">Address</label>
               </div>
               <div class="md-form mb-5">
                 <input type="text" id="address-2" class="form-control" placeholder="Apartment or suite">
@@ -69,6 +127,7 @@
             </form>
           </div>
         </div>
+
 
         <div class="col-md-4 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">

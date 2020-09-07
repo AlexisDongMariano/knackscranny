@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'ecommerce.apps.EcommerceConfig',
     'users.apps.UsersConfig',
     # Dong Aug-23-2020 added cleanup --> should always be at the last line
-    'django_cleanup.apps.CleanupConfig', 
+    'django_cleanup.apps.CleanupConfig',
+    'django_countries', 
 ]
 
 MIDDLEWARE = [
