@@ -3,6 +3,14 @@ from django.db.models import F
 from django.shortcuts import redirect, render
 from .forms import CheckoutForm
 from .models import Item, Variation, VariationImage, Order, OrderItem
+from users.models import Address
+
+
+def is_field_valid(fields):
+    for i in fields:
+        if i == '':
+            return False
+    return True
 
 
 def home(request):
@@ -40,7 +48,7 @@ def cart(request):
     context = {
         'items': items,
         'order': order,
-        }
+    }
     return render(request, 'ecommerce/cart.html', context)
 
 
@@ -84,7 +92,7 @@ def minus_from_cart(request, variation_id):
         item = Variation.objects.filter(id=variation_id).first()
         if request.user.is_authenticated:
             customer = request.user #request.user.customer in dennis
-            order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+            order = Order.objects.filter(customer=customer, is_ordered=False).first()
             order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
 
             if order_item.quantity > 1:
@@ -103,7 +111,7 @@ def delete_cart_item(request, variation_id):
         item = Variation.objects.filter(id=variation_id).first()
         if request.user.is_authenticated:
             customer = request.user #request.user.customer in dennis
-            order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+            order = Order.objects.filter(customer=customer, is_ordered=False).first()
             order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
             order_item.delete()
             messages.warning(request, 'Item is removed from the cart!')
@@ -112,20 +120,13 @@ def delete_cart_item(request, variation_id):
 
 
 def checkout(request):
-    if request.method == 'POST':
-        form = CheckoutForm(request.POST)
-
-        if form.is_valid():
-            print('form is valid')
-            print(form.cleaned_data)
-        return redirect('ecommerce:checkout')
-
-    elif request.method == 'GET':
+    customer = request.user #request.user.customer in dennis
+    order = Order.objects.filter(customer=customer, is_ordered=False).first()
+    if request.method == 'GET':
         form = CheckoutForm()
-
         if request.user.is_authenticated:
             customer = request.user #request.user.customer in dennis
-            order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+            # order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
             items = order.orderitem_set.all()
         else:
             items = []
@@ -137,6 +138,34 @@ def checkout(request):
             'form': form,
             }
         return render(request, 'ecommerce/checkout.html', context)
+    
+    elif request.method == 'POST':
+        form = CheckoutForm(request.POST)
+
+        if form.is_valid():
+            print('form is valid')
+            print(form.cleaned_data)
+
+            shipping_address1 = form.cleaned_data.get('shipping_address1')
+            shipping_address2 = form.cleaned_data.get('shipping_address2')
+            shipping_country = form.cleaned_data.get('shipping_country')
+            shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
+
+            if is_field_valid([shipping_address1, shipping_address2, shipping_country, shipping_zip_code]):
+                shipping_address = Address(
+                    customer = customer,
+                    address1 = shipping_address1,
+                    address2 = shipping_address2,
+                    country = shipping_country,
+                    zip_code = shipping_zip_code,
+                    address_type = 'S'
+                )
+                shipping_address.save()
+                order.shipping_address = shipping_address
+                order.save()
+
+        return redirect('ecommerce:checkout')
+
 
 
 

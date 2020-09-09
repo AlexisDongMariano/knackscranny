@@ -30,6 +30,22 @@ body,
   margin-bottom: 0px; */
 }
 
+/* .modal-body{
+  word-break: break-all;
+} */
+
+.word-wrap {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  white-space: pre-line;
+}
+
 .carousel-control-next {
   /* opacity:1 !important; */
   color:gray;

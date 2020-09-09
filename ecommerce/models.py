@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
 from PIL import Image
+from users.models import Address
 
 
 class Item(models.Model):
@@ -97,6 +98,7 @@ class VariationImage(models.Model):
 class Order(models.Model):
     '''Basically this is the Cart'''
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True) # Create a Customer model from Dennis
+    shipping_address = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
     is_ordered = models.BooleanField(default=False)
     ordered_date = models.DateTimeField(blank=True, null=True) # add if ordered

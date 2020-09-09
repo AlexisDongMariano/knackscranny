@@ -35,7 +35,7 @@
                           <a onClick="document.forms['minusCart-{{item.item.id}}'].submit();" href="#"><i class="fas fa-minus mr-2"></i></a>
                         </form>
                         {% else %}
-                        <a data-toggle="modal" href="#delete-cart-item"><i class="fas fa-minus mr-2"></i></a>
+                        <a data-toggle="modal" href="#delete-cart-item{{ item.item.id }}"><i class="fas fa-minus mr-2"></i></a>
                         {% endif %}
                         {{ item.quantity }}
                         <form name="addCart-{{item.item.id}}" action="{% url 'ecommerce:add-to-cart' item.item.id 2 %}" method="POST" class="d-inline">
@@ -45,14 +45,14 @@
                       </td>
                       <td>${{ item.get_total }}</td>
                       <td>
-                        <a data-toggle="modal" href="#delete-cart-item" style='color: red;'>
+                        <a data-toggle="modal" href="#delete-cart-item{{ item.item.id }}" style='color: red;'>
                           <i class="fas fa-trash float-right"></i>
                         </a>
                       </td>
                     </tr>
 
                     <!-- Item Delete Modal -->
-                    <div class="modal fade" id="delete-cart-item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="delete-cart-item{{ item.item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -62,7 +62,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            Do you want to remove the item from the cart?
+                            <p class="word-wrap">Do you want to remove the item from the cart?</p>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>

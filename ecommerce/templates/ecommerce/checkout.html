@@ -9,42 +9,43 @@
         <div class="col-md-8 mb-4">
           <div class="card">
             <form class="card-body" method="POST">
+              <h5>Shipping Address</h5>
               {% csrf_token %}
               {{ form.non_field_errors }}
               <div class="md-form mb-5">
-                {{ form.street_address.errors }}
-                {{ form.street_address }}
-                <label for="{{ form.street_address.id_for_label }}">Address</label>
+                {{ form.shipping_address1.errors }}
+                {{ form.shipping_address1 }}
+                <label for="{{ form.shipping_address1.id_for_label }}">Address</label>
               </div>
               <div class="md-form mb-5">
-                {{ form.apartment_address.errors }}
-                {{ form.apartment_address }}
-                <label for="{{ form.apartment_address.id_for_label }}">Address 2 (optional)</label>
+                {{ form.shipping_address2.errors }}
+                {{ form.shipping_address2 }}
+                <label for="{{ form.shipping_address2.id_for_label }}">Address 2 (optional)</label>
               </div>
 
               <div class="row">
-                <div class="col-lg-6 col-md-12 mb-4">
-                  {{ form.country.errors }}
-                  <label for="{{ form.country.id_for_label }}">Country</label>
-                  {{ form.country }}
+                <div class="col-lg-6 col-md-12 mb-2">
+                  {{ form.shipping_country.errors }}
+                  <label for="{{ form.shipping_country.id_for_label }}">Country</label>
+                  {{ form.shipping_country }}
                   
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                  {{ form.zip_code.errors }}
-                  <label for="{{ form.zip_code.id_for_label }}">Zip</label>
-                  {{ form.zip_code }}
+                <div class="col-lg-4 col-md-6 mb-2">
+                  {{ form.shipping_zip_code.errors }}
+                  <label for="{{ form.shipping_zip_code.id_for_label }}">Zip</label>
+                  {{ form.shipping_zip_code }}
                 </div>
               </div>
               <hr>
               <div class="custom-control custom-checkbox">
                 {{ form.chk_same_billing_address.errors }}
                 {{ form.chk_same_billing_address }}
-                <label class="custom-control-label" for="{{ form.chk_same_billing_address.id_for_label }}">Shipping address is the same as my billing address</label>
+                <label class="custom-control-label" for="{{ form.chk_same_billing_address.id_for_label }}">Billing address is the same as my shipping address</label>
               </div>
               <div class="custom-control custom-checkbox">
                 {{ form.chk_save_info.errors }}
                 {{ form.chk_save_info }}
-                <label class="custom-control-label" for="{{ form.chk_save_info.id_for_label }}">Save this information for next time</label>
+                <label class="custom-control-label" for="{{ form.chk_save_info.id_for_label }}">Save shipping address as default</label>
               </div>
               <hr>
               <div class="d-block my-3">
