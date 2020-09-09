@@ -117,6 +117,8 @@ def checkout(request):
 
         if form.is_valid():
             print('form is valid')
+            print(form.cleaned_data)
+        return redirect('ecommerce:checkout')
 
     elif request.method == 'GET':
         form = CheckoutForm()
