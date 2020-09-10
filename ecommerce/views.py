@@ -13,6 +13,20 @@ def is_field_valid(fields):
     return True
 
 
+def save_address(customer, address_fields):
+    address = Address(
+        customer = customer,
+        address1 = address_fields[0],
+        address2 = address_fields[1],
+        country = address_fields[2],
+        zip_code = address_fields[3],
+        address_type = address_fields[4],
+        default = address_fields[5]
+    )
+    address.save()
+    return address
+
+
 def home(request):
     items = Item.objects.all()
     context = {
@@ -146,23 +160,42 @@ def checkout(request):
             print('form is valid')
             print(form.cleaned_data)
 
+            # Shipping Address
             shipping_address1 = form.cleaned_data.get('shipping_address1')
             shipping_address2 = form.cleaned_data.get('shipping_address2')
             shipping_country = form.cleaned_data.get('shipping_country')
             shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
+            address_type = 'S'
+            save_shipping = form.cleaned_data.get('chk_save_shipping_info')
+            temp_address = [shipping_address1, shipping_address2, shipping_country, shipping_zip_code, address_type, save_shipping]
+            same_address = form.cleaned_data.get('chk_same_address')
 
-            if is_field_valid([shipping_address1, shipping_address2, shipping_country, shipping_zip_code]):
-                shipping_address = Address(
-                    customer = customer,
-                    address1 = shipping_address1,
-                    address2 = shipping_address2,
-                    country = shipping_country,
-                    zip_code = shipping_zip_code,
-                    address_type = 'S'
-                )
-                shipping_address.save()
-                order.shipping_address = shipping_address
+            if is_field_valid(temp_address):
+                order.shipping_address = save_address(customer, temp_address)
                 order.save()
+            else:
+                messages.error(request, f'Please fill in shipping details.')
+            
+            # Billing Address
+            save_billing = form.cleaned_data.get('chk_save_billing_info')
+            if same_address:
+                temp_address[4] = 'B'
+                temp_address[5] = save_billing
+
+            elif not same_address:
+                billing_address1 = form.cleaned_data.get('billing_address1')
+                billing_address2 = form.cleaned_data.get('billing_address2')
+                billing_country = form.cleaned_data.get('billing_country')
+                billing_zip_code = form.cleaned_data.get('billing_zip_code')
+                address_type = 'B'
+                temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]
+
+                if not is_field_valid(temp_address):
+                    messages.error(request, f'Please fill in billing details.')
+                    return redirect('ecommerce:checkout')
+
+            order.billing_address = save_address(customer, temp_address)
+            order.save()
 
         return redirect('ecommerce:checkout')
 

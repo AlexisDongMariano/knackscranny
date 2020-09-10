@@ -9,6 +9,7 @@
         <div class="col-md-8 mb-4">
           <div class="card">
             <form class="card-body" method="POST">
+              <!-- SHIPPING ADDRESS -->
               <h5>Shipping Address</h5>
               {% csrf_token %}
               {{ form.non_field_errors }}
@@ -36,21 +37,55 @@
                   {{ form.shipping_zip_code }}
                 </div>
               </div>
-              <hr>
+              
               <div class="custom-control custom-checkbox">
-                {{ form.chk_same_billing_address.errors }}
-                {{ form.chk_same_billing_address }}
-                <label class="custom-control-label" for="{{ form.chk_same_billing_address.id_for_label }}">Billing address is the same as my shipping address</label>
+                {{ form.chk_same_address.errors }}
+                {{ form.chk_same_address }}
+                <label class="custom-control-label" for="{{ form.chk_same_address.id_for_label }}">Billing address is the same as my shipping address</label>
               </div>
               <div class="custom-control custom-checkbox">
-                {{ form.chk_save_info.errors }}
-                {{ form.chk_save_info }}
-                <label class="custom-control-label" for="{{ form.chk_save_info.id_for_label }}">Save shipping address as default</label>
+                {{ form.chk_save_shipping_info.errors }}
+                {{ form.chk_save_shipping_info }}
+                <label class="custom-control-label" for="{{ form.chk_save_shipping_info.id_for_label }}">Save shipping address as default</label>
               </div>
               <hr>
+              <!-- BILLING ADDRESS -->
+              <h5 class="mt-5">Billing Address</h5>
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <div class="md-form mb-5">
+                {{ form.billing_address1.errors }}
+                {{ form.billing_address1 }}
+                <label for="{{ form.billing_address1.id_for_label }}">Address</label>
+              </div>
+              <div class="md-form mb-5">
+                {{ form.billing_address2.errors }}
+                {{ form.billing_address2 }}
+                <label for="{{ form.billing_address2.id_for_label }}">Address 2 (optional)</label>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-md-12 mb-2">
+                  {{ form.billing_country.errors }}
+                  <label for="{{ form.billing_country.id_for_label }}">Country</label>
+                  {{ form.billing_country }}
+                  
+                </div>
+                <div class="col-lg-4 col-md-6 mb-2">
+                  {{ form.billing_zip_code.errors }}
+                  <label for="{{ form.billing_zip_code.id_for_label }}">Zip</label>
+                  {{ form.billing_zip_code }}
+                </div>
+              </div>
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_save_billing_info.errors }}
+                {{ form.chk_save_billing_info }}
+                <label class="custom-control-label" for="{{ form.chk_save_billing_info.id_for_label }}">Save billing address as default</label>
+              </div>
+              <hr>
+              <!-- PAYMENT OPTIONS -->
               <div class="d-block my-3">
                 {{ form.payment_option.errors }}
-
                 {% for payment in form.payment_option %}
                 <div class="custom-control custom-radio">
                   {{ payment.tag }}
@@ -60,6 +95,7 @@
                 </div>
                 {% endfor %}
               </div>
+
               
               <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
             </form> 
