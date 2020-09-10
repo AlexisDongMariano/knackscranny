@@ -14,16 +14,28 @@ def is_field_valid(fields):
 
 
 def save_address(customer, address_fields):
-    address = Address(
-        customer = customer,
-        address1 = address_fields[0],
-        address2 = address_fields[1],
-        country = address_fields[2],
-        zip_code = address_fields[3],
-        address_type = address_fields[4],
-        default = address_fields[5]
-    )
-    address.save()
+    # if address is default, just update the row
+    if address_fields[5]:
+        values_to_update = {
+            'address1': address_fields[0],
+            'address2': address_fields[1],
+            'country': address_fields[2],
+            'zip_code': address_fields[3]
+        }
+
+        address, created = Address.objects.update_or_create(
+            customer=customer, address_type=address_fields[4], default=True, defaults=values_to_update)
+    else:
+        address = Address(
+            customer = customer,
+            address1 = address_fields[0],
+            address2 = address_fields[1],
+            country = address_fields[2],
+            zip_code = address_fields[3],
+            address_type = address_fields[4],
+            default = address_fields[5]
+        )
+        address.save()
     return address
 
 
@@ -136,6 +148,8 @@ def delete_cart_item(request, variation_id):
 def checkout(request):
     customer = request.user #request.user.customer in dennis
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
+    shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True)
+    billing_address = Address.objects.filter(customer=customer, address_type='B', default=True)
     if request.method == 'GET':
         form = CheckoutForm()
         if request.user.is_authenticated:
@@ -151,38 +165,70 @@ def checkout(request):
             'order': order,
             'form': form,
             }
+
+        if shipping_address.exists():
+            context['shipping_address'] = shipping_address.first()
+        if billing_address.exists():
+            context['billing_address'] = billing_address.first()
+        print(context)
         return render(request, 'ecommerce/checkout.html', context)
     
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)
 
         if form.is_valid():
-            print('form is valid')
             print(form.cleaned_data)
 
             # Shipping Address
-            shipping_address1 = form.cleaned_data.get('shipping_address1')
-            shipping_address2 = form.cleaned_data.get('shipping_address2')
-            shipping_country = form.cleaned_data.get('shipping_country')
-            shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
-            address_type = 'S'
-            save_shipping = form.cleaned_data.get('chk_save_shipping_info')
-            temp_address = [shipping_address1, shipping_address2, shipping_country, shipping_zip_code, address_type, save_shipping]
             same_address = form.cleaned_data.get('chk_same_address')
+            # if saved shipping address is checked. Checkbox will only show if the default shipping address is found
+            if form.cleaned_data.get('chk_use_default_shipping'):
+                # double checking, might delete this extra check
+                if shipping_address.exists():
+                    order.shipping_address = shipping_address.first()
+                    print('DEFAULT SHIPPING ADDRESS IS USED :)')
+                else:
+                    messages.error(request, f'Saved shipping address not found!')
+                    return redirect('ecommerce:checkout')
+            elif not form.cleaned_data.get('chk_use_default_shipping'): 
+                shipping_address1 = form.cleaned_data.get('shipping_address1')
+                shipping_address2 = form.cleaned_data.get('shipping_address2')
+                shipping_country = form.cleaned_data.get('shipping_country')
+                shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
+                address_type = 'S'
+                save_shipping = form.cleaned_data.get('chk_save_shipping_info')
+                temp_address = [shipping_address1, shipping_address2, shipping_country, shipping_zip_code, address_type, save_shipping]
+                
 
-            if is_field_valid(temp_address):
+                if not is_field_valid(temp_address):
+                    messages.error(request, f'Please fill in shipping details.')
+                    return redirect('ecommerce:checkout')
                 order.shipping_address = save_address(customer, temp_address)
-                order.save()
-            else:
-                messages.error(request, f'Please fill in shipping details.')
-            
+
+            order.save()
+         
             # Billing Address
             save_billing = form.cleaned_data.get('chk_save_billing_info')
             if same_address:
-                temp_address[4] = 'B'
-                temp_address[5] = save_billing
-
-            elif not same_address:
+                billing_address1 = shipping_address.first().billing_address1
+                billing_address2 = shipping_address.first().billing_address2
+                billing_country = shipping_address.first().billing_country
+                billing_zip_code = shipping_address.first().billing_zip_code
+                address_type = 'B'
+                save_billing = save_billing
+                temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]
+                order.billing_address = save_address(customer, temp_address)
+            # if saved billing address is checked. Checkbox will only show if the default billing address is found
+            elif form.cleaned_data.get('chk_use_default_billing'):
+                # double checking, might delete this extra check
+                if billing_address.exists():
+                    order.billing_address = billing_address.first()
+                    print('DEFAULT BILLING ADDRESS IS USED :)')
+                else:
+                    messages.error(request, f'Saved shipping address not found!')
+                    return redirect('ecommerce:checkout')
+            # same address and use saved default billing address are not checked:
+            else:
                 billing_address1 = form.cleaned_data.get('billing_address1')
                 billing_address2 = form.cleaned_data.get('billing_address2')
                 billing_country = form.cleaned_data.get('billing_country')
@@ -193,8 +239,8 @@ def checkout(request):
                 if not is_field_valid(temp_address):
                     messages.error(request, f'Please fill in billing details.')
                     return redirect('ecommerce:checkout')
+                order.billing_address = save_address(customer, temp_address)
 
-            order.billing_address = save_address(customer, temp_address)
             order.save()
 
         return redirect('ecommerce:checkout')

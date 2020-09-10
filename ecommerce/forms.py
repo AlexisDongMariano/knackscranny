@@ -37,5 +37,10 @@ class CheckoutForm(forms.Form):
         attrs={'class':'custom-control-input'}))
     chk_save_billing_info = forms.BooleanField(required=False, widget=forms.CheckboxInput(
         attrs={'class':'custom-control-input'}))
+    chk_use_default_shipping = forms.BooleanField(required=False, widget=forms.CheckboxInput(
+        attrs={'class':'custom-control-input'}))
+    chk_use_default_billing = forms.BooleanField(required=False, widget=forms.CheckboxInput(
+        attrs={'class':'custom-control-input'}))
+
     payment_option = forms.ChoiceField(widget=forms.RadioSelect(
         attrs={'class':'custom-control-input'}), choices=PAYMENT_CHOICES)

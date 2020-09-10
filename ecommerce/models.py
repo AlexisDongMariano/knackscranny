@@ -165,3 +165,9 @@ class OrderItem(models.Model):
 # https://stackoverflow.com/questions/925456/giving-anonymous-users-the-same-functionality-as-registered-ones
 # https://stackoverflow.com/questions/60065854/how-to-keep-track-of-users-who-are-not-logged-in-django
 # https://stackoverflow.com/questions/36263857/calling-a-method-when-the-user-login-django
+
+# TODO:
+# 1. add a crontab that deletes addresses that are not bound to orders and exclude the default addresses
+# query: Address.objects.filter(shipping_address__isnull=True, billing_address__isnull=True).exclude(default=True)
+# shipping_address and billing_address are related manager query from orders because of related_name
+# if related name is not present, it can be as simple as Address.objects.filter(order__isnull=True)

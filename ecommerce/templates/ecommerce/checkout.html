@@ -10,7 +10,7 @@
           <div class="card">
             <form class="card-body" method="POST">
               <!-- SHIPPING ADDRESS -->
-              <h5>Shipping Address</h5>
+              <h5 class="mt-2 text-center">Shipping Address</h5>
               {% csrf_token %}
               {{ form.non_field_errors }}
               <div class="md-form mb-5">
@@ -18,7 +18,7 @@
                 {{ form.shipping_address1 }}
                 <label for="{{ form.shipping_address1.id_for_label }}">Address</label>
               </div>
-              <div class="md-form mb-5">
+              <div class="md-form mb-4">
                 {{ form.shipping_address2.errors }}
                 {{ form.shipping_address2 }}
                 <label for="{{ form.shipping_address2.id_for_label }}">Address 2 (optional)</label>
@@ -48,9 +48,18 @@
                 {{ form.chk_save_shipping_info }}
                 <label class="custom-control-label" for="{{ form.chk_save_shipping_info.id_for_label }}">Save shipping address as default</label>
               </div>
-              <hr>
+              {% if shipping_address %}
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_use_default_shipping.errors }}
+                {{ form.chk_use_default_shipping }}
+                <label class="custom-control-label" for="{{ form.chk_use_default_shipping.id_for_label }}">
+                  Use saved shipping address ({{ shipping_address.address1|truncatechars:20 }})
+                </label>
+              </div>
+              {% endif %}
+              <!-- <hr> -->
               <!-- BILLING ADDRESS -->
-              <h5 class="mt-5">Billing Address</h5>
+              <h5 class="mt-5 text-center">Billing Address</h5>
               {% csrf_token %}
               {{ form.non_field_errors }}
               <div class="md-form mb-5">
@@ -58,7 +67,7 @@
                 {{ form.billing_address1 }}
                 <label for="{{ form.billing_address1.id_for_label }}">Address</label>
               </div>
-              <div class="md-form mb-5">
+              <div class="md-form mb-4">
                 {{ form.billing_address2.errors }}
                 {{ form.billing_address2 }}
                 <label for="{{ form.billing_address2.id_for_label }}">Address 2 (optional)</label>
@@ -82,8 +91,19 @@
                 {{ form.chk_save_billing_info }}
                 <label class="custom-control-label" for="{{ form.chk_save_billing_info.id_for_label }}">Save billing address as default</label>
               </div>
-              <hr>
+              {% if billing_address %}
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_use_default_billing.errors }}
+                {{ form.chk_use_default_billing }}
+                <label class="custom-control-label" for="{{ form.chk_use_default_billing.id_for_label }}">
+                  Use saved billing address ({{ billing_address.address1|truncatechars:20 }})
+                </label>
+              </div>
+              {% endif %}
+              <!-- <hr> -->
               <!-- PAYMENT OPTIONS -->
+              <h5 class="mt-5 text-center">Payment Options</h5>
+              <hr>
               <div class="d-block my-3">
                 {{ form.payment_option.errors }}
                 {% for payment in form.payment_option %}
