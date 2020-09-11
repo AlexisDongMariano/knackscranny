@@ -3,4 +3,4 @@ from django.shortcuts import redirect, render
 
 
 def stripe(request):
-    return render(request, 'payment/stripe.html', context)
+    return render(request, 'payment/stripe.html')

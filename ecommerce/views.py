@@ -243,6 +243,12 @@ def checkout(request):
 
             order.save()
 
+            payment_option = form.cleaned_data.get('payment_option')
+            if payment_option == 'S':
+                return redirect('payment:stripe')
+            elif payment_option == 'P':
+                return redirect('payment:paypal')
+
         return redirect('ecommerce:checkout')
 
 
