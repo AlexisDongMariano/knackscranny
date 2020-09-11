@@ -3,7 +3,7 @@
 
 <main class="mt-5 pt-4">
   <div class="container wow fadeIn">
-    <h2 class="my-5 h2 text-center">Checkout form</h2>
+    <h2 class="my-5 h2 text-center">Stripe Payment</h2>
 
     <div class="row">
       <div class="col-md-8 mb-4">
@@ -42,14 +42,14 @@
               {{ form.chk_same_address.errors }}
               {{ form.chk_same_address }}
               <label class="custom-control-label" for="{{ form.chk_same_address.id_for_label }}">Billing
-                address is the
-                same as my shipping address</label>
+                address is the same as my shipping address</label>
             </div>
             <div class="custom-control custom-checkbox">
               {{ form.chk_save_shipping_info.errors }}
               {{ form.chk_save_shipping_info }}
               <label class="custom-control-label" for="{{ form.chk_save_shipping_info.id_for_label }}">Save shipping
-                address as default</label>
+                address as
+                default</label>
             </div>
             {% if shipping_address %}
             <div class="custom-control custom-checkbox">
@@ -93,8 +93,7 @@
               {{ form.chk_save_billing_info.errors }}
               {{ form.chk_save_billing_info }}
               <label class="custom-control-label" for="{{ form.chk_save_billing_info.id_for_label }}">Save
-                billing
-                address as default</label>
+                billing address as default</label>
             </div>
             {% if billing_address %}
             <div class="custom-control custom-checkbox">
@@ -121,12 +120,13 @@
               {% endfor %}
             </div>
 
+
             <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
           </form>
         </div>
       </div>
 
-      <!-- CART SUMMARY -->
+
       <div class="col-md-4 mb-4">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Your cart</span>

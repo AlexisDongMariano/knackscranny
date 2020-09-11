@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'ecommerce.apps.EcommerceConfig',
     'users.apps.UsersConfig',
+    'payment.apps.PaymentConfig',
     # Dong Aug-23-2020 added cleanup --> should always be at the last line
     'django_cleanup.apps.CleanupConfig',
     'django_countries', 
