@@ -6,10 +6,18 @@ from .models import Item, Variation, VariationImage, Order, OrderItem
 from users.models import Address
 
 
+# def is_field_valid(fields):
+#     for i in fields:
+#         if i == '':
+#             return False
+#     return True
 def is_field_valid(fields):
-    for i in fields:
-        if i == '':
-            return False
+    for i in range(len(fields)):
+        if i == 1:
+            continue
+        else:
+            if fields[i] == '':
+                return False
     return True
 
 
@@ -181,6 +189,7 @@ def checkout(request):
 
             # Shipping Address
             same_address = form.cleaned_data.get('chk_same_address')
+            print('SAME ADDRESS?', same_address)
             # if saved shipping address is checked. Checkbox will only show if the default shipping address is found
             if form.cleaned_data.get('chk_use_default_shipping'):
                 # double checking, might delete this extra check
@@ -210,10 +219,10 @@ def checkout(request):
             # Billing Address
             save_billing = form.cleaned_data.get('chk_save_billing_info')
             if same_address:
-                billing_address1 = shipping_address.first().billing_address1
-                billing_address2 = shipping_address.first().billing_address2
-                billing_country = shipping_address.first().billing_country
-                billing_zip_code = shipping_address.first().billing_zip_code
+                billing_address1 = shipping_address.first().address1
+                billing_address2 = shipping_address.first().address2
+                billing_country = shipping_address.first().country
+                billing_zip_code = shipping_address.first().zip_code
                 address_type = 'B'
                 save_billing = save_billing
                 temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]
