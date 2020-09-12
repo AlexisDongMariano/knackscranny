@@ -6,13 +6,9 @@ from .models import Item, Variation, VariationImage, Order, OrderItem
 from users.models import Address
 
 
-# def is_field_valid(fields):
-#     for i in fields:
-#         if i == '':
-#             return False
-#     return True
 def is_field_valid(fields):
     for i in range(len(fields)):
+        # let the fields[1] (address2) empty
         if i == 1:
             continue
         else:

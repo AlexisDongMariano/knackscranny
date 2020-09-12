@@ -7,7 +7,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ecommerce.urls')),
-    path('', include('payment.urls')),
+    path('payment/', include('payment.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html', redirect_authenticated_user=True), name='login'),
 ]
 
