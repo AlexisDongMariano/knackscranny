@@ -16,10 +16,14 @@ stripe.PaymentIntent.create(
 )
 
 def stripe(request):
-    order = Order.objects.filter(customer=request.user, is_ordered=False).first()
-    items = order.orderitem_set.all()
-    context = {
-        'order': order,
-        'items': items,
-    }
-    return render(request, 'payment/stripe.html',context)
+    if request.method == 'GET':
+        order = Order.objects.filter(customer=request.user, is_ordered=False).first()
+        items = order.orderitem_set.all()
+        context = {
+            'order': order,
+            'items': items,
+        }
+        return render(request, 'payment/stripe.html',context)
+
+    elif request.method == 'POST':
+        return redirect('payment:stripe')
