@@ -179,6 +179,7 @@ def checkout(request):
     
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)
+        print('CHECKOUT DATA:', request.POST)
 
         if form.is_valid():
             print(form.cleaned_data)

@@ -8,14 +8,9 @@ import stripe
 
 stripe.api_key = conf_settings.STRIPE_SECRET_KEY
 
-stripe.PaymentIntent.create(
-  amount=1000,
-  currency='usd',
-  payment_method_types=['card'],
-  receipt_email='jenny.rosen@example.com',
-)
 
-def stripe(request):
+
+def stripe_payment(request):
     if request.method == 'GET':
         order = Order.objects.filter(customer=request.user, is_ordered=False).first()
         items = order.orderitem_set.all()
@@ -26,4 +21,17 @@ def stripe(request):
         return render(request, 'payment/stripe.html',context)
 
     elif request.method == 'POST':
+        print('DATA:', request.POST)
+        stripe.Customer.create(
+            description="test customer",
+            name="Alexis Dong Mariano",
+            email="alexisdongmariano@gmail.com"
+        )
+        stripe.PaymentIntent.create(
+            amount=10*100,
+            currency='usd',
+            payment_method_types=['card'],
+            receipt_email='alexisdongmariano@gmail.com',
+        )
+        
         return redirect('payment:stripe')
