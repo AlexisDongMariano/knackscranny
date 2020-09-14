@@ -186,13 +186,11 @@ def checkout(request):
 
             # Shipping Address
             same_address = form.cleaned_data.get('chk_same_address')
-            print('SAME ADDRESS?', same_address)
             # if saved shipping address is checked. Checkbox will only show if the default shipping address is found
             if form.cleaned_data.get('chk_use_default_shipping'):
                 # double checking, might delete this extra check
                 if shipping_address.exists():
                     order.shipping_address = shipping_address.first()
-                    print('DEFAULT SHIPPING ADDRESS IS USED :)')
                 else:
                     messages.error(request, f'Saved shipping address not found!')
                     return redirect('ecommerce:checkout')
@@ -228,7 +226,6 @@ def checkout(request):
                 # double checking, might delete this extra check
                 if billing_address.exists():
                     order.billing_address = billing_address.first()
-                    print('DEFAULT BILLING ADDRESS IS USED :)')
                 else:
                     messages.error(request, f'Saved shipping address not found!')
                     return redirect('ecommerce:checkout')

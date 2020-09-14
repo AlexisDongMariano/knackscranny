@@ -4,6 +4,7 @@ from django.conf import settings as conf_settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
+from django.utils import timezone
 import stripe
 
 
@@ -18,7 +19,6 @@ def stripe_process(request, process_type, stripe_customer=None, amount_total=Non
     try:
         if process_type == 1:
             customer = stripe.Customer.create(
-                description="test customer",
                 name=request.user.username,
                 email=request.user.email,
                 source=request.POST.get('stripeToken')
@@ -28,7 +28,6 @@ def stripe_process(request, process_type, stripe_customer=None, amount_total=Non
                 customer=stripe_customer,
                 amount=int(amount_total),
                 currency='cad',
-                description='test charge',
                 receipt_email='alexisdongmariano@gmail.com'
         )     
     except stripe.error.CardError as e:
@@ -55,27 +54,30 @@ def stripe_process(request, process_type, stripe_customer=None, amount_total=Non
         error_message = 'Network communication with Stripe failed'
     except stripe.error.StripeError as e:
         # Display a very generic error to the user, and maybe send
-        # yourself an email
+        # sendemail.TODO: yourself an email
         error_message = 'Server error. Payment is not made, please try again.'
     except Exception as e:
         # Something else happened, completely unrelated to Stripe
-        # send email to me
+        # sendemail.TODO: send email to me
         error_message = e
     else:
         if process_type == 1:
             return [True, customer]
         elif process_type == 2:
             return [True, charge]
+    # return error message if an exception has occurred
     return [False, error_message]
 
 
 def stripe_payment(request):
+    '''stripe payment processing'''
     order = Order.objects.filter(customer=request.user, is_ordered=False).first()
     if request.method == 'GET':
         items = order.orderitem_set.all()
         context = {
             'order': order,
             'items': items,
+            'STRIPE_PUBLIC_KEY': conf_settings.STRIPE_PUBLIC_KEY
         }
         return render(request, 'payment/stripe.html',context)
 
@@ -85,22 +87,17 @@ def stripe_payment(request):
 
         # create stripe customer
         stripe_customer = stripe_process(request, 1)
-        # if creating stripe customer has an issue
-        print('CUSTOMER CREATED')
         if not stripe_customer[0]:
             messages.error(request, f'Error: {stripe_customer[1]}')
             return redirect('payment:stripe')
 
         # create stripe charge in canadian dollar
         stripe_charge = stripe_process(request, 2, stripe_customer[1], amount_total)
-        print('CHARGE CREATED')
-        # if creating stripe charge has an issue
         if not stripe_charge[0]:
             messages.error(request, f'Error: {stripe_customer[1]}')
             return redirect('payment:stripe')
 
         try:
-            print(x)
             # save the payment in payment model
             payment = Payment()
             payment.customer = request.user
@@ -112,15 +109,18 @@ def stripe_payment(request):
             # update the order to be in ordered state and add the payment
             order.payment = payment
             order.is_ordered = True
+            order.ordered_date = timezone.now()
             order.save()
         except Exception as e:
             print(e)
-            # send an email
+            # 1.TODO: create a charge cancel or charge refund 
             messages.error(request, f'Error: {e}')
             return redirect('payment:stripe')
         else:
-            print('transaction successful')
+            print('transaction and order saving successful')
+            # 2.TODO: create a thank you template
             return redirect('ecommerce:home')
+
         
         
         

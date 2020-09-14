@@ -138,19 +138,6 @@ class OrderItem(models.Model):
         return total
 
 
-# class ShippingAddress(models.Model):
-#     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True) # Create a Customer model from Dennis
-#     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-#     address = models.CharField(max_length=200, null=True)
-#     city = models.CharField(max_length=200, null=True)
-#     state = models.CharField(max_length=200, null=True)
-#     zipcode = models.CharField(max_length=200, null=True)
-#     date_added = models.DateTimeField(default=timezone.now)
-
-#     def __str__(self):
-#         return self.address
-
-
 # might as well put in users app
 # class Customer(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -159,17 +146,3 @@ class OrderItem(models.Model):
 
 #     def __str__(self):
 #         return self.name
-
-# to do:
-# 1. check or get the sessions value for the anonymous user
-# 2. update the items when the anonymous is promoted as a registered user
-# 3. check the usage of signals upon authentication
-# https://stackoverflow.com/questions/925456/giving-anonymous-users-the-same-functionality-as-registered-ones
-# https://stackoverflow.com/questions/60065854/how-to-keep-track-of-users-who-are-not-logged-in-django
-# https://stackoverflow.com/questions/36263857/calling-a-method-when-the-user-login-django
-
-# TODO:
-# 1. add a crontab that deletes addresses that are not bound to orders and exclude the default addresses
-# query: Address.objects.filter(shipping_address__isnull=True, billing_address__isnull=True).exclude(default=True)
-# shipping_address and billing_address are related manager query from orders because of related_name
-# if related name is not present, it can be as simple as Address.objects.filter(order__isnull=True)

@@ -1,0 +1,34 @@
+=========================
+TODO list labeled in view
+=========================
+1.TODO (Sep-14-2020): create a charge cancel or charge refund
+    > if the stripe payment went through but there was an issue in saving the payment and/or updating the order inside the try block
+    > send an email as well
+
+2.TODO (Sep-14-2020): create a thank you template
+    > once the stripe payment is successful
+
+
+=============================
+TODO list NOT labeled in view
+=============================
+1.(Sep-14-2020): subtract the value of orderItem quantity to the variationItem inventory when the transaction is successful
+
+2.(Sep-14-2020): create a CustomerProxy model or something in place of Customer(User) so that we can use this if the user is anonymous
+    > check or get the sessions value for the anonymous user
+    > update the items when the anonymous is promoted as a registered user
+    > check the usage of signals upon authentication
+    # https://stackoverflow.com/questions/925456/giving-anonymous-users-the-same-functionality-as-registered-ones
+    # https://stackoverflow.com/questions/60065854/how-to-keep-track-of-users-who-are-not-logged-in-django
+    # https://stackoverflow.com/questions/36263857/calling-a-method-when-the-user-login-django
+
+3.(Sep-14-2020): create a crontab cleanup script for deleting stale addresses (which is not default and not binded to order)
+    > query: Address.objects.filter(shipping_address__isnull=True, billing_address__isnull=True).exclude(default=True)
+    ** shipping_address and billing_address are related manager query from orders because of related_name
+    ** if related name is not present, it can be as simple as Address.objects.filter(order__isnull=True)
+
+
+=========
+MISC TODO
+=========
+sendemail.TODO (Sep-14-2020): configure sending email and use

@@ -15,4 +15,4 @@ class Payment(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.customer.username
+        return self.customer.username + '_' + self.payment_method

@@ -38,14 +38,6 @@
       </div>
     </div>
    
-
-
-
-    
-
-
-
-
     <div class="row">
       <div class="col-md-12 mb-4">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -96,7 +88,7 @@
 {% block extra_scripts %}
 <script>
 	// Create a Stripe client.
-	var stripe = Stripe('pk_test_51HQYBCGzTvIeKlVtb0xpvZ9xdpxanFVlZzYVcvZFqscvdvzIPZtw0LIIENkjCYD2IBDZKcAzVejzqVKGksYCgCNc001Bif6Z4c');
+	var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
 
 	// Create an instance of Elements.
 	var elements = stripe.elements();
