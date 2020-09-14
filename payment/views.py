@@ -83,7 +83,7 @@ def stripe_payment(request):
 
     elif request.method == 'POST':
         print('DATA:', request.POST)
-        amount_total = 10*100 # in cents 
+        amount_total = order.get_cart_total*100 # in cents 
 
         # create stripe customer
         stripe_customer = stripe_process(request, 1)
@@ -102,7 +102,7 @@ def stripe_payment(request):
             payment = Payment()
             payment.customer = request.user
             payment.charge_id = stripe_charge[1]['id']
-            payment.amount = amount_total
+            payment.amount = order.get_cart_total
             payment.payment_method = 'S'
             payment.save()
             
@@ -117,7 +117,7 @@ def stripe_payment(request):
             messages.error(request, f'Error: {e}')
             return redirect('payment:stripe')
         else:
-            print('transaction and order saving successful')
+            messages.info(request, 'Order was successful')
             # 2.TODO: create a thank you template
             return redirect('ecommerce:home')
 
