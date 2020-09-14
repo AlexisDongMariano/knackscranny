@@ -30,11 +30,14 @@ class OrderAdmin(admin.ModelAdmin):
         test.allow_tags = True
         test.short_description = 'address'
     def payment_detail(self, obj):
-        return mark_safe('<a href="%s">%s</a>' % (
-            reverse('admin:payment_payment_change', args=(obj.payment.id,)), obj.payment
-            ))
+        if obj.payment:
+            return mark_safe('<a href="%s">%s</a>' % (
+                reverse('admin:payment_payment_change', args=(obj.payment.id,)), obj.payment
+                ))
+        else:
+            return None
         test.allow_tags = True
-        test.short_description = 'payment'
+        test.short_description = 'address'
 
     list_display = [
         'id',

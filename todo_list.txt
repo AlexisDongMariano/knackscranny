@@ -27,6 +27,7 @@ TODO list NOT labeled in view
     ** shipping_address and billing_address are related manager query from orders because of related_name
     ** if related name is not present, it can be as simple as Address.objects.filter(order__isnull=True)
 
+4.(Sep-15-2020): modify the admin view for Payment model
 
 =========
 MISC TODO
