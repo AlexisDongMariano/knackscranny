@@ -7,6 +7,7 @@ from users.models import Address
 
 
 def is_field_valid(fields):
+    '''server check if the address fields are empty excluding address2'''
     for i in range(len(fields)):
         # let the fields[1] (address2) empty
         if i == 1:
@@ -18,7 +19,7 @@ def is_field_valid(fields):
 
 
 def save_address(customer, address_fields):
-    # if address is default, just update the row
+    '''saving address to address model but update if the default is set to True'''
     if address_fields[5]:
         values_to_update = {
             'address1': address_fields[0],
@@ -26,7 +27,6 @@ def save_address(customer, address_fields):
             'country': address_fields[2],
             'zip_code': address_fields[3]
         }
-
         address, created = Address.objects.update_or_create(
             customer=customer, address_type=address_fields[4], default=True, defaults=values_to_update)
     else:
@@ -205,7 +205,6 @@ def checkout(request):
                 save_shipping = form.cleaned_data.get('chk_save_shipping_info')
                 temp_address = [shipping_address1, shipping_address2, shipping_country, shipping_zip_code, address_type, save_shipping]
                 
-
                 if not is_field_valid(temp_address):
                     messages.error(request, f'Please fill in shipping details.')
                     return redirect('ecommerce:checkout')
