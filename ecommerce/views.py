@@ -3,7 +3,7 @@ from django.db.models import F
 from django.shortcuts import redirect, render
 from .forms import CheckoutForm
 from .models import Item, Variation, VariationImage, Order, OrderItem
-from users.models import Address
+from users.models import Address, Customer
 
 
 def is_field_valid(fields):
@@ -43,8 +43,36 @@ def save_address(customer, address_fields):
     return address
 
 
+def get_session(request):
+    '''get or create anonymous customer through request.session_key'''
+    if not request.session.session_key:
+        request.session.save()
+
+    session_key = request.session.session_key
+    customer_session, created = Customer.objects.get_or_create(session_id=session_key)
+
+    if created:
+        print('NEW ANONYMOUS USER WAS CREATED')
+        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
+    else:
+        print('ANONYMOUS EXiSTS')
+        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
+    return customer_session
+
+
+def query_customer(request):
+    if request.user.is_authenticated:
+        return Customer.objects.filter(user=request.user)
+    else:
+        return get_session(request)
+
+
 def home(request):
     items = Item.objects.all()
+
+    if not request.user.is_authenticated:
+        get_session(request)
+
     context = {
         'items': items,
     }
@@ -85,6 +113,8 @@ def cart(request):
 # view_type 1: from item view
 # view_type 2: from cart view
 def add_to_cart(request, variation_id, view_type):
+    customer = query_customer(request)
+    print('CUSTOMER ID:', customer.id)
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
         item_inventory = item.inventory
@@ -93,9 +123,13 @@ def add_to_cart(request, variation_id, view_type):
             messages.error(request, 'Sorry, this item is out of stock. You may go to contact us for item requests.')
         else:
             if request.user.is_authenticated:
-                customer = request.user #request.user.customer in dennis
+                customer = request.user
                 order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
                 order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
+                if request.user.is_authenticated:
+                    customer = request.user #request.user.customer in dennis
+                    order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+                    order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
 
                 print('item_inventory:', item_inventory)
                 print('order item_quantity:', order_item.quantity)
@@ -115,6 +149,37 @@ def add_to_cart(request, variation_id, view_type):
             return redirect('ecommerce:item', item.item.id, item.name)
         elif view_type == 2:
             return redirect('ecommerce:cart')
+# def add_to_cart(request, variation_id, view_type):
+#     if request.method == 'POST':
+#         item = Variation.objects.filter(id=variation_id).first()
+#         item_inventory = item.inventory
+
+#         if item_inventory <= 0:
+#             messages.error(request, 'Sorry, this item is out of stock. You may go to contact us for item requests.')
+#         else:
+#             if request.user.is_authenticated:
+#                 customer = request.user #request.user.customer in dennis
+#                 order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+#                 order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
+
+#                 print('item_inventory:', item_inventory)
+#                 print('order item_quantity:', order_item.quantity)
+#                 print(item_inventory - (order_item.quantity + 1))
+#                 if item_inventory < (order_item.quantity + 1):
+#                     messages.error(request, f'Only {item_inventory} stock(s) left for this item. You may go to contact us for item requests.')
+#                 else:
+#                     order_item.quantity = F('quantity')+1
+#                     order_item.save()
+
+#                     if created:
+#                         messages.info(request, 'Item is successfully added! Review cart for more details.')
+#                     else:
+#                         messages.info(request, 'Item quantity is updated! Review cart for more details.')
+
+#         if view_type == 1:
+#             return redirect('ecommerce:item', item.item.id, item.name)
+#         elif view_type == 2:
+#             return redirect('ecommerce:cart')
 
 
 def minus_from_cart(request, variation_id):

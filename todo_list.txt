@@ -29,6 +29,8 @@ TODO list NOT labeled in view
 
 4.(Sep-15-2020): modify the admin view for Payment model
 
+5.(Sep-16-2020): add a crontab for deleting Customers that has no binded User
+
 =========
 MISC TODO
 =========

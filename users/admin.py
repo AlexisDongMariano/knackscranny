@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Address
+from .models import Address, Customer
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
@@ -29,3 +29,4 @@ class AddressAdmin(admin.ModelAdmin):
     # the User model has the username field
 
 admin.site.register(Address, AddressAdmin)
+admin.site.register(Customer)
