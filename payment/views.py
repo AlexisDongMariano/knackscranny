@@ -1,5 +1,6 @@
 from .models import Payment
 from ecommerce.models import Order, OrderItem
+from ecommerce.views import query_customer
 from django.conf import settings as conf_settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -71,7 +72,8 @@ def stripe_process(request, process_type, stripe_customer=None, amount_total=Non
 
 def stripe_payment(request):
     '''stripe payment processing'''
-    order = Order.objects.filter(customer=request.user, is_ordered=False).first()
+    customer = query_customer(request)
+    order = Order.objects.filter(customer=customer, is_ordered=False).first()
     if request.method == 'GET':
         items = order.orderitem_set.all()
         context = {

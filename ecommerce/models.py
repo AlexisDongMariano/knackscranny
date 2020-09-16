@@ -4,7 +4,7 @@ from django.utils import timezone
 from django_countries.fields import CountryField
 from PIL import Image
 from payment.models import Payment
-from users.models import Address
+from users.models import Address, Customer
 
 
 class Item(models.Model):
@@ -98,7 +98,7 @@ class VariationImage(models.Model):
 
 class Order(models.Model):
     '''Basically this is the Cart'''
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True) # Create a Customer model from Dennis
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True) # Create a Customer model from Dennis
     shipping_address = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)

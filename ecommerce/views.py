@@ -6,6 +6,32 @@ from .models import Item, Variation, VariationImage, Order, OrderItem
 from users.models import Address, Customer
 
 
+
+def get_session(request):
+    '''get or create anonymous customer through request.session_key'''
+    if not request.session.session_key:
+        request.session.save()
+
+    session_key = request.session.session_key
+    customer_session, created = Customer.objects.get_or_create(session_id=session_key)
+
+    if created:
+        print('NEW ANONYMOUS USER WAS CREATED')
+        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
+    else:
+        print('ANONYMOUS EXiSTS')
+        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
+    return customer_session
+
+
+def query_customer(request):
+    '''get the customer. User object if logged in else, the create session user'''
+    if request.user.is_authenticated:
+        return Customer.objects.filter(user=request.user).first()
+    else:
+        return get_session(request)
+
+
 def is_field_valid(fields):
     '''server check if the address fields are empty excluding address2'''
     for i in range(len(fields)):
@@ -43,30 +69,6 @@ def save_address(customer, address_fields):
     return address
 
 
-def get_session(request):
-    '''get or create anonymous customer through request.session_key'''
-    if not request.session.session_key:
-        request.session.save()
-
-    session_key = request.session.session_key
-    customer_session, created = Customer.objects.get_or_create(session_id=session_key)
-
-    if created:
-        print('NEW ANONYMOUS USER WAS CREATED')
-        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
-    else:
-        print('ANONYMOUS EXiSTS')
-        print('ANONYMOUS SESSION_ID:', customer_session.session_id)
-    return customer_session
-
-
-def query_customer(request):
-    if request.user.is_authenticated:
-        return Customer.objects.filter(user=request.user)
-    else:
-        return get_session(request)
-
-
 def home(request):
     items = Item.objects.all()
 
@@ -95,13 +97,10 @@ def item(request, item_id, variation_name):
 
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer = request.user #request.user.customer in dennis
-        order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
+    '''cart items summary view'''
+    customer = query_customer(request)
+    order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+    items = order.orderitem_set.all()
  
     context = {
         'items': items,
@@ -113,8 +112,6 @@ def cart(request):
 # view_type 1: from item view
 # view_type 2: from cart view
 def add_to_cart(request, variation_id, view_type):
-    customer = query_customer(request)
-    print('CUSTOMER ID:', customer.id)
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
         item_inventory = item.inventory
@@ -122,81 +119,45 @@ def add_to_cart(request, variation_id, view_type):
         if item_inventory <= 0:
             messages.error(request, 'Sorry, this item is out of stock. You may go to contact us for item requests.')
         else:
-            if request.user.is_authenticated:
-                customer = request.user
-                order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-                order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
-                if request.user.is_authenticated:
-                    customer = request.user #request.user.customer in dennis
-                    order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-                    order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
+            customer = query_customer(request)
+            order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
+            order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
 
-                print('item_inventory:', item_inventory)
-                print('order item_quantity:', order_item.quantity)
-                print(item_inventory - (order_item.quantity + 1))
-                if item_inventory < (order_item.quantity + 1):
-                    messages.error(request, f'Only {item_inventory} stock(s) left for this item. You may go to contact us for item requests.')
+            print(item_inventory - (order_item.quantity + 1))
+            if item_inventory < (order_item.quantity + 1):
+                messages.error(request, f'Only {item_inventory} stock(s) left for this item. You may go to contact us for item requests.')
+            else:
+                order_item.quantity = F('quantity')+1
+                order_item.save()
+
+                if created:
+                    messages.info(request, 'Item is successfully added! Review cart for more details.')
                 else:
-                    order_item.quantity = F('quantity')+1
-                    order_item.save()
-
-                    if created:
-                        messages.info(request, 'Item is successfully added! Review cart for more details.')
-                    else:
-                        messages.info(request, 'Item quantity is updated! Review cart for more details.')
+                    messages.info(request, 'Item quantity is updated! Review cart for more details.')
 
         if view_type == 1:
             return redirect('ecommerce:item', item.item.id, item.name)
         elif view_type == 2:
             return redirect('ecommerce:cart')
-# def add_to_cart(request, variation_id, view_type):
-#     if request.method == 'POST':
-#         item = Variation.objects.filter(id=variation_id).first()
-#         item_inventory = item.inventory
-
-#         if item_inventory <= 0:
-#             messages.error(request, 'Sorry, this item is out of stock. You may go to contact us for item requests.')
-#         else:
-#             if request.user.is_authenticated:
-#                 customer = request.user #request.user.customer in dennis
-#                 order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-#                 order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
-
-#                 print('item_inventory:', item_inventory)
-#                 print('order item_quantity:', order_item.quantity)
-#                 print(item_inventory - (order_item.quantity + 1))
-#                 if item_inventory < (order_item.quantity + 1):
-#                     messages.error(request, f'Only {item_inventory} stock(s) left for this item. You may go to contact us for item requests.')
-#                 else:
-#                     order_item.quantity = F('quantity')+1
-#                     order_item.save()
-
-#                     if created:
-#                         messages.info(request, 'Item is successfully added! Review cart for more details.')
-#                     else:
-#                         messages.info(request, 'Item quantity is updated! Review cart for more details.')
-
-#         if view_type == 1:
-#             return redirect('ecommerce:item', item.item.id, item.name)
-#         elif view_type == 2:
-#             return redirect('ecommerce:cart')
 
 
 def minus_from_cart(request, variation_id):
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
-        if request.user.is_authenticated:
-            customer = request.user #request.user.customer in dennis
-            order = Order.objects.filter(customer=customer, is_ordered=False).first()
-            order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
+        customer = query_customer(request)
+        order = Order.objects.filter(customer=customer, is_ordered=False).first()
+        order_item = OrderItem.objects.filter(order=order, item=item).first()
+        # order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
 
-            if order_item.quantity > 1:
-                order_item.quantity = F('quantity')-1
-                order_item.save()
-                messages.info(request, 'Item quantity is updated!')
-            else:
-                order_item.delete()
-                messages.warning(request, 'Item is removed from the cart!')
+        print('order:',order.id, 'order_item:',order_item.id)
+
+        if order_item.quantity > 1:
+            order_item.quantity = F('quantity')-1
+            order_item.save()
+            messages.info(request, 'Item quantity is updated!')
+        else:
+            order_item.delete()
+            messages.warning(request, 'Item is removed from the cart!')
             
         return redirect('ecommerce:cart')
 
@@ -204,18 +165,16 @@ def minus_from_cart(request, variation_id):
 def delete_cart_item(request, variation_id):
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
-        if request.user.is_authenticated:
-            customer = request.user #request.user.customer in dennis
-            order = Order.objects.filter(customer=customer, is_ordered=False).first()
-            order_item, created = OrderItem.objects.get_or_create(order=order, item=item)
-            order_item.delete()
-            messages.warning(request, 'Item is removed from the cart!')
-            
+        customer = query_customer(request)
+        order = Order.objects.filter(customer=customer, is_ordered=False).first()
+        order_item = OrderItem.objects.filter(order=order, item=item).first()
+        order_item.delete()
+        messages.warning(request, 'Item is removed from the cart!')
         return redirect('ecommerce:cart')
 
 
 def checkout(request):
-    customer = request.user #request.user.customer in dennis
+    customer = query_customer(request)
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
     shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True)
     billing_address = Address.objects.filter(customer=customer, address_type='B', default=True)

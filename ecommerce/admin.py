@@ -6,29 +6,34 @@ from django.utils.safestring import mark_safe
 class OrderAdmin(admin.ModelAdmin):
     def user(self, obj):
         return mark_safe('<a href="%s">%s</a>' % (
-                reverse('admin:auth_user_change', args=(obj.customer.id,)), obj.customer
+                reverse('admin:users_customer_change', args=(obj.customer.id,)), obj.customer
             ))
         user_link.allow_tags = True
-        user_link.short_description = 'User'
+        user_link.short_description = 'customer'
     
-    # def test(self, obj):
-    #     return mark_safe('<a href="%s">%s</a>' % (
-    #             reverse('admin:address_change', args=(obj.customer.id,)), obj.customer
-    #         ))
-    #     user_link.allow_tags = True
-    #     user_link.short_description = 'User'
+
     def ship_address(self, obj):
-        return mark_safe('<a href="%s">%s</a>' % (
-            reverse('admin:users_address_change', args=(obj.shipping_address.id,)), obj.shipping_address
-            ))
+        if obj.shipping_address:
+            return mark_safe('<a href="%s">%s</a>' % (
+                reverse('admin:users_address_change', args=(obj.shipping_address.id,)), obj.shipping_address
+                ))
+        else:
+            return None
         test.allow_tags = True
         test.short_description = 'address'
+
+
     def bill_address(self, obj):
-        return mark_safe('<a href="%s">%s</a>' % (
-            reverse('admin:users_address_change', args=(obj.billing_address.id,)), obj.billing_address
-            ))
+        if obj.billing_address:
+            return mark_safe('<a href="%s">%s</a>' % (
+                reverse('admin:users_address_change', args=(obj.billing_address.id,)), obj.billing_address
+                ))
+        else:
+            return None
         test.allow_tags = True
         test.short_description = 'address'
+
+
     def payment_detail(self, obj):
         if obj.payment:
             return mark_safe('<a href="%s">%s</a>' % (
@@ -41,6 +46,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     list_display = [
         'id',
+        'customer',
         'user', # refers to the user method above
         'ship_address',
         'bill_address',

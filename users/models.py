@@ -10,8 +10,23 @@ ADDRESS_CHOICES = (
     ('S', 'Shipping'),
 )
 
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    session_id = models.CharField(max_length=32, blank=True, null=True)
+    first_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50, blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
+    contact1 = models.CharField(max_length=30, blank=True, null=True)
+    contact2 = models.CharField(max_length=30, blank=True, null=True)
+    date_added = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class Address(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
     country = CountryField(multiple=False)
@@ -21,15 +36,10 @@ class Address(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.customer.username + "_" + str(self.id)
+        if self.customer.user:
+            return self.customer.user.username + "_" + str(self.id)
+        else:
+            return 'user' + str(self.customer.id) + str(self.id)
 
     class Meta:
         verbose_name_plural = 'Addresses'
-
-
-class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True)
-    session_id = models.CharField(max_length=32, blank=True, null=True)
-
-    def __str__(self):
-        return str(self.id)
