@@ -71,7 +71,7 @@ def save_address(customer, address_fields):
 
 def home(request):
     items = Item.objects.all()
-
+    print('SESSION_KEY:', request.session.session_key)
     if not request.user.is_authenticated:
         get_session(request)
 
@@ -178,15 +178,10 @@ def checkout(request):
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
     shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True)
     billing_address = Address.objects.filter(customer=customer, address_type='B', default=True)
+
     if request.method == 'GET':
         form = CheckoutForm()
-        if request.user.is_authenticated:
-            # customer = request.user #request.user.customer in dennis
-            # order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
-            items = order.orderitem_set.all()
-        else:
-            items = []
-            order = {'get_cart_total': 0, 'get_cart_items': 0}
+        items = order.orderitem_set.all()
     
         context = {
             'items': items,
@@ -198,7 +193,6 @@ def checkout(request):
             context['shipping_address'] = shipping_address.first()
         if billing_address.exists():
             context['billing_address'] = billing_address.first()
-        print(context)
         return render(request, 'ecommerce/checkout.html', context)
     
     elif request.method == 'POST':
