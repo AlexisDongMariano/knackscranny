@@ -107,8 +107,8 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(blank=True, null=True) # add if ordered
 
     def __str__(self):
-        return str(self.id) + '_' + self.customer.username
-    
+        return str(self.id)
+        
     @property
     def get_cart_total(self):
         order_items = self.orderitem_set.all()

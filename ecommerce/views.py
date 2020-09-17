@@ -181,7 +181,7 @@ def checkout(request):
     if request.method == 'GET':
         form = CheckoutForm()
         if request.user.is_authenticated:
-            customer = request.user #request.user.customer in dennis
+            # customer = request.user #request.user.customer in dennis
             # order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
             items = order.orderitem_set.all()
         else:
