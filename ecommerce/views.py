@@ -176,6 +176,7 @@ def delete_cart_item(request, variation_id):
 def checkout(request):
     customer = query_customer(request)
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
+    print('CUSTOMER ID:', customer.id)
     shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True)
     billing_address = Address.objects.filter(customer=customer, address_type='B', default=True)
 
@@ -190,7 +191,10 @@ def checkout(request):
             }
 
         if shipping_address.exists():
+            print('SHIPPING ADDRESS EXISTS')
             context['shipping_address'] = shipping_address.first()
+        else:
+            print('SHIPPING ADDRESS DOES NOT EXISTS')
         if billing_address.exists():
             context['billing_address'] = billing_address.first()
         return render(request, 'ecommerce/checkout.html', context)
@@ -231,10 +235,14 @@ def checkout(request):
             # Billing Address
             save_billing = form.cleaned_data.get('chk_save_billing_info')
             if same_address:
-                billing_address1 = shipping_address.first().address1
-                billing_address2 = shipping_address.first().address2
-                billing_country = shipping_address.first().country
-                billing_zip_code = shipping_address.first().zip_code
+                # billing_address1 = shipping_address.first().address1
+                # billing_address2 = shipping_address.first().address2
+                # billing_country = shipping_address.first().country
+                # billing_zip_code = shipping_address.first().zip_code
+                billing_address1 = order.shipping_address.address1
+                billing_address2 = order.shipping_address.address2
+                billing_country = order.shipping_address.country
+                billing_zip_code = order.shipping_address.zip_code
                 address_type = 'B'
                 save_billing = save_billing
                 temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]

@@ -4,11 +4,13 @@ IMPORTANT/URGENT tasks
 ======================
 1.(Sep-17-2020) U1.I2: add a column in Order admin, where it lists the count of order items 
 
-!2.(Sep-17-2020) U1.I1 --> 90% DONE (Sep-17-2020): fix Checkout form page
+2.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix Checkout form page
 
 3.(Sep-17-2020) U1.I2: fix the admin pages
 
-!4.(Sep-17-2020) U1.I1 --> 10% DONE (Sep-17-2020): create user registration and bind the customer functionality 
+4.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): create user registration and bind the customer functionality 
+
+!5.(Sep-18-2020) U1.I1 --> 0% DONE (Sep-18-2020): fix payment functionality for anonymous users
 
 =========================
 TODO list labeled in view
