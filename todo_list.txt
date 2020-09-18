@@ -1,16 +1,21 @@
 ! = currently working
+$ = finished
 ======================
 IMPORTANT/URGENT tasks
 ======================
 1.(Sep-17-2020) U1.I2: add a column in Order admin, where it lists the count of order items 
 
-2.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix Checkout form page
+$2.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix Checkout form page
 
 3.(Sep-17-2020) U1.I2: fix the admin pages
+    > set the label of customers so that we could easily identify if it is registered user - like in Order admin view
 
-4.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): create user registration and bind the customer functionality 
+$4.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): create user registration and bind the customer functionality 
 
-!5.(Sep-18-2020) U1.I1 --> 0% DONE (Sep-18-2020): fix payment functionality for anonymous users
+$5.(Sep-18-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix payment functionality for anonymous users
+
+!6.(Sep-18-2020) U2.I1 --> 0% DONE (Sep-18-2020): work on discount codes
+
 
 =========================
 TODO list labeled in view
@@ -49,6 +54,7 @@ TODO list NOT labeled in view
 4.(Sep-15-2020): modify the admin view for Payment model
 
 5.(Sep-16-2020): add a crontab for deleting Customers that has no binded User
+
 
 =========
 MISC TODO

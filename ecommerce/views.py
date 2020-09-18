@@ -202,10 +202,21 @@ def checkout(request):
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)
         print('CHECKOUT DATA:', request.POST)
-
+        
         if form.is_valid():
             print(form.cleaned_data)
 
+            if not customer.user:
+                print('SAVING Customer details')
+                customer.first_name = form.cleaned_data.get('first_name')
+                customer.last_name = form.cleaned_data.get('last_name')
+                customer.email = form.cleaned_data.get('email')
+                customer.contact1 = form.cleaned_data.get('contact1')
+                customer.contact2 = form.cleaned_data.get('contact2')
+                customer.save()
+                print('Customer details saved')
+            else:
+                print('wats happening')
             # Shipping Address
             same_address = form.cleaned_data.get('chk_same_address')
             # if saved shipping address is checked. Checkbox will only show if the default shipping address is found
@@ -276,6 +287,8 @@ def checkout(request):
                 return redirect('payment:stripe')
             elif payment_option == 'P':
                 return redirect('payment:paypal')
+        else:
+            messages.error(request, "Error")
 
         return redirect('ecommerce:checkout')
 

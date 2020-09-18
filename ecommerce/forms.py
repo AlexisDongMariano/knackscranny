@@ -12,13 +12,13 @@ class CheckoutForm(forms.Form):
     # first_name = forms.CharField(required=False, widget=forms.TextInput(
     #     attrs={'class': 'form-control',
     #             'placeholder': '1234 Main Street'}))
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False, widget=forms.TextInput(
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True, widget=forms.TextInput(
         attrs={'class': 'form-control'}))
-    email = forms.EmailField(required=False, widget=forms.EmailInput(
+    email = forms.EmailField(required=True, widget=forms.EmailInput(
         attrs={'class': 'form-control',
                 'placeholder': 'username@example.com'}))
-    contact1 = forms.CharField(required=False, widget=forms.TextInput(
+    contact1 = forms.CharField(required=True, widget=forms.TextInput(
         attrs={'class': 'form-control'}))
     contact2 = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'class': 'form-control'}))

@@ -18,10 +18,10 @@
               <div class="col-md-6 mb-2">
                 <div class="md-form">
                   {% if not user.first_name %}
-                  <input type="text" id="first_name" class="form-control">
+                  <input type="text" id="first_name" name="first_name" class="form-control">
                   <label for="first_name" class="">First name</label>
                   {% else %}
-                  <input type="text" id="first_name" class="form-control" value="{{ user.first_name }}">
+                  <input type="text" id="first_name" class="form-control" name="first_name" value="{{ user.first_name }}">
                   <!-- <label for="first_name" class="">First name</label> -->
                   {% endif %}
                 </div>
@@ -29,10 +29,10 @@
               <div class="col-md-6 mb-2">
                 <div class="md-form">
                   {% if not user.last_name %}
-                  <input type="text" id="last_name" class="form-control">
+                  <input type="text" id="last_name" name="last_name" class="form-control"/>
                   <label for="last_name" class="">Last name</label>
                   {% else %}
-                  <input type="text" id="last_name" class="form-control" value="{{ user.last_name }}">
+                  <input type="text" id="last_name" name="last_name" class="form-control" value="{{ user.last_name }}"/>
                   {% endif %}
                 </div>
               </div>
@@ -40,10 +40,10 @@
 
             <div class="md-form mb-3">
               {% if not user.email %}
-              <input type="email" id="email" class="form-control" placeholder="username@mail.com">
+              <input type="email" id="email" name="email" class="form-control" placeholder="username@mail.com">
               <label for="email" class="">Email</label>
               {% else %}
-              <input type="email" id="email" class="form-control" value="{{ user.email }}">
+              <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}">
               <label for="email" class="">Email</label>
               {% endif %}
             </div>

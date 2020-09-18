@@ -17,14 +17,18 @@ stripe.api_key = conf_settings.STRIPE_SECRET_KEY
 def stripe_process(request, process_type, stripe_customer=None, amount_total=None):
     '''stripe process of creating customer and charge'''
     error_message = ''
+
     try:
         if process_type == 1:
             customer = stripe.Customer.create(
-                name=request.user.username,
-                email=request.user.email,
+                # name=request.user.username,
+                # email=request.user.email,
+                name=stripe_customer.first_name + ' ' + stripe_customer.last_name,
+                email=stripe_customer.email,
                 source=request.POST.get('stripeToken')
             )
         elif process_type == 2:
+            print('STRIPE_CUSTOMER:', stripe_customer)
             charge = stripe.Charge.create(
                 customer=stripe_customer,
                 amount=int(amount_total),
@@ -88,7 +92,7 @@ def stripe_payment(request):
         amount_total = order.get_cart_total*100 # in cents 
 
         # create stripe customer
-        stripe_customer = stripe_process(request, 1)
+        stripe_customer = stripe_process(request, 1, customer)
         if not stripe_customer[0]:
             messages.error(request, f'Error: {stripe_customer[1]}')
             return redirect('payment:stripe')
@@ -102,7 +106,7 @@ def stripe_payment(request):
         try:
             # save the payment in payment model
             payment = Payment()
-            payment.customer = request.user
+            payment.customer = customer
             payment.charge_id = stripe_charge[1]['id']
             payment.amount = order.get_cart_total
             payment.payment_method = 'S'
