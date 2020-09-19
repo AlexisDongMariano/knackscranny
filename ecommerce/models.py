@@ -6,8 +6,18 @@ from PIL import Image
 from payment.models import Payment
 from users.models import Address, Customer
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = 'Categories'
+
 
 class Item(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -137,12 +147,3 @@ class OrderItem(models.Model):
         total = self.item.price * self.quantity
         return total
 
-
-# might as well put in users app
-# class Customer(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-#     name = models.CharField(max_length=200, null=True)
-#     email = models.CharField(max_length=200, null=True)
-
-#     def __str__(self):
-#         return self.name

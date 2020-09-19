@@ -12,7 +12,7 @@ ADDRESS_CHOICES = (
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True)
     session_id = models.CharField(max_length=32, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)

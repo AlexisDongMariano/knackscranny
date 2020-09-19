@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, Variation, VariationImage, Order, OrderItem
+from .models import Category, Item, Variation, VariationImage, Order, OrderItem
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
@@ -58,6 +58,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added']
     search_fields = ['customer__username', 'shipping_address', 'billing_address'] 
 
+admin.site.register(Category)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Item)
 admin.site.register(Variation)
