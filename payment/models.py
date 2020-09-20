@@ -28,7 +28,7 @@ class Coupon(models.Model):
     date_expiration = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-    return self.name[:10]
+        return self.name[:10]
 
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()
