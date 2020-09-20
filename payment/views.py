@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 import stripe
 
 
@@ -126,6 +127,11 @@ def stripe_payment(request):
             messages.info(request, 'Order was successful')
             # 2.TODO: create a thank you template
             return redirect('ecommerce:home')
+
+
+@require_POST
+def add_coupon(request):
+    return redirect('ecommerce:checkout')
 
         
         

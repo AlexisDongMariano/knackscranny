@@ -26,16 +26,18 @@
     </li>
   </ul>
 
-  <form class="card p-2">
+  {% if display_coupon_form %}
+  <form class="card p-2" action="{% url 'payment:add-coupon' %}" method="POST">
     {% csrf_token %}
     <div class="input-group">
       <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
         aria-describedby="basic-addon2"> -->
-        {{ CouponForm.code.errors }}
-        {{ CouponForm.code }}
+        {{ coupon_form.code.errors }}
+        {{ coupon_form.code }}
         <!-- <label for="{{ form.code.id_for_label }}">Address</label> -->
       <div class="input-group-append">
         <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
       </div>
     </div>
   </form>
+  {% endif %}

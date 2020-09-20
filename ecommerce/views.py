@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .forms import CheckoutForm
 from .models import Order, OrderItem
 from items.models import Category, Item, Variation, VariationImage
+from payment.forms import CouponForm
 from users.models import Address, Customer
 
 
@@ -183,14 +184,17 @@ def checkout(request):
 
     if request.method == 'GET':
         form = CheckoutForm()
+        coupon_form = CouponForm()
         items = order.orderitem_set.all()
     
         context = {
             'items': items,
             'order': order,
             'form': form,
-            }
-
+            'coupon_form': coupon_form,
+            'display_coupon_form': True
+        }
+        
         if shipping_address.exists():
             print('SHIPPING ADDRESS EXISTS')
             context['shipping_address'] = shipping_address.first()
@@ -292,6 +296,9 @@ def checkout(request):
             messages.error(request, "Error")
 
         return redirect('ecommerce:checkout')
+
+
+
 
 
 
