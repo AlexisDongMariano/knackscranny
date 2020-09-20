@@ -20,7 +20,7 @@ class Payment(models.Model):
 
 
 class Coupon(models.Model):
-    name = models.CharField(max_length=20)
+    code = models.CharField(max_length=20)
     fixed_amount = models.DecimalField(max_digits=4, decimal_places=2)
     percent_value = models.DecimalField(max_digits=4, decimal_places=2)
     date_added = models.DateTimeField(default=timezone.now)
@@ -28,7 +28,7 @@ class Coupon(models.Model):
     date_expiration = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.name[:10]
+        return self.code[:10]
 
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()

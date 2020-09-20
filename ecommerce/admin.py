@@ -51,12 +51,13 @@ class OrderAdmin(admin.ModelAdmin):
         'ship_address',
         'bill_address',
         'payment_detail',
+        'coupon',
         'date_added',
         'is_ordered',
         'ordered_date',
     ]
-    list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added']
-    search_fields = ['customer__username', 'shipping_address', 'billing_address'] 
+    list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added', 'coupon']
+    search_fields = ['customer__username', 'shipping_address', 'billing_address', 'coupon'] 
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)

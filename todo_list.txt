@@ -14,7 +14,8 @@ $4.(Sep-17-2020) U1.I1 --> 100% DONE (Sep-18-2020): create user registration and
 
 $5.(Sep-18-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix payment functionality for anonymous users
 
-!6.(Sep-18-2020) U2.I1 --> 10% DONE (Sep-18-2020): work on discount codes
+!6.(Sep-18-2020) U2.I1 --> 25% DONE (Sep-20-2020): work on discount codes
+    > (Sep-20-2020): Create CouponForm in the views and add the logic, as well as the computation to be added in the Order model
 
 
 =========================

@@ -9,15 +9,9 @@ PAYMENT_CHOICES = (
 )
 
 class CheckoutForm(forms.Form):
-    # first_name = forms.CharField(required=False, widget=forms.TextInput(
-    #     attrs={'class': 'form-control',
-    #             'placeholder': '1234 Main Street'}))
     first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    email = forms.EmailField(required=True, widget=forms.EmailInput(
-        attrs={'class': 'form-control',
-                'placeholder': 'username@example.com'}))
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
     contact1 = forms.CharField(required=True, widget=forms.TextInput(
         attrs={'class': 'form-control'}))
     contact2 = forms.CharField(required=False, widget=forms.TextInput(
