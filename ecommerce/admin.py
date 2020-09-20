@@ -58,12 +58,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added']
     search_fields = ['customer__username', 'shipping_address', 'billing_address'] 
 
-admin.site.register(Category)
 admin.site.register(Order, OrderAdmin)
-admin.site.register(Item)
-admin.site.register(Variation)
-admin.site.register(VariationImage)
-# admin.site.register(Order)
 admin.site.register(OrderItem)
 
 

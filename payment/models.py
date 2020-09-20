@@ -17,3 +17,19 @@ class Payment(models.Model):
 
     def __str__(self):
         return str(self.customer.id) + '_' + self.payment_method
+
+
+class Coupon(models.Model):
+    name = models.CharField(max_length=20)
+    fixed_amount = models.DecimalField(max_digits=4, decimal_places=2)
+    percent_value = models.DecimalField(max_digits=4, decimal_places=2)
+    date_added = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(default=timezone.now)
+    date_expiration = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+    return self.name[:10]
+
+    def save(self, *args, **kwargs):
+        self.date_updated = timezone.now()
+        super(Coupon, self).save(*args, **kwargs)

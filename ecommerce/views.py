@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.db.models import F
 from django.shortcuts import redirect, render
 from .forms import CheckoutForm
-from .models import Item, Variation, VariationImage, Order, OrderItem
+from .models import Order, OrderItem
+from items.models import Category, Item, Variation, VariationImage
 from users.models import Address, Customer
 
 
