@@ -1,4 +1,5 @@
-from .models import Payment
+from .forms import CouponForm
+from .models import Coupon, Payment
 from ecommerce.models import Order, OrderItem
 from ecommerce.views import query_customer
 from django.conf import settings as conf_settings
@@ -131,6 +132,21 @@ def stripe_payment(request):
 
 @require_POST
 def add_coupon(request):
+    customer = query_customer(request)
+    order = Order.objects.filter(customer=customer, is_ordered=False).first()
+    form = CouponForm(request.POST)
+
+    if form.is_valid():
+        print(form.cleaned_data)
+        coupon_qs = Coupon.objects.filter(code=form.cleaned_data.get('code'))
+
+        if coupon_qs.exists():
+            order.coupon = coupon_qs.first()
+            order.save()
+            messages.info(request, f'Promo code successfully applied')
+        else:
+            messages.error(request, f'Invalid promo code')
+
     return redirect('ecommerce:checkout')
 
         

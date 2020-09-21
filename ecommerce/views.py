@@ -207,7 +207,7 @@ def checkout(request):
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)
         print('CHECKOUT DATA:', request.POST)
-        
+
         if form.is_valid():
             print(form.cleaned_data)
 
@@ -247,6 +247,7 @@ def checkout(request):
                 order.shipping_address = save_address(customer, temp_address)
 
             order.save()
+            print('ORDER WAS SAVED')
          
             # Billing Address
             save_billing = form.cleaned_data.get('chk_save_billing_info')

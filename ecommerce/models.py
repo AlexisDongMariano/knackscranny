@@ -21,11 +21,23 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    @property
+    def get_cart_subtotal(self):
+        order_items = self.orderitem_set.all()
+        total = sum([item.get_total for item in order_items])
+        return total
         
     @property
     def get_cart_total(self):
         order_items = self.orderitem_set.all()
         total = sum([item.get_total for item in order_items])
+
+        if self.coupon:
+            if self.coupon.fixed_amount:
+                total -= self.coupon.fixed_amount
+            elif self.coupon.percent_value:
+                total = round(total - (total * (self.coupon.percent_value / 100)),2)
         return total
     
     @property
@@ -33,6 +45,14 @@ class Order(models.Model):
         order_items = self.orderitem_set.all()
         total = sum([item.quantity for item in order_items])
         return total
+
+    @property
+    def get_discount(self):
+        if self.coupon.fixed_amount:
+            return '-$'+str(self.coupon.fixed_amount)
+        elif self.coupon.percent_value:
+            # return str(self.coupon.percent_value)[:len(str(self.coupon.percent_value))-3]+'% off'
+            return str(round(self.coupon.percent_value,0))+'% off'
 
 
 class OrderItem(models.Model):

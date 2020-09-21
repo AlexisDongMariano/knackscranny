@@ -13,15 +13,22 @@
       <span class="text-muted">${{ item.item.price }}</span>
     </li>
     {% endfor %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Subtotal</span>
+      ${{ order.get_cart_subtotal }}
+    </li>
+    {% if order.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
       <div class="text-success">
         <h6 class="my-0">Promo code</h6>
-        <small>EXAMPLECODE</small>
+        <small>{{ order.coupon.code }}</small>
       </div>
-      <span class="text-success">-$5</span>
+      
+      <span class="text-success">{{ order.get_discount }}</span>
     </li>
+    {% endif %}
     <li class="list-group-item d-flex justify-content-between">
-      <span>Total (USD)</span>
+      <span>Total (CAD)</span>
       <strong>${{ order.get_cart_total }}</strong>
     </li>
   </ul>

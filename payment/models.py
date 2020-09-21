@@ -21,8 +21,8 @@ class Payment(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=20)
-    fixed_amount = models.DecimalField(max_digits=4, decimal_places=2)
-    percent_value = models.DecimalField(max_digits=4, decimal_places=2)
+    fixed_amount = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+    percent_value = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
     date_expiration = models.DateTimeField(blank=True, null=True)
@@ -33,3 +33,5 @@ class Coupon(models.Model):
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()
         super(Coupon, self).save(*args, **kwargs)
+
+    
