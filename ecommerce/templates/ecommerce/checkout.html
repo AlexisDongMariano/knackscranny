@@ -67,28 +67,36 @@
 
             <!-- SHIPPING ADDRESS -->
             <h5 class="mt-2 text-center">Shipping Address</h5>
-            <div class="md-form mb-5">
-              {{ form.shipping_address1.errors }}
-              {{ form.shipping_address1 }}
-              <label for="{{ form.shipping_address1.id_for_label }}">Address</label>
-            </div>
-            <div class="md-form mb-4">
-              {{ form.shipping_address2.errors }}
-              {{ form.shipping_address2 }}
-              <label for="{{ form.shipping_address2.id_for_label }}">Address 2 (optional)</label>
-            </div>
-
-            <div class="row">
-              <div class="col-lg-6 col-md-12 mb-2">
-                {{ form.shipping_country.errors }}
-                <label for="{{ form.shipping_country.id_for_label }}">Country</label>
-                {{ form.shipping_country }}
-
+            <div class="toggle_shipping_form">
+              <div class="md-form mb-5">
+                {{ form.shipping_address1.errors }}
+                {{ form.shipping_address1 }}
+                <label for="{{ form.shipping_address1.id_for_label }}">Address</label>
               </div>
-              <div class="col-lg-4 col-md-6 mb-2">
-                {{ form.shipping_zip_code.errors }}
-                <label for="{{ form.shipping_zip_code.id_for_label }}">Zip</label>
-                {{ form.shipping_zip_code }}
+              <div class="md-form mb-4">
+                {{ form.shipping_address2.errors }}
+                {{ form.shipping_address2 }}
+                <label for="{{ form.shipping_address2.id_for_label }}">Address 2 (optional)</label>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-md-12 mb-2">
+                  {{ form.shipping_country.errors }}
+                  <label for="{{ form.shipping_country.id_for_label }}">Country</label>
+                  {{ form.shipping_country }}
+
+                </div>
+                <div class="col-lg-4 col-md-6 mb-2">
+                  {{ form.shipping_zip_code.errors }}
+                  <label for="{{ form.shipping_zip_code.id_for_label }}">Zip</label>
+                  {{ form.shipping_zip_code }}
+                </div>
+              </div>
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_save_shipping_info.errors }}
+                {{ form.chk_save_shipping_info }}
+                <label class="custom-control-label" for="{{ form.chk_save_shipping_info.id_for_label }}">Save shipping
+                  address as default</label>
               </div>
             </div>
 
@@ -99,12 +107,7 @@
                 address is the
                 same as my shipping address</label>
             </div>
-            <div class="custom-control custom-checkbox">
-              {{ form.chk_save_shipping_info.errors }}
-              {{ form.chk_save_shipping_info }}
-              <label class="custom-control-label" for="{{ form.chk_save_shipping_info.id_for_label }}">Save shipping
-                address as default</label>
-            </div>
+            <!-- Use saved shipping address -->
             {% if shipping_address %}
             <div class="custom-control custom-checkbox">
               {{ form.chk_use_default_shipping.errors }}
@@ -116,50 +119,55 @@
             {% endif %}
             <!-- <hr> -->
             <!-- BILLING ADDRESS -->
-            <h5 class="mt-5 text-center">Billing Address</h5>
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="md-form mb-5">
-              {{ form.billing_address1.errors }}
-              {{ form.billing_address1 }}
-              <label for="{{ form.billing_address1.id_for_label }}">Address</label>
-            </div>
-            <div class="md-form mb-4">
-              {{ form.billing_address2.errors }}
-              {{ form.billing_address2 }}
-              <label for="{{ form.billing_address2.id_for_label }}">Address 2 (optional)</label>
-            </div>
+            <div class="toggle_billing_address">
+              <h5 class="mt-5 text-center">Billing Address</h5>
+              <div class="toggle_billing_form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="md-form mb-5">
+                  {{ form.billing_address1.errors }}
+                  {{ form.billing_address1 }}
+                  <label for="{{ form.billing_address1.id_for_label }}">Address</label>
+                </div>
+                <div class="md-form mb-4">
+                  {{ form.billing_address2.errors }}
+                  {{ form.billing_address2 }}
+                  <label for="{{ form.billing_address2.id_for_label }}">Address 2 (optional)</label>
+                </div>
 
-            <div class="row">
-              <div class="col-lg-6 col-md-12 mb-2">
-                {{ form.billing_country.errors }}
-                <label for="{{ form.billing_country.id_for_label }}">Country</label>
-                {{ form.billing_country }}
+                <div class="row">
+                  <div class="col-lg-6 col-md-12 mb-2">
+                    {{ form.billing_country.errors }}
+                    <label for="{{ form.billing_country.id_for_label }}">Country</label>
+                    {{ form.billing_country }}
 
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    {{ form.billing_zip_code.errors }}
+                    <label for="{{ form.billing_zip_code.id_for_label }}">Zip</label>
+                    {{ form.billing_zip_code }}
+                  </div>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  {{ form.chk_save_billing_info.errors }}
+                  {{ form.chk_save_billing_info }}
+                  <label class="custom-control-label" for="{{ form.chk_save_billing_info.id_for_label }}">Save
+                    billing
+                    address as default</label>
+                </div>
               </div>
-              <div class="col-lg-4 col-md-6 mb-2">
-                {{ form.billing_zip_code.errors }}
-                <label for="{{ form.billing_zip_code.id_for_label }}">Zip</label>
-                {{ form.billing_zip_code }}
+              <!-- Use saved billing address -->
+              {% if billing_address %}
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_use_default_billing.errors }}
+                {{ form.chk_use_default_billing }}
+                <label class="custom-control-label" for="{{ form.chk_use_default_billing.id_for_label }}">
+                  Use saved billing address ({{ billing_address.address1|truncatechars:20 }})
+                </label>
               </div>
-            </div>
-            <div class="custom-control custom-checkbox">
-              {{ form.chk_save_billing_info.errors }}
-              {{ form.chk_save_billing_info }}
-              <label class="custom-control-label" for="{{ form.chk_save_billing_info.id_for_label }}">Save
-                billing
-                address as default</label>
-            </div>
-            {% if billing_address %}
-            <div class="custom-control custom-checkbox">
-              {{ form.chk_use_default_billing.errors }}
-              {{ form.chk_use_default_billing }}
-              <label class="custom-control-label" for="{{ form.chk_use_default_billing.id_for_label }}">
-                Use saved billing address ({{ billing_address.address1|truncatechars:20 }})
-              </label>
             </div>
             {% endif %}
-            <!-- <hr> -->
+           
             <!-- PAYMENT OPTIONS -->
             <h5 class="mt-5 text-center">Payment Options</h5>
             <hr>
@@ -183,46 +191,45 @@
       <!-- CART SUMMARY -->
       <div class="col-md-4 mb-4">
         {% include "payment/summary.html" %}
-        <!-- <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Your cart</span>
-          <span class="badge badge-secondary badge-pill">{{ order.get_cart_items }}</span>
-        </h4>
-        <ul class="list-group mb-3 z-depth-1">
-          {% for item in items %}
-          <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-              <h6 class="my-0">{{ item.item.item.name|truncatechars:20 }} ({{ item.item.name }})
-                <strong>x{{ item.quantity }}</strong></h6>
-              <small class="text-muted">{{ item.item.description|truncatechars:35  }}</small>
-            </div>
-            <span class="text-muted">${{ item.item.price }}</span>
-          </li>
-          {% endfor %}
-          <li class="list-group-item d-flex justify-content-between bg-light">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">-$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
-            <strong>${{ order.get_cart_total }}</strong>
-          </li>
-        </ul>
-
-        <form class="card p-2">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
-              aria-describedby="basic-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-secondary btn-md waves-effect m-0" type="button">Redeem</button>
-            </div>
-          </div>
-        </form> -->
       </div>
     </div>
   </div>
 </main>
-
 {% endblock content %}
+
+{% block extra_scripts %}
+<script>
+const toggle_shipping_form = $('.toggle_shipping_form');
+const toggle_billing_form = $('.toggle_billing_form');
+const toggle_billing_address = $('.toggle_billing_address');
+
+const use_default_shipping = document.querySelector("input[name=chk_use_default_shipping]");
+const use_default_billing = document.querySelector("input[name=chk_use_default_billing]");
+const use_same_address = document.querySelector("input[name=chk_same_address]");
+
+use_default_shipping.addEventListener('change', function() {
+  if (this.checked) {
+    toggle_shipping_form.hide();
+  } else {
+    toggle_shipping_form.show();
+  }
+})
+
+use_default_billing.addEventListener('change', function() {
+  if (this.checked) {
+    toggle_billing_form.hide();
+  } else {
+    toggle_billing_form.show();
+  }
+})
+
+use_same_address.addEventListener('change', function() {
+  if (this.checked) {
+    toggle_billing_address.hide();
+  } else {
+    toggle_billing_address.show();
+  }
+})
+
+</script>
+{% endblock extra_scripts %}
