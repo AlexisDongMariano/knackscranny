@@ -12,10 +12,8 @@ class CheckoutForm(forms.Form):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
-    contact1 = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    contact2 = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
+    contact1 = forms.CharField(required=True)
+    contact2 = forms.CharField(required=False)
 
 
     shipping_address1 = forms.CharField(required=False, widget=forms.TextInput(

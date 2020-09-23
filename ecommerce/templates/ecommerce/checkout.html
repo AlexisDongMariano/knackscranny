@@ -53,14 +53,15 @@
             <div class="row mb-4">
               <div class="col-md-6 mb-2">
                 <div class="md-form ">
-                  {{ form.contact1 }}
-                  <label for="{{ form.contact1.id_for_label }}" class="">Contact number</label>
+                  <input type="text" id="contact1" class="form-control" name="contact1" value="{{ order.customer.contact1 }}">
+                  <label for="contact1" class="">Contact number</label> 
                 </div>
               </div>
               <div class="col-md-6 mb-2">
                 <div class="md-form ">
-                  {{ form.contact2 }}
-                  <label for="{{ form.contact2.id_for_label }}" class="">Alternate number (optional)</label>
+                  <input type="text" id="contact2" class="form-control" name="contact2" value="{{ order.customer.contact2 }}">
+                  <label for="contact2" class="">Alternate number (optional)</label> 
+                  <!-- <label for="{{ form.contact2.id_for_label }}" class="">Alternate number (optional)</label> -->
                 </div>
               </div>
             </div>

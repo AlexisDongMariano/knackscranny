@@ -20,7 +20,7 @@ $6.(Sep-18-2020) U2.I1 --> 100% DONE (Sep-21-2020): work on discount codes
 $7.(Sep-21-2020) U2.I1: --> 100% DONE (Sep-23-2020): restrict user going directly to 
     > checkout and/or payments if the user has no orderitems, payment stripe
 
-8.(Sep-21-2020) U2.I1: prepopulate contact # in the checkout form
+$8.(Sep-21-2020) U2.I1: --> 100% DONE (Sep-23-2020): prepopulate contact # in the checkout form
 
 $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items in the navbar
 
