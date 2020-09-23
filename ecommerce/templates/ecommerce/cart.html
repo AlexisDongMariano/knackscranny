@@ -84,6 +84,13 @@
                     {% if items %}
                     <tr>
                       <td colspan="3"></td>
+                      <td><strong>Promo: {{ order.coupon.code }}</strong></td>
+                      <td><strong>Discount: {{ order.get_discount }}</strong></td>
+                      <!-- <td><strong>Order Total: ${{ order.get_cart_total }}</strong></td> -->
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3"></td>
                       <td><strong>Total Items: {{ order.get_cart_items }}</strong></td>
                       <td><strong>Order Total: ${{ order.get_cart_total }}</strong></td>
                       <td></td>

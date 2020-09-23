@@ -186,23 +186,27 @@ def checkout(request):
         form = CheckoutForm()
         coupon_form = CouponForm()
         items = order.orderitem_set.all()
-    
-        context = {
-            'items': items,
-            'order': order,
-            'form': form,
-            'coupon_form': coupon_form,
-            'display_coupon_form': True
-        }
-        
-        if shipping_address.exists():
-            print('SHIPPING ADDRESS EXISTS')
-            context['shipping_address'] = shipping_address.first()
+
+        if items:
+            context = {
+                'items': items,
+                'order': order,
+                'form': form,
+                'coupon_form': coupon_form,
+                'display_coupon_form': True
+            }
+            
+            if shipping_address.exists():
+                print('SHIPPING ADDRESS EXISTS')
+                context['shipping_address'] = shipping_address.first()
+            else:
+                print('SHIPPING ADDRESS DOES NOT EXISTS')
+            if billing_address.exists():
+                context['billing_address'] = billing_address.first()
+            return render(request, 'ecommerce/checkout.html', context)
         else:
-            print('SHIPPING ADDRESS DOES NOT EXISTS')
-        if billing_address.exists():
-            context['billing_address'] = billing_address.first()
-        return render(request, 'ecommerce/checkout.html', context)
+            messages.warning(request, f'You do not have an active order')
+            return redirect('ecommerce:cart')
     
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)

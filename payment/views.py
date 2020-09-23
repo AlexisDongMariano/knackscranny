@@ -82,12 +82,17 @@ def stripe_payment(request):
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
     if request.method == 'GET':
         items = order.orderitem_set.all()
-        context = {
-            'order': order,
-            'items': items,
-            'STRIPE_PUBLIC_KEY': conf_settings.STRIPE_PUBLIC_KEY
-        }
-        return render(request, 'payment/stripe.html',context)
+
+        if items:
+            context = {
+                'order': order,
+                'items': items,
+                'STRIPE_PUBLIC_KEY': conf_settings.STRIPE_PUBLIC_KEY
+            }
+            return render(request, 'payment/stripe.html',context)
+        else:
+            messages.warning(request, f'You do not have an active order.')
+            return redirect('ecommerce:cart')
 
     elif request.method == 'POST':
         print('DATA:', request.POST)

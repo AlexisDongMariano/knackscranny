@@ -17,11 +17,12 @@ $5.(Sep-18-2020) U1.I1 --> 100% DONE (Sep-18-2020): fix payment functionality fo
 $6.(Sep-18-2020) U2.I1 --> 100% DONE (Sep-21-2020): work on discount codes
     > (Sep-20-2020): Create CouponForm in the views and add the logic, as well as the computation to be added in the Order model
 
-7.(Sep-21-2020) U2.I1: restrict user going directly to checkout and/or payments if the user has no orderitems
+$7.(Sep-21-2020) U2.I1: --> 100% DONE (Sep-23-2020): restrict user going directly to 
+    > checkout and/or payments if the user has no orderitems, payment stripe
 
 8.(Sep-21-2020) U2.I1: prepopulate contact # in the checkout form
 
-9.(Sep-21-2020) U2.I1: work on the # of cart items in the navbar
+$9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items in the navbar
 
 10.(Sep-21-2020) U2.I1: work on the login, registration page
 
