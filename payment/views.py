@@ -1,6 +1,6 @@
 from .forms import CouponForm
 from .models import Coupon, Payment
-from ecommerce.models import Order, OrderItem
+from ecommerce.models import Order, OrderItem, OrderStatus
 from ecommerce.views import query_customer
 from django.conf import settings as conf_settings
 from django.contrib import messages
@@ -8,10 +8,16 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+import random
+import string
 import stripe
 
 
 stripe.api_key = conf_settings.STRIPE_SECRET_KEY
+
+
+def generate_reference_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 # process_type 1 = create customer
@@ -123,7 +129,11 @@ def stripe_payment(request):
             order.payment = payment
             order.is_ordered = True
             order.ordered_date = timezone.now()
+            order.reference_code = generate_reference_code()
             order.save()
+
+            # creating order status model with Processing as default
+            order_status = OrderStatus.objects.create(order=order)
         except Exception as e:
             print(e)
             # 1.TODO: create a charge cancel or charge refund 

@@ -39,7 +39,7 @@ class Address(models.Model):
         if self.customer.user:
             return self.customer.user.username + "_" + str(self.id)
         else:
-            return 'user' + str(self.customer.id) + str(self.id)
+            return 'user' + str(self.customer.id) + "_" + str(self.id)
 
     class Meta:
         verbose_name_plural = 'Addresses'

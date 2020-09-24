@@ -7,10 +7,19 @@ from payment.models import Coupon, Payment
 from PIL import Image
 from users.models import Address, Customer
 
+ORDER_STATUS = (
+    ('PD', 'Production'),
+    ('PC', 'Processing'),
+    ('PG', 'Packaging'),
+    ('DV', 'Being Delivered'),
+    ('RC', 'Received'),
+)
+
 
 class Order(models.Model):
     '''Basically this is the Cart'''
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    reference_code = models.CharField(max_length=20, blank=True, null=True)
     shipping_address = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
@@ -69,4 +78,20 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.item.price * self.quantity
         return total
+
+
+class OrderStatus(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    status = models.CharField(max_length=2, choices=ORDER_STATUS, default='PC')
+    refund_requested = models.BooleanField(default=False)
+    refund_granted = models.BooleanField(default=False)
+    date_added = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'{self.order}'
+
+    def save(self, *args, **kwargs):
+        self.date_updated = timezone.now()
+        super(OrderStatus, self).save(*args, **kwargs)
 

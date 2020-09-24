@@ -8,7 +8,6 @@ from payment.forms import CouponForm
 from users.models import Address, Customer
 
 
-
 def get_session(request):
     '''get or create anonymous customer through request.session_key'''
     if not request.session.session_key:
@@ -103,7 +102,7 @@ def cart(request):
     customer = query_customer(request)
     order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
     items = order.orderitem_set.all()
- 
+
     context = {
         'items': items,
         'order': order,
@@ -224,8 +223,7 @@ def checkout(request):
                 customer.contact2 = form.cleaned_data.get('contact2')
                 customer.save()
                 print('Customer details saved')
-            else:
-                print('wats happening')
+            
             # Shipping Address
             same_address = form.cleaned_data.get('chk_same_address')
             # if saved shipping address is checked. Checkbox will only show if the default shipping address is found

@@ -26,6 +26,14 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 10.(Sep-21-2020) U2.I1: work on the login, registration page
 
+11.(Sep-24-2020) U2.I1: Add quantity to the coupon and logic in the code
+
+12.(Sep-25-2020) U2.I1: Modify Order Status admin page
+
+13.(Sep-25-2020) U2.I1: Maybe add Refund model and view?
+
+14.(Sep-24-2020) U2.I1: Work on the User's profile page
+
 
 =========================
 TODO list labeled in view
