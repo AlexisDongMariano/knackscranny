@@ -70,6 +70,13 @@ def save_address(customer, address_fields):
     return address
 
 
+def landing_page(request):
+    if not request.user.is_authenticated:
+        get_session(request)
+
+    return render(request, 'ecommerce/landing-page.html')
+
+
 def home(request):
     items = Item.objects.all()
     print('SESSION_KEY:', request.session.session_key)

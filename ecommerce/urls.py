@@ -3,7 +3,8 @@ from . import views
 
 app_name = 'ecommerce'
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.landing_page, name='landing-page'),
+    path('home/', views.home, name='home'),
     path('item/<int:item_id>/<str:variation_name>/', views.item, name='item'),
     path('cart/', views.cart, name='cart'),
     path('checkout/', views.checkout, name='checkout'),
