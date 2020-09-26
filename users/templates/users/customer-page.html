@@ -1,0 +1,39 @@
+{% extends "ecommerce/base.html" %}
+{% block content %}
+
+<main class="mt-5 pt-4">
+  <div class="container wow fadeIn">
+
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <div class="card">
+          {% include "users/profile.html" %}
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <!-- <div class="card"> -->
+          <ul class="list-group mb-3 z-depth-1">
+            <li class="list-group-item d-flex justify-content-between">
+              Profile
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              Addresses
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              Orders
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              Payments
+            </li>
+          </ul>
+        <!-- </div> -->
+      </div>
+    </div>
+
+   
+
+
+  </div>
+</main>
+{% endblock content %}

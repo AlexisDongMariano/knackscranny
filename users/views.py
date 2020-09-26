@@ -33,3 +33,11 @@ def register(request):
         else:
             form = UserRegisterForm()
         return render(request, 'users/register.html', {'form': form})
+
+
+def customer_page(request):
+    customer = Customer.objects.filter(user=request.user).first()
+    context = {
+        'customer': customer
+    }
+    return render(request, 'users/customer-page.html', context)
