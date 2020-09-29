@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django_countries.fields import CountryField
-
+from PIL import Image
 
 
 ADDRESS_CHOICES = (
@@ -20,9 +20,28 @@ class Customer(models.Model):
     contact1 = models.CharField(max_length=30, blank=True, null=True)
     contact2 = models.CharField(max_length=30, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(default=f'default_profile.png', upload_to='profile_pics')
 
     def __str__(self):
         return str(self.id)
+    
+    def save(self, *args, **kwargs):
+        #* deletes the previous image when updated
+        if Customer.objects.filter(id=self.id).exists():
+            this = Customer.objects.filter(id=self.id).first()
+            
+            if this.image != self.image and this.image != 'default_profile.png':
+                this.image.delete(save=False)
+                print('IMAGE DELETED')
+        #*
+        super().save(*args, **kwargs)
+        
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
 
 class Address(models.Model):

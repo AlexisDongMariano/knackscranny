@@ -79,6 +79,11 @@ body,
 .th-summary-img {
   width: 20%;
 }
+.profile-img{
+  height: 10rem;
+  width: 10rem;
+  border-radius: 2%;
+}
 
 
 

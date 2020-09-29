@@ -35,9 +35,11 @@ def register(request):
         return render(request, 'users/register.html', {'form': form})
 
 
-def customer_page(request):
+def profile(request):
     customer = Customer.objects.filter(user=request.user).first()
     context = {
-        'customer': customer
+        'customer': customer,
+        'first_name': customer.first_name.capitalize(),
+        'last_name': customer.last_name.capitalize(),
     }
-    return render(request, 'users/customer-page.html', context)
+    return render(request, 'users/profile.html', context)

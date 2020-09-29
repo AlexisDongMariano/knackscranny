@@ -1,1 +1,56 @@
-{{customer.user.username}}
+{% extends "ecommerce/base.html" %}
+{% block content %}
+
+<main class="mt-5 pt-4">
+  <div class="container wow fadeIn">
+
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <div class="card">
+          <div class="row my-5">
+            <div class="col-md-5">
+              <div class="text-center">
+                <img class="profile-img" src="{{ customer.image.url }}">
+              <h5><strong>{{customer.user.username}}</strong></h5>
+              </div>
+              
+            </div>
+
+            <div class="col-md-7">
+              <h5 class=""><strong>name: </strong>{{first_name}} {{last_name}}</h5>
+              <h5><strong>email: </strong>{{ customer.email }}</h5>
+              <h5><strong>contact: </strong>{{ customer.contact1 }}</h5>
+              {% if customer.contact2 %}
+              <h5><strong>alternate: </strong>{{ customer.contact2 }}</h5>
+              {% endif %}
+            </div>
+          </div>
+          
+          
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <!-- <div class="card"> -->
+        <ul class="list-group mb-3 z-depth-1">
+          <li class="list-group-item d-flex justify-content-between bg-light">
+            Profile
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Addresses
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Orders
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Payments
+          </li>
+        </ul>
+        <!-- </div> -->
+      </div>
+    </div>
+
+
+  </div>
+</main>
+{% endblock content %}
