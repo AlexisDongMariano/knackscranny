@@ -1,3 +1,4 @@
+from .models import Customer
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -19,4 +20,12 @@ class UserRegisterForm(UserCreationForm):
         if User.objects.filter(email=self.cleaned_data['email']).exists():
             raise forms.ValidationError("the given email is already registered")
         return self.cleaned_data['email']
+
+
+class CustomerUpdateForm(forms.ModelForm):
+    # widgets = {'about_me': forms.Textarea(attrs={'cols': 80})}
+    
+    class Meta:
+        model = Customer
+        fields = ['first_name', 'last_name', 'email', 'contact1', 'contact2', 'image']
         

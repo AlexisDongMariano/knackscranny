@@ -1,4 +1,4 @@
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, CustomerUpdateForm
 from .models import Customer
 from ecommerce.views import get_session
 from django.shortcuts import render, redirect
@@ -37,7 +37,9 @@ def register(request):
 
 def profile(request):
     customer = Customer.objects.filter(user=request.user).first()
+    form = CustomerUpdateForm(instance=customer)
     context = {
+        'form': form,
         'customer': customer,
         'first_name': customer.first_name.capitalize(),
         'last_name': customer.last_name.capitalize(),
