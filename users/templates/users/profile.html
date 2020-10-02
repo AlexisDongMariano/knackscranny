@@ -14,14 +14,64 @@
             <div class="col-md-12 px-5">
               <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <fieldset class="form-group">
-                  <legend class="border-bottom mb-4">Profile Info</legend>
-                  {{ form|crispy }}
-                </fieldset>
-                <div class="form-group">
-                  <button class="btn btn-outline-secondary btn-sm" type="submit">Update</button>
-                  <a class="btn btn-danger btn-sm ml-2" data-toggle="modal" href="#" data-target="#profile-delete">Delete</a>
+                {{ form.non_field_errors }}
+
+                <div class="row justify-content-center">
+                  <div class="col-md-5 text-center mb-4">
+                    <a href="{{ customer.image.url }}" target="_blank">
+                      <img class="profile-img" src="{{ customer.image.url }}" alt="{{ customer.first_name }} {{ customer.last_name}}" srcset="">
+                    </a>
+                  </div>
                 </div>
+
+                <div class="row mb-4 mt-2 justify-content-center">
+                  <div class="col-md-12">
+                    {% comment %}
+                    {{ form.image.errors }}
+                    <label for="{{ form.image.id_for_label }}">Image</label>
+                    {{ form.image }}
+                    {% endcomment %}
+                    <div class="custom-file">
+                      {{ form.image }}
+                      <label class="custom-file-label" for="customFile">Replace Image</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{ form.first_name.errors }}
+                    <label for="{{ form.first_name.id_for_label }}">First name</label>
+                    {{ form.first_name }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.last_name.errors }}
+                    <label for="{{ form.last_name.id_for_label }}">Last name</label>
+                    {{ form.last_name }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    {{ form.email.errors }}
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{ form.contact1.errors }}
+                    <label for="{{ form.contact1.id_for_label }}">Contact no.</label>
+                    {{ form.contact1 }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.contact2.errors }}
+                    <label for="{{ form.contact2.id_for_label }}">Alternate contact</label>
+                    {{ form.contact2 }}
+                  </div>
+                </div>
+                
               </form>
             </div>
             
