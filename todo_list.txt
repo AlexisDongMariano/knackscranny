@@ -32,7 +32,7 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 13.(Sep-25-2020) U2.I1: Maybe add Refund model and view?
 
-14.(Sep-24-2020) U2.I1 --> 20% DONE (Oct-03-2020): Work on the User's profile page
+14.(Sep-24-2020) U2.I1 --> 30% DONE (Oct-04-2020): Work on the User's profile page
 
 
 =========================

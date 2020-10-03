@@ -25,7 +25,6 @@ class UserRegisterForm(UserCreationForm):
 class CustomerUpdateForm(forms.ModelForm):
     # widgets = {'about_me': forms.Textarea(attrs={'cols': 80})}
     
-
     class Meta:
         model = Customer
         fields = ['first_name', 'last_name', 'email', 'contact1', 'contact2', 'image']
@@ -39,7 +38,12 @@ class CustomerUpdateForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'custom-file-input', 'accept': 'image/*'})
         }
 
-# class CustomerUpdateForm(forms.Form):
-#     first_name = forms.CharField(required=True)
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
 
         
