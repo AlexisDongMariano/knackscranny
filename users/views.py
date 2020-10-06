@@ -1,5 +1,6 @@
-from .forms import UserRegisterForm, CustomerUpdateForm, UserUpdateForm
-from .models import Customer
+from .forms import UserRegisterForm, CustomerUpdateForm, UserUpdateForm, ShippingAddressUpdateForm, BillingAddressUpdateForm
+from .models import Customer, Address
+from ecommerce.models import Order
 from ecommerce.views import get_session
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -55,22 +56,61 @@ def profile(request):
         form = CustomerUpdateForm(request.POST, request.FILES, instance=customer)
         u_form = UserUpdateForm(request.POST, instance=request.user)
 
-        if u_form.is_valid() and form.is_valid():
-            # update the User model instance from the customer form
-            new_u_form = u_form.save(commit=False)
-            new_u_form.email = form.cleaned_data.get('email')
-            new_u_form.first_name = form.cleaned_data.get('first_name')
-            new_u_form.last_name = form.cleaned_data.get('last_name')
-            new_u_form.save()
+        email_input = form.data.get('email')
 
-            form.save()
-
-            messages.success(request, f'Account has been updated!')    
-
+        if customer.email != email_input and User.objects.filter(email=email_input).exists():
+            messages.error(request, f'Email already exists!')    
             return redirect('users:profile')
+        else:
+            if u_form.is_valid() and form.is_valid():
+                # update the User model instance from the customer form
+                new_u_form = u_form.save(commit=False)
+                new_u_form.email = email_input
+                new_u_form.first_name = form.cleaned_data.get('first_name')
+                new_u_form.last_name = form.cleaned_data.get('last_name')
+
+                new_u_form.save()
+                form.save()
+                messages.success(request, f'Account has been updated!')    
+
+                return redirect('users:profile')
+
 
 @login_required
 def addresses(request):
     customer = Customer.objects.filter(user=request.user).first()
+    shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True).first()
+    billing_address = Address.objects.filter(customer=customer, address_type='B', default=True).first()
+
     if request.method == 'GET':
-        return render(request, 'users/addresses.html')
+        s_form = ShippingAddressUpdateForm(instance=shipping_address, prefix='shipping')
+        b_form = BillingAddressUpdateForm(instance=billing_address, prefix='billing')
+
+        context = {
+            's_form': s_form,
+            'b_form': b_form,
+        }
+        return render(request, 'users/addresses.html', context)
+    
+    elif request.method == 'POST':
+        s_form = ShippingAddressUpdateForm(request.POST, prefix='shipping', instance=shipping_address)
+        b_form = BillingAddressUpdateForm(request.POST,  prefix='billing', instance=billing_address)
+
+        if s_form.is_valid() and b_form.is_valid():
+            s_form.save()
+            b_form.save()
+
+            messages.success(request, f'Account has been updated!')    
+            return redirect('users:addresses')
+
+
+@login_required
+def orders(request):
+    customer = Customer.objects.filter(user=request.user).first()
+    orders = Order.objects.filter(customer=customer, is_ordered=True)
+    if request.method == 'GET':
+
+        context = {
+            'orders': orders,
+        }
+        return render(request, 'users/orders.html', context)

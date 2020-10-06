@@ -1,0 +1,48 @@
+{% extends "ecommerce/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<main class="mt-5 pt-4">
+  <div class="container wow fadeIn">
+    <h2 class="my-5 h2 text-center">Orders</h2>
+
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <div class="card">
+          <div class="row my-3">
+            <div class="col-md-12 px-5">
+              {% for order in orders %}
+
+              <p>REF CODE: {{ order.reference_code}}</p>
+                {% for item in order.orderitem_set.all %}
+                
+                  <p>ITEM: {{ item.item.item.name }}</p>
+                {% endfor %}
+
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SIDEBAR -->
+      <div class="col-md-4 mb-4">
+        <ul class="list-group mb-3 z-depth-1">
+          <a href="{% url 'users:profile' %}">
+            <li class="list-group-item d-flex justify-content-between">Profile</li>
+          </a>
+          <a href="{% url 'users:addresses' %}">
+            <li class="list-group-item d-flex justify-content-between">Addresses</li>
+          </a>
+          <a href="{% url 'users:orders' %}">
+            <li class="list-group-item d-flex justify-content-between bg-light">Orders</li>
+          </a>
+          <a href="#">
+            <li class="list-group-item d-flex justify-content-between">Payments</li>
+          </a>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock content %}

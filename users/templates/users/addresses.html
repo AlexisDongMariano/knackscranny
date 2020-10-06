@@ -11,9 +11,73 @@
         <div class="card">
           <div class="row my-3">
             <div class="col-md-12 px-5">
-              <form method="POST" enctype="multipart/form-data">
+              <form class="card-body" method="POST">
+                <h5 class="text-center">Shipping Address</h5>
                 {% csrf_token %}
-                test
+                
+                
+                <div class="row my-4">
+                  <div class="col-md-12">
+                    {{ s_form.address1.errors }}
+                    <label for="{{ s_form.address1.id_for_label }}">Address</label>
+                    {{ s_form.address1 }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    {{ s_form.address2.errors }}
+                    <label for="{{ s_form.address2.id_for_label }}">Address 2 (optional)</label>
+                    {{ s_form.address2 }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{ s_form.country.errors }}
+                    <label for="{{ s_form.country.id_for_label }}">Country</label>
+                    {{ s_form.country }}
+                  </div>
+                  <div class="col-md-4">
+                    {{ s_form.zip_code.errors }}
+                    <label for="{{ s_form.zip_code.id_for_label }}">Zip</label>
+                    {{ s_form.zip_code }}
+                  </div>
+                </div>
+
+                <!-- BILLING ADDRESS -->
+                <h5 class="text-center mt-5">Billing Address</h5>
+                <div class="row my-4">
+                  <div class="col-md-12">
+                    {{ b_form.address1.errors }}
+                    <label for="{{ b_form.address1.id_for_label }}">Address</label>
+                    {{ b_form.address1 }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    {{ b_form.address2.errors }}
+                    <label for="{{ b_form.address2.id_for_label }}">Address 2 (optional)</label>
+                    {{ b_form.address2 }}
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{ b_form.country.errors }}
+                    <label for="{{ b_form.country.id_for_label }}">Country</label>
+                    {{ b_form.country }}
+                  </div>
+                  <div class="col-md-4">
+                    {{ b_form.zip_code.errors }}
+                    <label for="{{ b_form.zip_code.id_for_label }}">Zip</label>
+                    {{ b_form.zip_code }}
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+
               </form>
             </div>
           </div>
@@ -28,7 +92,7 @@
           <a href="{% url 'users:addresses' %}">
             <li class="list-group-item d-flex justify-content-between bg-light">Addresses</li>
           </a>
-          <a href="#">
+          <a href="{% url 'users:orders' %}">
             <li class="list-group-item d-flex justify-content-between">Orders</li>
           </a>
           <a href="#">

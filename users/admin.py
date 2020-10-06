@@ -21,9 +21,9 @@ class AddressAdmin(admin.ModelAdmin):
         'zip_code',
         'address_type',
         'default',
-        'date_added'
+        'date_updated'
     ]
-    list_filter = ['default', 'address_type', 'date_added', 'country']
+    list_filter = ['default', 'address_type', 'date_added', 'date_updated', 'country']
     search_fields = ['customer__username', 'address1', 'address2', 'zip_code', 'country'] 
     # **customer is a model instance, so we have to get other field from that, in our case,
     # the User model has the username field

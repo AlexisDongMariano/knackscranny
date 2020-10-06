@@ -1,7 +1,8 @@
-from .models import Customer
+from .models import Customer, Address
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django_countries.widgets import CountrySelectWidget
 
 
 class UserRegisterForm(UserCreationForm):
@@ -23,8 +24,6 @@ class UserRegisterForm(UserCreationForm):
 
 
 class CustomerUpdateForm(forms.ModelForm):
-    # widgets = {'about_me': forms.Textarea(attrs={'cols': 80})}
-    
     class Meta:
         model = Customer
         fields = ['first_name', 'last_name', 'email', 'contact1', 'contact2', 'image']
@@ -38,6 +37,7 @@ class CustomerUpdateForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'custom-file-input', 'accept': 'image/*'})
         }
 
+
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -46,4 +46,32 @@ class UserUpdateForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
         }
 
-        
+
+class ShippingAddressUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['address1', 'address2', 'country', 'zip_code']
+        widgets = {
+             'address1': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+             'address2': forms.TextInput(attrs={'class': 'form-control'}),
+             'country': CountrySelectWidget(
+                 attrs={'class': 'custom-select d-block w-100'},
+                 layout='{widget}<img class="country-select-flag" id="{flag_id}" style="margin: 6px 4px 0" src="{country.flag}">'
+             ),
+            'zip_code': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
+
+
+class BillingAddressUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['address1', 'address2', 'country', 'zip_code']
+        widgets = {
+             'address1': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+             'address2': forms.TextInput(attrs={'class': 'form-control'}),
+             'country': CountrySelectWidget(
+                 attrs={'class': 'custom-select d-block w-100'},
+                 layout='{widget}<img class="country-select-flag" id="{flag_id}" style="margin: 6px 4px 0" src="{country.flag}">'
+             ),
+            'zip_code': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+        }
