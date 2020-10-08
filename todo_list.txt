@@ -33,6 +33,9 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 13.(Sep-25-2020) U2.I1: Maybe add Refund model and view?
 
 14.(Sep-24-2020) U2.I1 --> 90% DONE (Oct-09-2020): Work on the User's profile page
+    > add id tag in every orders/payments so that we can add an href pointing to each other
+
+15.(Oct-09-2020) U2.I1: figure out and/or add the stages of the order when order status is changed in the admin page
 
 
 =========================
@@ -47,6 +50,8 @@ TODO list labeled in view
 
 3.TODO (Sep-17-2020) --> 100% DONE (Sep-17-2020): 
     > edit the checkout template to add fields for anonymous user
+
+4.TODO (Oct-9-2020): remove the Decimal casting once the db is flushed as well as the import Decimal
 
 
 =============================

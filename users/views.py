@@ -114,3 +114,15 @@ def orders(request):
             'orders': orders,
         }
         return render(request, 'users/orders.html', context)
+
+
+@login_required
+def payments(request):
+    customer = Customer.objects.filter(user=request.user).first()
+    orders = Order.objects.filter(customer=customer, is_ordered=True)
+    if request.method == 'GET':
+
+        context = {
+            'orders': orders,
+        }
+        return render(request, 'users/payments.html', context)

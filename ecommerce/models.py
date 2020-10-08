@@ -7,6 +7,7 @@ from payment.models import Coupon, Payment
 from PIL import Image
 from users.models import Address, Customer
 
+
 ORDER_STATUS = (
     ('PD', 'Production'),
     ('PC', 'Processing'),
@@ -94,6 +95,14 @@ class OrderItem(models.Model):
         total = self.item.price * self.quantity
         return total
 
+    @property
+    def get_ordered_total(self):
+        if self.ordered_item_price:
+            total = self.ordered_item_price * self.quantity # 4.TODO remove the conditional if db is reloaded
+        else:
+            total = 0
+        return total
+
 
 class OrderStatus(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -109,3 +118,6 @@ class OrderStatus(models.Model):
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()
         super(OrderStatus, self).save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name_plural = 'Order Statuses'

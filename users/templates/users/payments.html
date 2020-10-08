@@ -4,7 +4,7 @@
 
 <main class="mt-5 pt-4">
   <div class="container wow fadeIn">
-    <h2 class="my-5 h2 text-center">Orders</h2>
+    <h2 class="my-5 h2 text-center">Payments</h2>
 
     <div class="row">
       <div class="col-md-8 mb-4">
@@ -19,7 +19,13 @@
                   Reference No. <a href="#">{{ order.reference_code}}</a> 
                 </div>
                 <div class="col-md-6 text-right">
-                  <span class="px-1 py-1 bg-secondary text-white">{{ order.orderstatus_set.first.get_status_display }}</span>
+                  <span>{{ order.ordered_date }}</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  Payment Method: {{ order.payment.get_payment_method_display }}
                 </div>
               </div>
 
@@ -32,15 +38,25 @@
                 </div>
                 <div class="col-md-5">
                   <a href="{% url 'ecommerce:item' item.item.item.id item.item.name %}" class="item-label">
-                    {{ item.item.item.name }} ({{ item.item.name }})
+                    {{ item.item.item.name }} ({{ item.item.name }}) <strong>x {{ item.quantity }}</strong>
                   </a>
-                  
                 </div>
                 <div class="col-md-3 offset-md-2 text-right">
-                  {{ item.ordered_item_price }} x {{ item.quantity }}
+                  $ {{ item.get_ordered_total }}
                 </div>
               </div>
               {% endfor %}
+
+              {% if order.coupon %}
+              <div class="row mt-2 text-success">
+                <div class="col-md-6">
+                  Coupon Applied: {{ order.coupon }}
+                </div>
+                <div class="col-md-6 text-right">
+                  {{ order.get_discount }}
+                </div>
+              </div>
+              {% endif %}
 
             </div>
           </div>
@@ -59,10 +75,10 @@
             <li class="list-group-item d-flex justify-content-between">Addresses</li>
           </a>
           <a href="{% url 'users:orders' %}">
-            <li class="list-group-item d-flex justify-content-between bg-light">Orders</li>
+            <li class="list-group-item d-flex justify-content-between">Orders</li>
           </a>
           <a href="{% url 'users:payments' %}">
-            <li class="list-group-item d-flex justify-content-between">Payments</li>
+            <li class="list-group-item d-flex justify-content-between bg-light">Payments</li>
           </a>
         </ul>
       </div>
