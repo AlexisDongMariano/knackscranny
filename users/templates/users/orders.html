@@ -9,22 +9,44 @@
     <div class="row">
       <div class="col-md-8 mb-4">
         <div class="card">
-          <div class="row my-3">
-            <div class="col-md-12 px-5">
-              {% for order in orders %}
-
-              <p>REF CODE: {{ order.reference_code}}</p>
-              <p>STATUS: {{ order.orderstatus_set.first.get_status_display }}</p>
-                {% for item in order.orderitem_set.all %}
+          {% for order in orders %}
+          <div class="card mx-2 my-3">
+            <div class="px-4 py-4">
+              
                 
-                  <p>ITEM: {{ item.item.item.name }}</p>
-                {% endfor %}
+              <div class="row">
+                <div class="col-md-6">
+                  Reference No. <a href="#">{{ order.reference_code}}</a> 
+                </div>
+                <div class="col-md-6 text-right">
+                  <span class="px-1 py-1 bg-secondary text-white">{{ order.orderstatus_set.first.get_status_display }}</span>
+                </div>
+              </div>
 
-                
-
+              {% for item in order.orderitem_set.all %}
+              <div class="row pt-4 align-items-center">
+                <div class="col-md-2">
+                  <a href="{% url 'ecommerce:item' item.item.item.id item.item.name %}" class="item-label">
+                    <img style="width:100px" src="{{ item.item.variationimage_set.first.image.url }}">
+                  </a>
+                </div>
+                <div class="col-md-5">
+                  <a href="{% url 'ecommerce:item' item.item.item.id item.item.name %}" class="item-label">
+                    {{ item.item.item.name }} ({{ item.item.name }})
+                  </a>
+                  
+                </div>
+                <div class="col-md-3 offset-md-2 text-right">
+                  {{ item.ordered_item_price }} x {{ item.quantity }}
+                </div>
+              </div>
               {% endfor %}
+
             </div>
           </div>
+          {% endfor %}
+
+    
         </div>
       </div>
       <!-- SIDEBAR -->

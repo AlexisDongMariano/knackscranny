@@ -27,7 +27,7 @@
                     <tr>
                       <th scope="row" class="th-summary-img"><img style="width:100px" src="{{ item.item.variationimage_set.first.image.url }}"></th>
                       <td class="td-cart">{{ item.item.item.name }} ({{ item.item.name }})</td>
-                      <td>${{ item.item.price }} {{ item.item.id }}</td>
+                      <td>${{ item.item.price }}</td>
                       <td>
                         {% if item.quantity > 1%}
                         <form name="minusCart-{{item.item.id}}" action="{% url 'ecommerce:minus-from-cart' item.item.id %}" method="POST" class="d-inline">

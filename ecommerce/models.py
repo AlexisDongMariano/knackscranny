@@ -27,9 +27,14 @@ class Order(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
     is_ordered = models.BooleanField(default=False)
     ordered_date = models.DateTimeField(blank=True, null=True)
+    date_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.id)
+
+    def save(self, *args, **kwargs):
+        self.date_updated = timezone.now()
+        super(Order, self).save(*args, **kwargs)
 
     @property
     def get_cart_subtotal(self):
@@ -68,11 +73,21 @@ class OrderItem(models.Model):
     '''Item/s within the cart'''
     item = models.ForeignKey(Variation, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    ordered_item_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     quantity = models.IntegerField(default=0, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.item.alias
+    
+    def save(self, *args, **kwargs):
+        ''' On first save, update ordered_item_price for ordered price reference'''
+        if not self.id:
+            if self.item.price_discount:
+                self.ordered_item_price = self.item.price_discount
+            elif self.item.price:
+                self.ordered_item_price = self.item.price
+        super(OrderItem, self).save(*args, **kwargs)
 
     @property
     def get_total(self):
@@ -94,4 +109,3 @@ class OrderStatus(models.Model):
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()
         super(OrderStatus, self).save(*args, **kwargs)
-

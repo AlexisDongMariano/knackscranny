@@ -86,7 +86,7 @@ body,
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-a .list-group-item {
+a .list-group-item, .item-label, .item-label:hover {
   color: #212529; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
 }
