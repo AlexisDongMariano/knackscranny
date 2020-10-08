@@ -14,10 +14,13 @@
               {% for order in orders %}
 
               <p>REF CODE: {{ order.reference_code}}</p>
+              <p>STATUS: {{ order.orderstatus_set.first.get_status_display }}</p>
                 {% for item in order.orderitem_set.all %}
                 
                   <p>ITEM: {{ item.item.item.name }}</p>
                 {% endfor %}
+
+                
 
               {% endfor %}
             </div>

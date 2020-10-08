@@ -89,7 +89,7 @@ class OrderStatus(models.Model):
     date_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f'{self.order}'
+        return f'{self.status}'
 
     def save(self, *args, **kwargs):
         self.date_updated = timezone.now()
