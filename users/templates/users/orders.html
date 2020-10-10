@@ -3,7 +3,7 @@
 {% block content %}
 
 <main class="mt-5 pt-4">
-  <div class="container wow fadeIn">
+  <div class="container fadeIn">
     <h2 class="my-5 h2 text-center">Orders</h2>
 
     <div class="row">
@@ -13,10 +13,10 @@
           <div class="card mx-2 my-3">
             <div class="px-4 py-4">
               
-                
+              <!-- <span id="{{ order.reference_code}}" class="anchor"></span> -->
               <div class="row">
                 <div class="col-md-6">
-                  Reference No. <a href="#">{{ order.reference_code}}</a> 
+                  Reference No. <a id="{{ order.reference_code}}" class="anchor" href="/payments/#{{ order.reference_code }}">{{ order.reference_code}}</a> 
                 </div>
                 <div class="col-md-6 text-right">
                   <span class="px-1 py-1 bg-secondary text-white">{{ order.orderstatus_set.first.get_status_display }}</span>

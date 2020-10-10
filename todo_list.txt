@@ -32,7 +32,7 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 13.(Sep-25-2020) U2.I1: Maybe add Refund model and view?
 
-14.(Sep-24-2020) U2.I1 --> 90% DONE (Oct-09-2020): Work on the User's profile page
+14.(Sep-24-2020) U2.I1 --> 100% DONE (Oct-11-2020): Work on the User's profile page
     > add id tag in every orders/payments so that we can add an href pointing to each other
 
 15.(Oct-09-2020) U2.I1: figure out and/or add the stages of the order when order status is changed in the admin page

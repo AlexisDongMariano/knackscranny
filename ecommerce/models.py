@@ -55,6 +55,20 @@ class Order(models.Model):
                 total = round(total - (total * (self.coupon.percent_value / 100)),2)
         return total
     
+    # used for the profile-payments template
+    @property
+    def get_ordered_cart_total(self):
+        order_items = self.orderitem_set.all()
+        total = sum([item.get_ordered_total for item in order_items])
+
+        if self.coupon:
+            if self.coupon.fixed_amount:
+                total -= self.coupon.fixed_amount
+            elif self.coupon.percent_value:
+                total = round(total - (total * (self.coupon.percent_value / 100)),2)
+        return total
+
+
     @property
     def get_cart_items(self):
         order_items = self.orderitem_set.all()

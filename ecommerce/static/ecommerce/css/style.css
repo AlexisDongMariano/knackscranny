@@ -34,6 +34,15 @@ body,
   word-break: break-all;
 } */
 
+.anchor{
+  position: relative;
+  padding-top: 100px;
+}
+a:active, a:focus, a:visited {
+  box-shadow: none;
+  outline: none;
+ }
+
 .word-wrap {
   overflow-wrap: break-word;
   word-wrap: break-word;
