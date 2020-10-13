@@ -116,17 +116,44 @@ a .list-group-item, .item-label, .item-label:hover {
 
 /* LANDING PAGE */
 .img-title {
-  position: relative;
+  /* position: relative; */
   /* z-index: 100; */
 }
 
-.txt-title {
+.title-container {
   position: relative;
-  z-index: 100;
-  left: 100px;
-  bottom: 300px;
 }
 
+.div-txt-title {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  /* left: 50%; */
+  text-align: center;
+}
+
+.txt-title {
+  /* position: absolute; */
+  /* z-index: 100; */
+  /* left: 100px;
+  bottom: 300px; */
+  /* top: 50%;
+  width: 100%;
+  text-align: right; */
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 5.2rem;
+}
+
+.txt-title-1 {
+  color: #fff;
+  /* text-shadow: 1px 1px 4px #999; */
+}
+
+.txt-title-2 {
+  color: #f7bbcb;
+  text-shadow: 1px 1px 4px #ddd;
+}
 
 
 
