@@ -34,6 +34,14 @@ body,
   word-break: break-all;
 } */
 
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-padding-right {
+  padding-right: 0 !important;
+}
+
 .anchor{
   position: relative;
   padding-top: 100px;
@@ -53,6 +61,11 @@ a:active, a:focus, a:visited {
   -webkit-hyphens: auto;
   hyphens: auto;
   white-space: pre-line;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto
 }
 
 .carousel-control-next {
@@ -101,6 +114,18 @@ a .list-group-item, .item-label, .item-label:hover {
 }
 
 
+/* LANDING PAGE */
+.img-title {
+  position: relative;
+  /* z-index: 100; */
+}
+
+.txt-title {
+  position: relative;
+  z-index: 100;
+  left: 100px;
+  bottom: 300px;
+}
 
 
 
