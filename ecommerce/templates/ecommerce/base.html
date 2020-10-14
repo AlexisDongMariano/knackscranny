@@ -25,7 +25,8 @@
 {% include "ecommerce/navbar.html" %}
 
 <body>
-    <div class="mt-5 pt-4">
+    <!-- removed the pt-4 below -->
+    <div class="mt-5">
     {% if messages %}
         {% for message in messages %}
         {% if message.tags == 'error' %}

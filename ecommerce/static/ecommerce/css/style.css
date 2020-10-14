@@ -34,13 +34,21 @@ body,
   word-break: break-all;
 } */
 
-.no-padding {
+/* .no-padding {
   padding: 0 !important;
+}
+
+.no-padding-lr {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.no-padding-left {
+  padding-left: 0 !important;
 }
 
 .no-padding-right {
   padding-right: 0 !important;
-}
+} */
 
 .anchor{
   position: relative;
@@ -115,31 +123,26 @@ a .list-group-item, .item-label, .item-label:hover {
 
 
 /* LANDING PAGE */
-.img-title {
-  /* position: relative; */
-  /* z-index: 100; */
-}
-
 .title-container {
   position: relative;
+  /* height: 80vh; */
 }
+/* .div-img {
+  height: 100vh;
+} */
+
+/* .img-title {
+  width: 100%;
+} */
 
 .div-txt-title {
   position: absolute;
   top: 40%;
   width: 100%;
-  /* left: 50%; */
   text-align: center;
 }
 
 .txt-title {
-  /* position: absolute; */
-  /* z-index: 100; */
-  /* left: 100px;
-  bottom: 300px; */
-  /* top: 50%;
-  width: 100%;
-  text-align: right; */
   font-family: 'Lato', sans-serif;
   font-weight: 700;
   font-size: 5.2rem;
@@ -147,7 +150,6 @@ a .list-group-item, .item-label, .item-label:hover {
 
 .txt-title-1 {
   color: #fff;
-  /* text-shadow: 1px 1px 4px #999; */
 }
 
 .txt-title-2 {
@@ -155,10 +157,61 @@ a .list-group-item, .item-label, .item-label:hover {
   text-shadow: 1px 1px 4px #ddd;
 }
 
+/* TITLE 2 */
+.title-2-container {
+  position: relative;
+  /* margin-top: 10rem; */
+}
+
+.div-txt-title-2 {
+  position: absolute;
+  top: 15%;
+  width: 100%;
+  text-align: center;
+}
+
+.txt-title-3 {
+  /* color: #f7bbcb; */
+  color: #fff;
+  /* font-family: 'Lato', sans-serif; */
+  /* font-size: 6rem; */
+  font-size: 4vw;
+  font-weight: 500;
+  /* text-shadow: 1px 1px 4px #999; */
+}
+
+.txt-title-3-label {
+  color: #fff;
+  /* font-size: 1.4rem; */
+  font-size: 1.4vw;
+  width: 60%;
+  margin: auto;
+  /* margin-top: 20px; */
+  margin-top: 2%;
+  font-weight: 300;
+  /* text-shadow: 0.1px 0.1px 4px #999; */
+  /* text-shadow: 1px 1px 4px #999; */
+}
 
 
 
+/* @media (max-width: 767px){
+  .div-img-title {
+    height: 20rem;
+  }
+}
 
+@media (max-width: 575px){
+  .div-img-title {
+    height: 15rem;
+  }
+}
+
+@media (max-width: 480px){
+  .div-img-title {
+    height: 12rem;
+  }
+} */
 
 
 
