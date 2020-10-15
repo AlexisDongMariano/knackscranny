@@ -39,30 +39,37 @@
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'ecommerce:cart' %}" class="nav-link waves-effect">
+            <a href="{% url 'ecommerce:cart' %}" class="nav-link waves-effect" title="Cart">
               {% if request|cart_items_count %}
-              <span class="badge red z-depth-1 mr-1"> {{ request|cart_items_count }} </span>
+              <span class="badge red z-depth-1"> {{ request|cart_items_count }} </span>
               {% endif %}
               <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+              <!-- <span class="clearfix d-none d-sm-inline-block"> Cart </span> -->
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'users:profile' %}" class="nav-link waves-effect" title="{{ user.username }}">
+              <i class="fas fa-user"></i>
+              <!-- <span class="clearfix d-none d-sm-inline-block"> Profile </span> -->
             </a>
           </li>
           <li class="nav-item">
             <!-- below should be href url 'account_logout' -->
-            <a class="nav-link waves-effect" href="#">
-              <span class="clearfix d-none d-sm-inline-block"> Logout </span>
+            <a class="nav-link waves-effect" href="{% url 'logout' %}" title="Log Out">
+              <i class="fas fa-sign-out-alt"></i>
+              <!-- <span class="clearfix d-none d-sm-inline-block"> Logout </span> -->
             </a>
           </li>
           {% else %}
           <li class="nav-item">
             <!-- below should be href url 'account_login' -->
-            <a class="nav-link waves-effect" href="#">
+            <a class="nav-link waves-effect" href="{% url 'login' %}">
               <span class="clearfix d-none d-sm-inline-block"> Login </span>
             </a>
           </li>
           <li class="nav-item">
             <!-- below should be href url 'account_signup' -->
-            <a class="nav-link waves-effect" href="#">
+            <a class="nav-link waves-effect" href="{% url 'users:register' %}">
               <span class="clearfix d-none d-sm-inline-block"> Signup </span>
             </a>
           </li>

@@ -37,6 +37,8 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 15.(Oct-09-2020) U2.I1: figure out and/or add the stages of the order when order status is changed in the admin page
 
+16.(Oct-16-2020) U2.I1: add the labels and search functionality
+
 
 =========================
 TODO list labeled in view

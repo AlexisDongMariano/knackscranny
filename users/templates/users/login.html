@@ -1,27 +1,19 @@
 {% extends "ecommerce/base.html" %}
 {% load crispy_forms_tags %}
-
-
-
 {% block content %}
-  <main>
+  <main class="mt-5 pt-4">
     <div class="container">
-      <section class="mb-4">
+      <section class="mb-4 mt-5">
         <div class="row wow fadeIn">
           <div class='col-6 offset-3'>
           <h1>Sign In</h1>
 
-          
           <p>If you have not created an account yet, then please
-          <a href="{{ signup_url }}">sign up</a> first.</p>
+          <a href="{% url 'users:register' %}">sign up</a> first.</p>
           
-
           <form class="login" method="POST" action="#">
             {% csrf_token %}
             {{ form|crispy }}
-            {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
             <a class="btn btn-default" href="#">Forgot Password?</a>
             <button class="btn btn-primary" type="submit">Sign in</button>
           </form>
