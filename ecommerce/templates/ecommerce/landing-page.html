@@ -2,17 +2,6 @@
 {% extends "ecommerce/base.html" %}
 {% load static %}
 {% block content %}
-<!-- <img src="{% static 'ecommerce/img/pink-hearts.jpg' %}" class="img-responsive" alt="image" width="100%" height="auto" /> -->
-<!-- <div class="row">
-  <div class="col-md-6 no-padding-right">
-    <img class="img-fluid img-title" src="#"/>
-    <h1 class="txt-title">High Quality</h1>
-  </div>
-  <div class="col-md-6">
-
-  </div>
-</div> -->
-
 <div class="title-container">
   <div class="row">
     <div class="col-md-6 no-padding-lr div-img-title">
@@ -23,15 +12,15 @@
     </div>
   </div>
   <div class="div-txt-title">
-    <!-- <h1 class="txt-title">
+    <h1 class="txt-title">
       <span class="txt-title-1">High Quality</span>
       <span class="txt-title-2">and Creative</span>
-    </h1> -->
+    </h1>
       
   </div>
 </div>
 
-<div class="title-2-container">
+<div class="title-2-container landing-mt">
   <div class="row">
     <div class="col-md-12 no-padding-lr">
       <img class="img-fluid" src="{% static 'ecommerce/img/color-pencils-blur.jpg' %}"/>
@@ -47,31 +36,43 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    
+<div class="container">
+  <div class="row landing-mt">
+    <div class="col-md-5 div-desc-1 text-center">
+      <h3 class="txt-title-4">CUSTOMIZED DESIGNS</h3>
+      <p class="txt-title-4-label">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacus sem, semper quis velit ut, pharetra ornare arcu. In fringilla, neque sit amet cursus congue, tellus urna cursus est, et sagittis metus sapien vitae nisi.
+      </p>
+      <div>
+        <button class="btn btn-secondary">Explore Gallery</button>
+      </div>
+    </div>
+    <div class="col-md-7 no-padding-lr">
+      <img class="img-fluid landing-immage-p" src="{% static 'ecommerce/img/cutout.jpg' %}"/>
+    </div>
   </div>
-  <div class="col-md-6 no-padding-lr">
-    <img class="img-fluid" src="{% static 'ecommerce/img/cutout.jpg' %}"/>
+
+  <div class="row landing-mt">
+    <div class="col-md-7 no-padding-lr">
+      <img class="img-fluid landing-immage-p" src="{% static 'ecommerce/img/topper.png' %}"/>
+    </div>
+    <div class="col-md-5 div-desc-2 text-center">
+      <h3 class="txt-title-4">CRAFTS TO CHERISH</h3>
+      <p class="txt-title-4-label">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacus sem, semper quis velit ut, pharetra ornare arcu. In fringilla, neque sit amet cursus congue, tellus urna cursus est, et sagittis metus sapien vitae nisi.
+      </p>
+      <div>
+        <button class="btn btn-secondary">Browse Collections</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6 no-padding-lr">
-    <img class="img-fluid" src="{% static 'ecommerce/img/topper.png' %}"/>
-  </div>
-  <div class="col-md-6">
-    
-  </div>
-</div>
 
 
 
 <main class="mt-5 pt-4">
-  <div class="container">
-    <button class="btn btn-primary">Accept</button>
-    
-  </div>
+  
 </main>
 {% endblock content %}
 
