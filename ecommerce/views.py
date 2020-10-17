@@ -77,14 +77,19 @@ def landing_page(request):
     return render(request, 'ecommerce/landing-page.html')
 
 
-def home(request):
+# page_type 1: return collection items
+# view_type 2: return made to order items
+def home(request, page_type=None):
     items = Item.objects.all()
+    collection_categories = Category.objects.all()
     print('SESSION_KEY:', request.session.session_key)
     if not request.user.is_authenticated:
         get_session(request)
-
+    
     context = {
         'items': items,
+        'page_type': page_type,
+        'collection_categories': collection_categories,
     }
     return render(request, 'ecommerce/home.html', context)
 
