@@ -93,11 +93,11 @@ def home(request, page_type=None):
     collection_categories = Category.objects.all()
 
     q = request.GET.get('search')
-    if search:
+    print('Q:', q)
+    if q:
         items = search(q)
         page_type = 'searched'
     else:
-        print('FUCK')
         items = Item.objects.all()
         q = 'Search'
 
