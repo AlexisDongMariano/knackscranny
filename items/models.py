@@ -4,6 +4,13 @@ from django.utils import timezone
 from PIL import Image
 
 
+ITEM_LABELS = (
+    ('NW', 'New'),
+    ('SD', 'Sold'),
+    ('BS', 'Bestseller'),
+    ('SL', 'Sale'),
+)
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
@@ -20,6 +27,7 @@ class Item(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     price_discount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    item_label = models.CharField(max_length=2, choices=ITEM_LABELS, default='NW')
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
     image = models.ImageField(default=f'default.png', upload_to='item_pics')
@@ -56,6 +64,8 @@ class Variation(models.Model):
     price_discount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     inventory = models.PositiveIntegerField(default=0, blank=True)
+    # item_label value is taken from Item but can be overriden unless it's SOLD
+    item_label = models.CharField(max_length=2, choices=ITEM_LABELS) 
     active = models.BooleanField(default=True)
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
@@ -70,8 +80,12 @@ class Variation(models.Model):
             self.date_added = timezone.now()
             self.price = self.item.price
             self.price_discount = self.item.price_discount
+            self.item_label = self.item.item_label
         self.alias = self.item.name + '_' + self.name
         self.date_updated = timezone.now()
+        
+        if self.item.item_label == 'SD':
+            self.item_label == 'SD'
         super(Variation, self).save(*args, **kwargs)
         
 

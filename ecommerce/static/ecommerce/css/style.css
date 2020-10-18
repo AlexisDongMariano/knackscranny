@@ -123,6 +123,7 @@ a .list-group-item, .item-label, .item-label:hover {
 
 
 /* LANDING PAGE */
+/****************/
 .title-container {
   position: relative;
   /* height: 80vh; */
@@ -215,6 +216,18 @@ a .list-group-item, .item-label, .item-label:hover {
 .txt-title-4-label {
   color: #6c757d;
   font-size: 1.3rem;
+}
+
+
+
+/* HOME PAGE */
+/*************/
+.tags {
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  right: 0;
+  margin: auto
 }
 
 /* @media (max-width: 767px){
