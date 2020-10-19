@@ -178,22 +178,17 @@
   <!--Main layout-->
   <main>
     <div class="container">
-
       <!--Navbar-->
       <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
-
         <!-- Navbar brand -->
         <span class="navbar-brand">Categories:</span>
-
         <!-- Collapse button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
           aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <!-- Collapsible content -->
         <div class="collapse navbar-collapse" id="basicExampleNav">
-
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item 
@@ -226,11 +221,9 @@
           </ul>
           <!-- Links -->
 
-
-     
-
           <form class="form-inline" type="get">
             <div class="md-form my-0">
+              <!-- xxx -->
               <input class="form-control mr-sm-2" type="text" placeholder="{{ search_placeholder }}" name="search" aria-label="Search">
             </div>
           </form>
@@ -240,7 +233,7 @@
       </nav>
       <!--/.Navbar-->
       
-      {% if page_type == 'collections'%}
+      {% if page_type == 'collections' %}
         {% include "ecommerce/home-collections.html" %}
       {% elif page_type == 'made-to-order'%}
         {% include "ecommerce/home-made-to-order.html" %}

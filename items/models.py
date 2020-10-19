@@ -5,6 +5,7 @@ from PIL import Image
 
 
 ITEM_LABELS = (
+    ('NA', 'Not Applicable'),
     ('NW', 'New'),
     ('SD', 'Sold'),
     ('BS', 'Bestseller'),
@@ -27,7 +28,7 @@ class Item(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     price_discount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    item_label = models.CharField(max_length=2, choices=ITEM_LABELS, default='NW')
+    item_label = models.CharField(max_length=2, choices=ITEM_LABELS, default='NA')
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
     image = models.ImageField(default=f'default.png', upload_to='item_pics')
@@ -85,7 +86,7 @@ class Variation(models.Model):
         self.date_updated = timezone.now()
         
         if self.item.item_label == 'SD':
-            self.item_label == 'SD'
+            self.item_label = 'SD'
         super(Variation, self).save(*args, **kwargs)
         
 

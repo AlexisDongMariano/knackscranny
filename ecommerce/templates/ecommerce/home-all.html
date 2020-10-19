@@ -370,7 +370,9 @@
             </a>
             <h5>
               <strong>
-                <a href="{% url 'ecommerce:item' item.id 'regular' %}" class="dark-grey-text">{{ item.name|truncatechars:20 }}</a>
+                <a href="{% url 'ecommerce:item' item.id 'regular' %}" class="dark-grey-text">{{ item.name|truncatechars:20 }}
+                  <span class="badge badge-pill danger-color">{{ item.get_item_label_display }}</span>
+                </a>
               </strong>
             </h5>
 
@@ -419,7 +421,7 @@
             <h5>
               <strong>
                 <a href="" class="dark-grey-text">Denim shirt
-                  <!-- <span class="badge badge-pill danger-color">NEW</span> -->
+                  <span class="badge badge-pill danger-color">{{ item.get_item_label_display }}</span>
                 </a>
               </strong>
             </h5>
