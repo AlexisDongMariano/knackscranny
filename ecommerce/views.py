@@ -82,11 +82,11 @@ def search(q):
     # return items using the search term (q) from the fields: name, description, and fk category
     return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(category__name__icontains=q))
 
-def filter_items(items):
-    return items.filter(item_label='NW')
+# def filter_items(items):
+#     return items.filter(item_label='NW')
 
 # page_type 1: return collection items
-# view_type 2: return made to order items
+# page_type 2: return made to order items
 def home(request, page_type=None):
     if not request.user.is_authenticated:
         get_session(request)

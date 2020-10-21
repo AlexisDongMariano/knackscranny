@@ -221,6 +221,37 @@
           </ul>
           <!-- Links -->
 
+
+
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                Filter
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <a class="dropdown-item">
+                  <input class="item-label" type="checkbox" name="NW">
+                   New
+                </a>
+                <a class="dropdown-item">
+                  <input class="item-label" type="checkbox" name="SL">
+                  Sale
+                </a>
+                <a class="dropdown-item">
+                  <input class="item-label" type="checkbox" name="BS">
+                  Bestseller
+                </a>
+                <a class="dropdown-item">
+                  <input class="item-label" type="checkbox" name="SD">
+                  Sold
+                </a>
+                <!-- <div class="dropdown-divider"></div> -->
+                
+              </div>
+            </li>
+          </ul>
+
           <form class="form-inline" type="get">
             <div class="md-form my-0">
               <!-- xxx -->
@@ -285,4 +316,133 @@
   </main>
   <!--Main layout-->
 {% endblock content %}
+
+ 
+{% block extra_scripts %}
+<script>
+const toggle_item_nw = $('.item-label-NW');
+const toggle_item_sl = $('.item-label-SL');
+const toggle_item_bs = $('.item-label-BS');
+const toggle_item_sd = $('.item-label-SD');
+const toggle_list = [toggle_item_nw, toggle_item_sl, toggle_item_bs, toggle_item_sd]
+
+const chkbox_show_nw = document.querySelector("input[name=NW]");
+const chkbox_show_sl = document.querySelector("input[name=SL]");
+const chkbox_show_bs = document.querySelector("input[name=BS]");
+const chkbox_show_sd = document.querySelector("input[name=SD]");
+const itemLabels = document.querySelectorAll(".item-label");
+let checked = document.querySelectorAll("input:checked");
+
+itemLabels.forEach((itemLabel, index) => {
+  console.log(itemLabel, itemLabel.checked);
+  itemLabel.addEventListener('change', () => {
+    checked = document.querySelectorAll("input:checked");
+    displayItems(index, itemLabel.checked, checked);
+  });
+});
+
+function displayItems(index, isChecked, checked) {
+  // toggle_item_nw.hide();
+  // toggle_item_sl.hide();
+  // toggle_item_bs.hide();
+  // toggle_item_sd.hide();
+  console.log('TEST:', checked.length);
+
+
+  console.log('OUTER isChecked:',isChecked, 'index:',index);
+  if(isChecked){
+    console.log('INNER 1: isChecked:',isChecked, 'index:',index);
+    if(index === 0)
+      toggle_item_nw.show();
+    if(index === 1)
+      toggle_item_sl.show();
+    if(index === 2)
+      toggle_item_bs.show();
+    if(index === 3)
+      toggle_item_sd.show();
+  }
+  else {
+    console.log('INNER 1: isChecked:',isChecked, 'index:',index);
+    toggle_list.forEach(toggle => {
+      console.log('ITERATED');
+      if(index === 0)
+        toggle_item_nw.hide();
+      if(index === 1)
+        toggle_item_sl.hide();
+      if(index === 2)
+        toggle_item_bs.hide();
+      if(index === 3)
+        toggle_item_sd.hide();
+    })
+  }
+
+  if(checked.length === 0){
+    toggle_item_nw.show();
+    toggle_item_sl.show();
+    toggle_item_bs.show();
+    toggle_item_sd.show();
+  }
+}
+
+// chkbox_show_nw.addEventListener('change', function() {
+//   if(this.checked){
+//     toggle_list.forEach(toggle => {
+//       if(toggle === toggle_item_nw)
+//         toggle.show();
+//       else
+//       toggle.hide();
+//     });
+//   }
+//   else
+//     toggle_list.forEach(toggle => {
+//       toggle.show();
+//     });
+// });
+
+// chkbox_show_sl.addEventListener('change', function() {
+//   if(this.checked){
+//     toggle_list.forEach(toggle => {
+//       if(toggle === toggle_item_sl)
+//         toggle.show();
+//       else
+//       toggle.hide();
+//     });
+//   }
+//   else
+//     toggle_list.forEach(toggle => {
+//       toggle.show();
+//     });
+// });
+
+// chkbox_show_bs.addEventListener('change', function() {
+//   if(this.checked){
+//     toggle_list.forEach(toggle => {
+//       if(toggle === toggle_item_bs)
+//         toggle.show();
+//       else
+//       toggle.hide();
+//     });
+//   }
+//   else
+//     toggle_list.forEach(toggle => {
+//       toggle.show();
+//     });
+// });
+
+// chkbox_show_sd.addEventListener('change', function() {
+//   if(this.checked){
+//     toggle_list.forEach(toggle => {
+//       if(toggle === toggle_item_sd)
+//         toggle.show();
+//       else
+//       toggle.hide();
+//     });
+//   }
+//   else
+//     toggle_list.forEach(toggle => {
+//       toggle.show();
+//     });
+// });
+</script>
+{% endblock extra_scripts %}
 
