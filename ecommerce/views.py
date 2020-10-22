@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.db.models import F, Q
 from django.shortcuts import redirect, render
 from .forms import CheckoutForm
@@ -6,6 +7,7 @@ from .models import Order, OrderItem
 from items.models import Category, Item, Variation, VariationImage
 from payment.forms import CouponForm
 from users.models import Address, Customer
+
 
 
 def get_session(request):
@@ -77,13 +79,23 @@ def landing_page(request):
     return render(request, 'ecommerce/landing-page.html')
 
 
-
 def search(q):
-    # return items using the search term (q) from the fields: name, description, and fk category
+    '''return items using the search term (q) from the fields: name, description, and fk category'''
     return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(category__name__icontains=q))
 
-# def filter_items(items):
-#     return items.filter(item_label='NW')
+
+
+#  posts = Post.objects.filter(author=selected_user).order_by('-date_posted')
+#         paginator = Paginator(posts, 5)
+
+#         page_number = request.GET.get('page')
+#         page_obj = paginator.get_page(page_number)
+#         context = {
+#             'selected_user': selected_user,
+#             'current_user': request.user.username,
+#             'followed': is_followed(request, user_profile, True),
+#             'page_obj': page_obj
+#         }
 
 # page_type 1: return collection items
 # page_type 2: return made to order items
@@ -103,7 +115,7 @@ def home(request, page_type=None):
         items = Item.objects.all()
         q = 'Search'
 
-    # items = filter_items(items)
+    
 
     context = {
         'items': items,
