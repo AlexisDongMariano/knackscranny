@@ -99,6 +99,14 @@ def search(q):
 
 # page_type 1: return collection items
 # page_type 2: return made to order items
+def paginate(request, items):
+    '''Paginate items in home, show 8 items per page'''
+    paginator = Paginator(items, 8)
+    page_number = request.GET.get('page')
+    
+    return paginator.get_page(page_number)
+
+
 def home(request, page_type=None):
     if not request.user.is_authenticated:
         get_session(request)
@@ -115,13 +123,16 @@ def home(request, page_type=None):
         items = Item.objects.all()
         q = 'Search'
 
-    
+    items = items.order_by('-date_updated')
+    page_obj = paginate(request, items)
+    print(page_obj)
 
     context = {
-        'items': items,
+        # 'items': items,
         'page_type': page_type,
         'collection_categories': collection_categories,
         'search_placeholder': q,
+        'page_obj': page_obj
     }
     return render(request, 'ecommerce/home.html', context)
 
