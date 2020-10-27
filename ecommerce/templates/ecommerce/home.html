@@ -276,21 +276,21 @@
 
       {% if page_obj.paginator.count > 8%}
         {% if page_obj.has_previous %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page=1">First</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">First</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Previous</a>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-                <a class="btn btn-secondary mb-4 btn-sm" href="?page={{ num }}">{{ num }}</a>
+                <a class="btn btn-secondary mb-4 btn-sm" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ num }}">{{ num }}</a>
+                <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Next</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Last</a>
         {% endif %}
       {% endif %}
 
