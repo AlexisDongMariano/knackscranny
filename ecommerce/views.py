@@ -152,6 +152,9 @@ def home(request, page_type=None):
 
     collection_categories = Category.objects.all()
     q = request.GET.get('search')
+    filters = request.GET.getlist('item-label')
+
+    print(filters)
     
     # get the item queryset
     if q:
