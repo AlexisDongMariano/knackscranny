@@ -247,6 +247,18 @@
                   Sold
                 </a>
                 <!-- <div class="dropdown-divider"></div> -->
+                <form action="." method="GET">
+                  <a class="dropdown-item">
+                    <input class="item-label" type="checkbox" name="test" value="SD">
+                    Sold
+                  </a>
+                  <a class="dropdown-item">
+                    <input class="item-label" type="checkbox" name="test" value="BS">
+                    Bestseller
+                  </a>
+                  <button type="submit" class="btn btn-outline-secondary btn-sm">Filter</button>
+                </form>
+                <a class="btn btn-outline-secondary mb-4 btn-sm btn-item-label" href="">Filter</a>
                 
               </div>
             </li>
@@ -273,24 +285,45 @@
       {% endif %}
 
 
-
+      {% comment %}
       {% if page_obj.paginator.count > 8%}
         {% if page_obj.has_previous %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">First</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Previous</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">First</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Previous</a>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-                <a class="btn btn-secondary mb-4 btn-sm" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
+                <a class="btn btn-secondary mb-4 btn-sm test" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
+                <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Next</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Last</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Next</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Last</a>
+        {% endif %}
+      {% endif %}
+      {% endcomment %}
+
+      {% if page_obj.paginator.count > 8%}
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page=1">First</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-secondary mb-4 btn-sm test" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
         {% endif %}
       {% endif %}
 
@@ -342,6 +375,30 @@
  
 {% block extra_scripts %}
 <script>
+  const pages = document.querySelectorAll('.test');
+
+  let test = '';
+  let search = '';
+  pages.forEach(page => {
+    search = location.search.substring(location.search.indexOf('search'));
+    console.log('search:', search);
+    console.log('orig href:', page.href);
+
+    page.href = `${page.href}&${search}`;
+    console.log('updated:', page.href);
+  });
+
+
+  const btn_itemLabel = document.querySelector('.btn-item-label');
+  if(location.search.indexOf('search') !== -1){
+    console.log('search is found in the URL');
+    btn_itemLabel.href = `${location.href}&filter=NW`;
+  }
+  else{
+    console.log('search is not found in the URL');
+    btn_itemLabel.href = `${location.href}?filter=NW`;
+  }
+    
 // JS Script for filtering items 
 // const toggle_item_nw = $('.item-label-NW');
 // const toggle_item_sl = $('.item-label-SL');

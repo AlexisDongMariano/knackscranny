@@ -152,7 +152,7 @@ def home(request, page_type=None):
 
     collection_categories = Category.objects.all()
     q = request.GET.get('search')
-    filters = request.GET.getlist('item-label')
+    filters = request.GET.get('filter')
 
     print(filters)
     
@@ -164,7 +164,9 @@ def home(request, page_type=None):
         items = Item.objects.all()
         q = 'Search'
 
+    # items = items.filter(Q(item_label__icontains=filters))
     items = items.order_by('-date_updated')
+    
 
     # q, items, page_type = get_items(request, page_type)
 
