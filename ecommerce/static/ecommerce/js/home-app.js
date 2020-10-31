@@ -17,17 +17,71 @@ function getFilters(){
         return [];
 }
 
-// add filter to local storage
+// save the filter to local storage
+function saveFilter(queryObject){
+    localStorage.setItem('filters', JSON.stringify(queryObject));
+}
+
+
+// add filter query
 function addFilter(itemLabel){
     itemsQuery.push(
         itemLabel
     );
-    localStorage.setItem('filters', JSON.stringify(itemsQuery));
+    saveFilter(itemsQuery);
+}
+
+// remove filter query
+function removeFilter(itemLabel){
+    const index = itemsQuery.indexOf(itemLabel);
+    itemsQuery.splice(index, 1);
+    saveFilter(itemsQuery);
 }
 
 
-console.log('items query:', itemsQuery, typeof(itemsQuery));
-console.log(chkbox_show_nw );
+
+chkbox_show_nw.addEventListener('change', e => {
+    // if(e.target.checked)
+    //     addFilter('NW');
+    // else{
+    //     removeFilter('NW');
+    // }
+    // console.log('FILTERS:', itemsQuery);
+    if(location.search === '')
+        location.assign(`${location.pathname}?filter=NW`);
+    else
+    location.assign(`${location.pathname}${location.search}&filter=NW`);
+    
+});
+
+chkbox_show_sl.addEventListener('change', e => {
+    if(e.target.checked)
+        addFilter('SL');
+    else{
+        removeFilter('SL');
+    }
+    console.log('FILTERS:', itemsQuery);
+});
+
+chkbox_show_bs.addEventListener('change', e => {
+    if(e.target.checked)
+        addFilter('BS');
+    else{
+        removeFilter('BS');
+    }
+    console.log('FILTERS:', itemsQuery);
+});
+
+chkbox_show_sd.addEventListener('change', e => {
+    if(e.target.checked)
+        addFilter('SD');
+    else{
+        removeFilter('SD');
+    }
+    console.log('FILTERS:', itemsQuery);
+});
+
+
 
 
 
