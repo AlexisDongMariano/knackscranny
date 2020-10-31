@@ -177,7 +177,7 @@ def home(request, page_type=None):
     for i in page_obj:
         print(f"ITEM {i.id}")
 
-    print('SEARCH TERM:', request.session['word'])
+    # print('SEARCH TERM:', request.session['word'])
 
     context = {
         'page_type': page_type,

@@ -374,30 +374,8 @@
 
  
 {% block extra_scripts %}
-<script>
-  const pages = document.querySelectorAll('.test');
-
-  let test = '';
-  let search = '';
-  pages.forEach(page => {
-    search = location.search.substring(location.search.indexOf('search'));
-    console.log('search:', search);
-    console.log('orig href:', page.href);
-
-    page.href = `${page.href}&${search}`;
-    console.log('updated:', page.href);
-  });
-
-
-  const btn_itemLabel = document.querySelector('.btn-item-label');
-  if(location.search.indexOf('search') !== -1){
-    console.log('search is found in the URL');
-    btn_itemLabel.href = `${location.href}&filter=NW`;
-  }
-  else{
-    console.log('search is not found in the URL');
-    btn_itemLabel.href = `${location.href}?filter=NW`;
-  }
+<script src="{% static 'ecommerce/js/home-app.js' %}">
+  
     
 // JS Script for filtering items 
 // const toggle_item_nw = $('.item-label-NW');
