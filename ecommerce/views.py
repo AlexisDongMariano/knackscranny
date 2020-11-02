@@ -152,7 +152,8 @@ def home(request, page_type=None):
 
     collection_categories = Category.objects.all()
     q = request.GET.get('search')
-    filters = request.GET.get('filter')
+    filters = request.GET.getlist('filter')
+    
 
     print(filters)
     
