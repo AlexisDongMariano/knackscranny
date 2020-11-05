@@ -1,3 +1,7 @@
+// ==============================
+//         UI ELEMENTS
+// ==============================
+
 const pages = document.querySelectorAll('.test');
 const btn_itemLabel = document.querySelector('.btn-item-label');
 const chkbox_show_nw = document.querySelector("input[value=NW]");
@@ -5,151 +9,27 @@ const chkbox_show_sl = document.querySelector("input[value=SL]");
 const chkbox_show_bs = document.querySelector("input[value=BS]");
 const chkbox_show_sd = document.querySelector("input[value=SD]");
 
-// initialize query
+
+// ==============================
+//         GLOBAL VARIABLES
+// ==============================
+
 const itemsQuery = getFilters();
+// const prevURL = new URL(document.referrer);
+console.log('document.referrer:', document.referrer);
+
+const filterQueries = itemsQuery[0];
 let searchGlobal = location.search;
-
-// get filter object from the local storage
-function getFilters(){
-    const itemsQuery = localStorage.getItem('filters');
-
-    if(itemsQuery !== null){
-        return JSON.parse(itemsQuery);
-    }
-    else{
-        return [{
-            NW: false,
-            SL: false,
-            BS: false,
-            SD: false
-        }];
-    }
-        
-}
-
-// save the filter to local storage
-function saveFilter(queryObject){
-    localStorage.setItem('filters', JSON.stringify(queryObject));
-}
-
-// add/set filter query
-function setFilter(itemLabel){
-    const filterQueries = itemsQuery[0];
-
-    if(itemLabel === 'NW')
-        filterQueries.NW = !filterQueries.NW;
-    else if(itemLabel === 'SL')
-        filterQueries.SL = !filterQueries.SL;
-    else if(itemLabel === 'BS')
-        filterQueries.BS = !filterQueries.BS;
-    else if(itemLabel === 'SD')
-        filterQueries.SD = !filterQueries.SD;
-
-    saveFilter(itemsQuery);
-    location.assign(`${location.pathname}${generateSearchUrl(2)}`);
-}
-
-// remove filter query
-function removeFilter(itemLabel){
-    const index = itemsQuery.indexOf(itemLabel);
-    itemsQuery.splice(index, 1);
-    saveFilter(itemsQuery);
-}
-
-// searchType 1: pages and search
-// searchType 2: filter
-function generateSearchUrl(searchType) {
-    const filterQueries = itemsQuery[0];
-    let search = '';
-    debugger;
-
-    if(searchType === 1){
-        if(location.search.indexOf('filter') !== -1){
-            if(searchGlobal.startsWith('?'))
-                search = '&' + searchGlobal.substring(1);
-            else
-                search = searchGlobal;
-            debugger
-        }
-        else if(location.search.indexOf('search') !== -1)
-            search = '&' + location.search.substring(location.search.indexOf('search'));
-        else
-            search = '';
-        debugger;
-        return search;
-    }
-    // generate search url if any filter box was checked
-    if(searchType === 2){
-        arr_search = searchGlobal.split('&');
-        console.log('2search:', arr_search);
-
-        const pageIndex = arr_search.findIndex(element => {
-            return element.startsWith('&page') || element.startsWith('?page');
-        });
-
-        console.log(pageIndex);
-        if(pageIndex > -1)
-            arr_search.splice(pageIndex, 1);
-
-        console.log('3search:', arr_search);
-        search = arr_search.join('&');
-        console.log('4search:', search);
-        if(!search.startsWith('?') && !search.startsWith('&') && search !== ''){
-            search = '?' + search;
-            console.log('1');
-        }
-        else if(search.startsWith('&')){
-            search = search.substring(1,search.length);
-            console.log('2');
-        }
-        console.log('NEW SEARCH:', search);
-        console.log('1search:', searchGlobal);
-        for(let key in filterQueries){
-            console.log(key, filterQueries[key]);
-            if(searchGlobal && search !== ''){
-                // getting the search and refreshing to remove the page in search terms
-                if(filterQueries[key]){
-                    console.log('1x');
-                    let x = search.indexOf(`?filter=${key}`);
-                    let y = search.indexOf(`&filter=${key}`);
-
-                    if(x === -1 && y === -1){
-                        search += `&filter=${key}`;
-                        console.log('2x');
-                    }
-                    console.log('3x');
-                }
-                else{
-                    search = search.replace(`?filter=${key}`, '');
-                    search = search.replace(`&filter=${key}`, ''); 
-                    console.log('4x');
-                    if(search.charAt(0) === '&'){
-                        search = search.replace(search.charAt(0), '?'); 
-                        console.log('5x');
-                    }
-                    console.log('6x');    
-                }
-            }
-            else{
-                if(filterQueries[key]){
-                    search = `?filter=${key}`;
-                }
-            }  
-        }
-        console.log('search:', search);
-        return search;
-    }
-    
-}
-
-// generate href of pages/pagination buttons
-pages.forEach(page => {
-    page.href = `${page.href}${generateSearchUrl(1)}`;
-    console.log('updated:', page.href);
-});
+let prevURL = '';
+if(document.referrer !== '')
+    prevURL = new URL(document.referrer);
 
 
-// EVENT LISTENERS
+
+// ==============================
+//         EVENT LISTENERS
+// ==============================
+
 chkbox_show_nw.addEventListener('change', e => {
     setFilter('NW');
 });
@@ -167,6 +47,181 @@ chkbox_show_sd.addEventListener('change', e => {
 });
 
 
+// ==============================
+//         GLOBAL FUNCTIONS
+// ==============================
+
+// get filter object from the local storage
+function getFilters(){
+    const itemsQuery = localStorage.getItem('filters');
+
+    if(itemsQuery !== null){
+        return JSON.parse(itemsQuery);
+    }
+    else{
+        return [{
+            NW: false,
+            SL: false,
+            BS: false,
+            SD: false
+        }];
+    }     
+}
+
+// save the filter to local storage
+function saveFilter(queryObject){
+    localStorage.setItem('filters', JSON.stringify(queryObject));
+}
+
+// add/set filter query
+function setFilter(itemLabel){
+    if(itemLabel === 'NW')
+        filterQueries.NW = !filterQueries.NW;
+    else if(itemLabel === 'SL')
+        filterQueries.SL = !filterQueries.SL;
+    else if(itemLabel === 'BS')
+        filterQueries.BS = !filterQueries.BS;
+    else if(itemLabel === 'SD')
+        filterQueries.SD = !filterQueries.SD;
+
+    saveFilter(itemsQuery);
+    // redirect or render the page upon checkbox change
+    location.assign(`${location.pathname}${generateSearchUrl(2)}`);
+}
+
+// searchType 1: pages and search
+// searchType 2: filter
+function generateSearchUrl(searchType) {
+    const filterQueries = itemsQuery[0];
+    let search = '';
+
+    // generate search url for the pagination a href buttons
+    if(searchType === 1){
+        // if we found the search keyword in url, we will append & and the remaining search in url starting from
+        // the search keyword else if it starts with filter keyword, we'll do the same but with filter keyword
+        // else, the returning search will be blank
+        if(location.search.indexOf('search') !== -1)
+            search = '&' + location.search.substring(location.search.indexOf('search'));
+        else if(location.search.indexOf('filter') !== -1){
+            search = '&' + location.search.substring(location.search.indexOf('filter'));    
+        }
+        else
+            search = '';
+
+        return search;
+    }
+    // generate search url if any filter box was checked
+    if(searchType === 2){
+        arr_search = searchGlobal.split('&');
+        console.log('INSIDE generate search url, arr_search:', arr_search);
+        // check the search url if it already contains page keywords as we will remove it and use
+        // appropriate prefix (&, ?) for the filter keywords
+        const pageIndex = arr_search.findIndex(element => {
+            return element.startsWith('&page') || element.startsWith('?page');
+        });
+
+        if(pageIndex > -1)
+            arr_search.splice(pageIndex, 1);
+
+        search = arr_search.join('&');
+
+        if(!search.startsWith('?') && !search.startsWith('&') && search !== '')
+            search = '?' + search;
+        else if(search.startsWith('&'))
+            search = search.substring(1, search.length);
+
+        for(let key in filterQueries){
+            console.log('INSIDE loop, search:', search);
+            if(search !== ''){
+                // getting the search and refreshing to remove the page in search terms
+                if(filterQueries[key]){
+                    let x = search.indexOf(`?filter=${key}`);
+                    let y = search.indexOf(`&filter=${key}`);
+
+                    if(x === -1 && y === -1)
+                        search += `&filter=${key}`;
+                }
+                else{
+                    search = search.replace(`?filter=${key}`, '');
+                    search = search.replace(`&filter=${key}`, ''); 
+
+                    if(search.charAt(0) === '&')
+                        search = search.replace(search.charAt(0), '?'); 
+                }
+            }
+            else{
+                if(filterQueries[key]){
+                    search = `?filter=${key}`;
+                }
+            }  
+        }
+        console.log('BEFORE RETURNING SEARCH:', search);
+        return search;
+    }  
+}
+
+
+// ==============================
+//         RUNTIME LOGIC
+// ==============================
+
+// generate href of pages/pagination buttons
+pages.forEach(page => {
+    page.href = `${page.href}${generateSearchUrl(1)}`;
+    console.log('updated:', page.href);
+});
+
+// reset filters if the previous page is not items page or /home/
+// const filterReset = location.pathname === '/home/' && prevURL.search === ''
+// if(prevURL.pathname !== '/home/' || (prevURL.pathname !== '/home/' && prevURL.search === '')){
+//     filterQueries.NW = false;
+//     filterQueries.SL = false;
+//     filterQueries.BS = false;
+//     filterQueries.SD = false;
+//     saveFilter(itemsQuery);
+//     console.log('Storage cleared!:', prevURL.pathname);
+// }
+
+// TODO: make a condition as well that checks if the current href has made-to-order... and the current search is empty--> clear checkboxes
+console.log('searchGlobal:', searchGlobal);
+const searchFlag = (prevURL.search === '') && (searchGlobal === '');
+console.log('searchFlag:', searchFlag);
+console.log('PREVIOUS URL pathname:', prevURL.pathname);
+
+// if(prevURL.pathname !== '/home/' || ((prevURL.pathname === '/home/') && searchFlag)){
+// if((prevURL.pathname !== '/home/' && searchFlag) || (prevURL.pathname === '/home/' && location.pathname !== '/home/') || (prevURL.pathname !== '/home/' && location.pathname === '/home/') || !prevURL){
+//     filterQueries.NW = false;
+//     filterQueries.SL = false;
+//     filterQueries.BS = false;
+//     filterQueries.SD = false;
+//     saveFilter(itemsQuery);
+//     console.log('Storage cleared!:', prevURL.pathname);
+// }
+console.log('HREF:', location.href);
+let reload = false;
+for(let key in filterQueries){
+    if(filterQueries[key]){
+        if(location.search.indexOf('filter') === -1){
+            reload = true;
+            
+        }
+            
+
+    }
+    
+}
+
+if(reload){
+    for(let key in filterQueries){
+        console.log('FILTER QUERIES:', filterQueries[key]);
+    }
+
+    location.assign(`${location.pathname}${generateSearchUrl(2)}`);
+}
+console.log('SEARCH URL:', generateSearchUrl(2));
+
+
+
 // set the checkbox status based on value in localStorage
 chkbox_show_nw.checked = itemsQuery[0].NW
 chkbox_show_sl.checked = itemsQuery[0].SL
@@ -174,6 +229,9 @@ chkbox_show_bs.checked = itemsQuery[0].BS
 chkbox_show_sd.checked = itemsQuery[0].SD
 
 
+
+console.log('PREVIOUS search:', prevURL.search);
+console.log('previous:', prevURL);
 
 
 
