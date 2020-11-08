@@ -15,9 +15,6 @@ const chkbox_show_sd = document.querySelector("input[value=SD]");
 // ==============================
 
 const itemsQuery = getFilters();
-// const prevURL = new URL(document.referrer);
-console.log('document.referrer:', document.referrer);
-
 const filterQueries = itemsQuery[0];
 let searchGlobal = location.search;
 let prevURL = '';
@@ -171,67 +168,34 @@ pages.forEach(page => {
     console.log('updated:', page.href);
 });
 
-// reset filters if the previous page is not items page or /home/
-// const filterReset = location.pathname === '/home/' && prevURL.search === ''
-// if(prevURL.pathname !== '/home/' || (prevURL.pathname !== '/home/' && prevURL.search === '')){
-//     filterQueries.NW = false;
-//     filterQueries.SL = false;
-//     filterQueries.BS = false;
-//     filterQueries.SD = false;
-//     saveFilter(itemsQuery);
-//     console.log('Storage cleared!:', prevURL.pathname);
-// }
+// if the previous first pathname is not home, clear the filter checkboxes
+if(prevURL.pathname.split('/')[1] !== 'home'){
+    filterQueries.NW = false;
+    filterQueries.SL = false;
+    filterQueries.BS = false;
+    filterQueries.SD = false;
+}
 
-// TODO: make a condition as well that checks if the current href has made-to-order... and the current search is empty--> clear checkboxes
-console.log('searchGlobal:', searchGlobal);
-const searchFlag = (prevURL.search === '') && (searchGlobal === '');
-console.log('searchFlag:', searchFlag);
-console.log('PREVIOUS URL pathname:', prevURL.pathname);
-
-// if(prevURL.pathname !== '/home/' || ((prevURL.pathname === '/home/') && searchFlag)){
-// if((prevURL.pathname !== '/home/' && searchFlag) || (prevURL.pathname === '/home/' && location.pathname !== '/home/') || (prevURL.pathname !== '/home/' && location.pathname === '/home/') || !prevURL){
-//     filterQueries.NW = false;
-//     filterQueries.SL = false;
-//     filterQueries.BS = false;
-//     filterQueries.SD = false;
-//     saveFilter(itemsQuery);
-//     console.log('Storage cleared!:', prevURL.pathname);
-// }
-console.log('HREF:', location.href);
+// if a filter checkbox is checked, add the filters to the search property of the location
 let reload = false;
 for(let key in filterQueries){
     if(filterQueries[key]){
         if(location.search.indexOf('filter') === -1){
             reload = true;
-            
         }
-            
-
     }
-    
 }
 
-if(reload){
-    for(let key in filterQueries){
-        console.log('FILTER QUERIES:', filterQueries[key]);
-    }
-
+if(reload)
     location.assign(`${location.pathname}${generateSearchUrl(2)}`);
-}
-console.log('SEARCH URL:', generateSearchUrl(2));
-
-
 
 // set the checkbox status based on value in localStorage
-chkbox_show_nw.checked = itemsQuery[0].NW
-chkbox_show_sl.checked = itemsQuery[0].SL
-chkbox_show_bs.checked = itemsQuery[0].BS
-chkbox_show_sd.checked = itemsQuery[0].SD
+chkbox_show_nw.checked = itemsQuery[0].NW;
+chkbox_show_sl.checked = itemsQuery[0].SL;
+chkbox_show_bs.checked = itemsQuery[0].BS;
+chkbox_show_sd.checked = itemsQuery[0].SD;
 
 
-
-console.log('PREVIOUS search:', prevURL.search);
-console.log('previous:', prevURL);
 
 
 

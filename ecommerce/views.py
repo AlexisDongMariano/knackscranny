@@ -85,6 +85,14 @@ def search(q):
     return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(category__name__icontains=q)).order_by('-date_updated')
 
 
+def filterItems(filters):
+    '''return items filtered by the checkboxes in home'''
+    q = Q()
+    for label in filters:
+        q = q | Q(item_label__icontains=label)
+    return Item.objects.filter(q)
+
+
 def paginate(request, items):
     '''Paginate items in home, show 8 items per page'''
     paginator = Paginator(items, 8)
@@ -92,55 +100,6 @@ def paginate(request, items):
     print('paginator is called')
 
     return paginator.get_page(page_number)
-
-
-# def get_items(request, page_type):
-#     '''query the items'''
-
-#     # if request.GET.get('search'):
-#     #     search = request.GET.get('search') #getting value from the GET url
-#     #     request.session['word'] = search
-#     # else:
-#     #     word = request.session.get('word', '')
-#     #     request.session['word'] = word
-#     #     search = word
-#     # context = {
-#     #     'search': search,
-#     # }
-#     page_type = page_type
-#     print('WORD:', request.session['word'])
-#     word = request.session['word']
-#     q = request.GET.get('search')
-#     print('S WORD:', q)
-
-#     if q is None:
-#         print('S WORD is None')
-#     elif q == '':
-#         print('S is empty string')
-#     elif q == ' ':
-#         print('S is a space')
-#     else:
-#         print('S WORD is not None')
-
-#     if q:
-#     # if q or word != '':
-#         items = search(q)
-#         page_type = 'searched'
-#         print('1 S WORD:', q)
-#         request.session['word'] = q
-#         print('1 WORD:', request.session['word'])
-#     elif word != '':
-#         print('2')
-#         items = search(word)
-#     else:
-#         print('3')
-#         items = Item.objects.all().order_by('-date_updated')
-#         word = request.session.get('word', '')
-#         request.session['word'] = word
-#         q = 'Search'
-    
-    
-#     return (q, items, page_type)
 
 
 # page_type 1: return collection items
@@ -153,11 +112,8 @@ def home(request, page_type=None):
     collection_categories = Category.objects.all()
     q = request.GET.get('search')
     filters = request.GET.getlist('filter')
-    
 
-    print(filters)
-    
-    # get the item queryset
+    # get the item queryset and apply search query
     if q:
         items = search(q)
         page_type = 'searched'
@@ -165,20 +121,10 @@ def home(request, page_type=None):
         items = Item.objects.all()
         q = 'Search'
 
-    # items = items.filter(Q(item_label__icontains=filters))
-    items = items.order_by('-date_updated')
-    
-
-    # q, items, page_type = get_items(request, page_type)
-
-    for i in items:
-        print(f"ITEM q: {i.id}")
+    # apply filter based on query
+    items = filterItems(filters).order_by('-date_updated')
+    # apply pagination
     page_obj = paginate(request, items)
-
-    for i in page_obj:
-        print(f"ITEM {i.id}")
-
-    # print('SEARCH TERM:', request.session['word'])
 
     context = {
         'page_type': page_type,
