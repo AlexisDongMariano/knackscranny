@@ -274,29 +274,6 @@
         {% include "ecommerce/home-all.html" %}
       {% endif %}
 
-
-      {% comment %}
-      {% if page_obj.paginator.count > 8%}
-        {% if page_obj.has_previous %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">First</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Previous</a>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <a class="btn btn-secondary mb-4 btn-sm test" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
-            {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Next</a>
-            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Last</a>
-        {% endif %}
-      {% endif %}
-      {% endcomment %}
-
       {% if page_obj.paginator.count > 8%}
         {% if page_obj.has_previous %}
             <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page=1">First</a>
@@ -364,43 +341,6 @@
 
  
 {% block extra_scripts %}
-<script src="{% static 'ecommerce/js/home-app.js' %}">
-  
-    
-// JS Script for filtering items 
-// const toggle_item_nw = $('.item-label-NW');
-// const toggle_item_sl = $('.item-label-SL');
-// const toggle_item_bs = $('.item-label-BS');
-// const toggle_item_sd = $('.item-label-SD');
-
-// const chkbox_show_nw = document.querySelector("input[name=NW]");
-// const chkbox_show_sl = document.querySelector("input[name=SL]");
-// const chkbox_show_bs = document.querySelector("input[name=BS]");
-// const chkbox_show_sd = document.querySelector("input[name=SD]");
-// const itemLabels = document.querySelectorAll(".item-label");
-// let checked = document.querySelectorAll("input:checked");
-
-// itemLabels.forEach((itemLabel, index) => {
-//   console.log(itemLabel, itemLabel.checked);
-//   itemLabel.addEventListener('change', () => {
-//     checked = document.querySelectorAll("input:checked");
-//     displayItems(checked);
-//   });
-// });
-
-// function displayItems(checked) {
-//   chkbox_show_nw.checked ? toggle_item_nw.show() : toggle_item_nw.hide();
-//   chkbox_show_sl.checked ? toggle_item_sl.show() : toggle_item_sl.hide();
-//   chkbox_show_bs.checked ? toggle_item_bs.show() : toggle_item_bs.hide();
-//   chkbox_show_sd.checked ? toggle_item_sd.show() : toggle_item_sd.hide();
-
-//   if(checked.length === 0){
-//     toggle_item_nw.show();
-//     toggle_item_sl.show();
-//     toggle_item_bs.show();
-//     toggle_item_sd.show();
-//   }
-// }
-// </script>
+<script src="{% static 'ecommerce/js/home-app.js' %}"></script>
 {% endblock extra_scripts %}
 
