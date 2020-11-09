@@ -219,9 +219,9 @@ a .list-group-item, .item-label, .item-label:hover {
 }
 
 
-
-/* HOME PAGE */
-/*************/
+/******************************/
+/*          HOME PAGE         */
+/******************************/
 .tags {
   position: absolute;
   bottom: 2%;
@@ -248,6 +248,13 @@ a .list-group-item, .item-label, .item-label:hover {
   }
 } */
 
+
+/******************************/
+/*          ITEM PAGE         */
+/******************************/
+.other-items {
+  width: 60%;
+}
 
 
 /* STRIPE SPECIFIC */

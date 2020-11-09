@@ -72,13 +72,6 @@ def save_address(customer, address_fields):
     return address
 
 
-def landing_page(request):
-    if not request.user.is_authenticated:
-        get_session(request)
-
-    return render(request, 'ecommerce/landing-page.html')
-
-
 def search(q):
     '''return items using the search term (q) from the fields: name, description, and fk category'''
     print('SEARCH ITEM INITIATED')
@@ -102,9 +95,18 @@ def paginate(request, items):
     return paginator.get_page(page_number)
 
 
+def landing_page(request):
+    '''Starting landing page'''
+    if not request.user.is_authenticated:
+        get_session(request)
+
+    return render(request, 'ecommerce/landing-page.html')
+
+
 # page_type 1: return collection items
 # page_type 2: return made to order items
 def home(request, page_type=None):
+    '''Main Page for the item list'''
     if not request.user.is_authenticated:
         get_session(request)
     print('SESSION_KEY:', request.session.session_key)
@@ -142,10 +144,14 @@ def item(request, item_id, variation_name):
     variation_images = VariationImage.objects.filter(variation=variation)
     variations = Variation.objects.filter(item=item)
 
+    other_items = Item.objects.all().exclude(id=item.id)[:3]
+    print(other_items)
+
     context = {
         'variation': variation,
         'variation_images': variation_images,
         'variations': variations,
+        'other_items': other_items
     }
     return render(request, 'ecommerce/item.html', context)
 
