@@ -46,8 +46,11 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 17.(Oct-19-2020) U1.I1: --> 100% DONE (Oct-20-2020): fix the signals in items when updating the item labels
 
-18.(Oct-23=2020) U1.I1: --> 100% DONE (Oct-27-2020): implement pagination
+18.(Oct-23-2020) U1.I1: --> 100% DONE (Oct-27-2020): implement pagination
 
+19.(Nov-13-2020) U1.I1: Add a checking in the Profile section for modifying username
+
+20.(Nov-13-2020) U1.I1: Continue the add review functionality
 
 =========================
 TODO list labeled in view

@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils import timezone
 from PIL import Image
+from users.models import Customer
 
 
 ITEM_LABELS = (
@@ -117,3 +118,22 @@ class VariationImage(models.Model):
             output_size = (525, 350)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+
+class ItemReview(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    review = models.TextField()
+    date_added = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.item
+
+    def save(self, *args, **kwargs):
+        ''' On save, update date updated '''
+        if not self.id:
+            self.date_added = timezone.now()
+        self.date_updated = timezone.now()
+
+        super(ItemComment, self).save(*args, **kwargs)

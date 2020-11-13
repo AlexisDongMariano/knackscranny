@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import F, Q
 from django.shortcuts import redirect, render
-from .forms import CheckoutForm
+from .forms import CheckoutForm, ItemReviewForm
 from .models import Order, OrderItem
 from items.models import Category, Item, Variation, VariationImage
 from payment.forms import CouponForm
@@ -140,19 +140,23 @@ def home(request, page_type=None):
 def item(request, item_id, variation_name):
     '''item details and variations'''
     item = Item.objects.filter(id=item_id).first()
-    variation = Variation.objects.filter(item=item, name=variation_name).first()
-    variation_images = VariationImage.objects.filter(variation=variation)
-    variations = Variation.objects.filter(item=item)
+    customer = query_customer(request)
 
-    other_items = Item.objects.all().exclude(id=item.id)[:3]
-    print(other_items)
+    if request.method == 'GET':
+        review_form = ItemReviewForm()
+        variation = Variation.objects.filter(item=item, name=variation_name).first()
+        variation_images = VariationImage.objects.filter(variation=variation)
+        variations = Variation.objects.filter(item=item)
 
-    context = {
-        'variation': variation,
-        'variation_images': variation_images,
-        'variations': variations,
-        'other_items': other_items
-    }
+        other_items = Item.objects.all().exclude(id=item.id)[:3]
+
+        context = {
+            'variation': variation,
+            'variation_images': variation_images,
+            'variations': variations,
+            'other_items': other_items,
+            'review_form': review_form
+        }
     return render(request, 'ecommerce/item.html', context)
 
 

@@ -1,6 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from items.models import ItemReview
 
 
 PAYMENT_CHOICES = (
@@ -14,7 +15,6 @@ class CheckoutForm(forms.Form):
     email = forms.EmailField(required=True)
     contact1 = forms.CharField(required=True)
     contact2 = forms.CharField(required=False)
-
 
     shipping_address1 = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'class': 'form-control',
@@ -51,3 +51,11 @@ class CheckoutForm(forms.Form):
 
     payment_option = forms.ChoiceField(widget=forms.RadioSelect(
         attrs={'class':'custom-control-input'}), choices=PAYMENT_CHOICES)
+
+
+class ItemReviewForm(forms.ModelForm):
+    class Meta:
+        model = ItemReview
+        fields = ['review']
+        labels = {'review': ''}
+        widgets = {'review': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell others why you love this item.', 'rows':3, 'cols':80})}

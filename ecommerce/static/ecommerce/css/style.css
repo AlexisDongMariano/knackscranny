@@ -93,6 +93,12 @@ a:active, a:focus, a:visited {
   color: slategray;
 }
 
+.form-control:focus {
+  border-color: #f7bbcb;
+  /* border-color: #ced4da; */
+  box-shadow: 0 0 0 0.1rem rgba(247, 187, 203, 1);
+}
+
 
 /* TEXT COLORS */
 .text-warning {
@@ -254,6 +260,26 @@ a .list-group-item, .item-label, .item-label:hover {
 /******************************/
 .other-items {
   width: 60%;
+}
+
+.star-rating {
+  /* line-height:32px;*/
+  font-size:1.25em; 
+  cursor: pointer;
+}
+
+.fa-star {
+  color: #f7bbcb;
+  /* box-shadow:  2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12); */
+}
+
+.fa-star-o {
+  /* color: #ced4da; */
+  color: #f7bbcb;
+}
+
+.img-review {
+  width: 150px;
 }
 
 
