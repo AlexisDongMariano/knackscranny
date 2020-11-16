@@ -124,11 +124,12 @@ class ItemReview(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     review = models.TextField()
+    rating = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.item
+        return self.item.name
 
     def save(self, *args, **kwargs):
         ''' On save, update date updated '''
@@ -136,4 +137,4 @@ class ItemReview(models.Model):
             self.date_added = timezone.now()
         self.date_updated = timezone.now()
 
-        super(ItemComment, self).save(*args, **kwargs)
+        super(ItemReview, self).save(*args, **kwargs)

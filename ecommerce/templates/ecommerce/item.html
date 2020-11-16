@@ -173,27 +173,29 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body text-center">
-              <h4 class="h4">{{ variation.item.name }} ({{ variation.item.category.name}})</h4>
-              <img class="img-review" src="{{ variation.item.image.url }}">
-              <div class="star-rating mb-4"> 
-                <span class="fa fa-star-o fa-lg"></span>
-                <span class="fa fa-star-o fa-lg"></span>
-                <span class="fa fa-star-o fa-lg"></span>
-                <span class="fa fa-star-o fa-lg"></span>
-                <span class="fa fa-star-o fa-lg"></span>
-                <input type="hidden" id="rating-value" value="0">
-              </div>
+            <form method="POST">
+              <div class="modal-body text-center">
+                <h4 class="h4">{{ variation.item.name }} ({{ variation.item.category.name}})</h4>
+                <img class="img-review" src="{{ variation.item.image.url }}">
+                <div class="star-rating mb-4"> 
+                  <span class="fa fa-star-o fa-lg"></span>
+                  <span class="fa fa-star-o fa-lg"></span>
+                  <span class="fa fa-star-o fa-lg"></span>
+                  <span class="fa fa-star-o fa-lg"></span>
+                  <span class="fa fa-star-o fa-lg"></span>
+                  <input type="hidden" id="rating-value" name="rating-value" value="0">
+                </div>
 
-              <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ review_form }}
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-white btn-md my-0 p" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-secondary btn-md my-0 p">Submit Review</button>
-            </div>
+                
+                  {% csrf_token %}
+                  {{ review_form }}
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-white btn-md my-0 p" data-dismiss="modal">Cancel</button>
+                <button type="input" class="btn btn-secondary btn-md my-0 p">Submit Review</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

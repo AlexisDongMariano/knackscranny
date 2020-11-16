@@ -157,6 +157,20 @@ def item(request, item_id, variation_name):
             'other_items': other_items,
             'review_form': review_form
         }
+
+    elif request.method == 'POST':
+        form = ItemReviewForm(data=request.POST)
+        rating = request.POST.get('rating-value')
+
+        if form.is_valid():
+            new_review = form.save(commit=False)
+            new_review.customer = customer
+            new_review.item = item
+            new_review.rating = rating
+            new_review.save()
+
+        return redirect('ecommerce:item', item_id, variation_name)
+
     return render(request, 'ecommerce/item.html', context)
 
 
