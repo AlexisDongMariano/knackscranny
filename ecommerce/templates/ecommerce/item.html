@@ -158,12 +158,26 @@
       <div class="row d-flex justify-content-center wow fadeIn">
         <div class="col-md-6 text-center">
           <h4 class="my-4 h4">Customer Reviews</h4>
-          <p>No Reviews have been written for this product.</p>
-          <button class="btn btn-outline-secondary btn-md my-0 p" data-toggle="modal" data-target="#reviewModal">Write a Review</button>
+          {% if not reviews %}
+            <p>No Reviews have been written for this product.</p>
+          {% endif %}
+          {% if not user_has_reviewed %}
+            <button class="btn btn-outline-secondary btn-md my-0 p" data-toggle="modal" data-target="#reviewModal">Write a Review</button>
+          {% endif %}
+          {% if reviews %}
+            {% for review in reviews %}
+              {% if review.customer.user.username %}
+                <p>{{ review.customer.user.username }}</p>
+              {% else %}
+                <p>User{{ review.customer.id }}</p>
+              {% endif %}
+              {{ review.review }}
+              rating: {{ review.rating }}
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
       <!-- Submit Item Review Modal -->
-      <!-- Modal -->
       <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">

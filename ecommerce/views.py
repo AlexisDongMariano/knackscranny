@@ -4,7 +4,7 @@ from django.db.models import F, Q
 from django.shortcuts import redirect, render
 from .forms import CheckoutForm, ItemReviewForm
 from .models import Order, OrderItem
-from items.models import Category, Item, Variation, VariationImage
+from items.models import Category, Item, ItemReview, Variation, VariationImage
 from payment.forms import CouponForm
 from users.models import Address, Customer
 
@@ -141,6 +141,8 @@ def item(request, item_id, variation_name):
     '''item details and variations'''
     item = Item.objects.filter(id=item_id).first()
     customer = query_customer(request)
+    reviews = ItemReview.objects.filter(item=item)
+    user_has_reviewed = reviews.filter(customer=customer).exists()
 
     if request.method == 'GET':
         review_form = ItemReviewForm()
@@ -149,25 +151,30 @@ def item(request, item_id, variation_name):
         variations = Variation.objects.filter(item=item)
 
         other_items = Item.objects.all().exclude(id=item.id)[:3]
-
+        print('USER', customer, ' has reviewed', user_has_reviewed)
         context = {
             'variation': variation,
             'variation_images': variation_images,
             'variations': variations,
             'other_items': other_items,
-            'review_form': review_form
+            'review_form': review_form,
+            'reviews': reviews,
+            'user_has_reviewed': user_has_reviewed
         }
 
     elif request.method == 'POST':
-        form = ItemReviewForm(data=request.POST)
-        rating = request.POST.get('rating-value')
+        if user_has_reviewed:
+            messages.error(request, f'You have already reviewed the item')
+        else:
+            form = ItemReviewForm(data=request.POST)
+            rating = request.POST.get('rating-value')
 
-        if form.is_valid():
-            new_review = form.save(commit=False)
-            new_review.customer = customer
-            new_review.item = item
-            new_review.rating = rating
-            new_review.save()
+            if form.is_valid():
+                new_review = form.save(commit=False)
+                new_review.customer = customer
+                new_review.item = item
+                new_review.rating = rating
+                new_review.save()
 
         return redirect('ecommerce:item', item_id, variation_name)
 
