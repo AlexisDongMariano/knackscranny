@@ -282,6 +282,12 @@ a .list-group-item, .item-label, .item-label:hover {
   width: 150px;
 }
 
+.img-reviewer {
+  height: 4rem;
+  width: 4rem;
+  /* margin-right: 1px; */
+}
+
 
 /* STRIPE SPECIFIC */
 /**

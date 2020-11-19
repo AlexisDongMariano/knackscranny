@@ -50,10 +50,11 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 19.(Nov-13-2020) U1.I1: Add a checking in the Profile section for modifying username
 
-20.(Nov-13-2020) U1.I1 --> 50% DONE (Oct-27-2020): Continue the add review functionality
-    > Display the review including the rating as stars (maybe make js for this gui) --> 20% DONE
+20.(Nov-13-2020) U1.I1 --> 80% DONE (Nov-19-2020): Continue the add review functionality
+    > Display the review including the rating as stars (maybe make js for this gui) --> 100% DONE
     > Make sure that one customer can only make one review --> 100% DONE
-    > make a checking in client that ensures rating is filled before submitting the review (js could be used)
+    > make a checking in client that ensures rating is filled before submitting the review (js could be used) --> 100% DONE
+    > user should be able to edit/delete review
 
 =========================
 TODO list labeled in view

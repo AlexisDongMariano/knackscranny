@@ -124,7 +124,7 @@ class ItemReview(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     # customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, unique=True)
     customer = models.OneToOneField(Customer, on_delete=models.SET_NULL, null=True)
-    review = models.TextField()
+    review = models.TextField(blank=True, null=True)
     rating = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(default=timezone.now)

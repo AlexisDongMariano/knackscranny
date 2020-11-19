@@ -164,17 +164,7 @@
           {% if not user_has_reviewed %}
             <button class="btn btn-outline-secondary btn-md my-0 p" data-toggle="modal" data-target="#reviewModal">Write a Review</button>
           {% endif %}
-          {% if reviews %}
-            {% for review in reviews %}
-              {% if review.customer.user.username %}
-                <p>{{ review.customer.user.username }}</p>
-              {% else %}
-                <p>User{{ review.customer.id }}</p>
-              {% endif %}
-              {{ review.review }}
-              rating: {{ review.rating }}
-            {% endfor %}
-          {% endif %}
+          
         </div>
       </div>
       <!-- Submit Item Review Modal -->
@@ -207,12 +197,22 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-white btn-md my-0 p" data-dismiss="modal">Cancel</button>
-                <button type="input" class="btn btn-secondary btn-md my-0 p">Submit Review</button>
+                <button type="input" id="submit-review" class="btn btn-secondary btn-md my-0 p" disabled>Submit Review</button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          {% if reviews %}
+            {% include "ecommerce/item-reviews.html" %}
+          {% endif %}
+        </div>
+      </div>
+
+      
 
       <!-- <div class="row wow fadeIn">
         <div class="col-lg-4 col-md-12 mb-4">
