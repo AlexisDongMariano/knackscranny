@@ -17,10 +17,10 @@ def register(request):
             print('================================', request.body)
             form = UserRegisterForm(request.POST)
             if form.is_valid():
-                form.save()
-                # create customer object and assign fields
-                customer = get_session(request)
+                form.save() # saving the User model first
+                # create Customer object and assign fields
                 user = User.objects.filter(username=form.cleaned_data.get('username')).first()
+                customer = get_session(request, user) # get customer via session key or create if new
                 customer.user = user
                 customer.first_name = form.cleaned_data.get('first_name')
                 customer.last_name = form.cleaned_data.get('last_name')
@@ -28,8 +28,6 @@ def register(request):
                 customer.contact1 = form.cleaned_data.get('contact1')
                 customer.contact2 = form.cleaned_data.get('contact2')
                 customer.save()
-
-                username = form.cleaned_data.get('username')
                 messages.success(request, f'Account created, you can now login!')
                 return redirect('login')
         else:

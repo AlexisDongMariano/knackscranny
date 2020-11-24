@@ -1,0 +1,99 @@
+<!-- Item Variation Modal -->
+<div class="modal fade" id="variationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Select Variation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            {% for var in variations %}
+            <div class="col-md-4">
+              <div class="card my-3">
+
+                <!--Card image-->
+                <div class="view overlay mt-4">
+                  <!-- <img src="{{ test.image.url }}" class="card-img-top" alt=""> -->
+                  <img src="{{ var.variationimage_set.first.image.url }}" class="card-img-top" alt="">
+                  <a href="{% url 'ecommerce:item' var.item.id var.name %}" >
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+                <!--Card image-->
+                <div class="card-body text-center">
+                  <!--Category & Title-->
+                  <a href="" class="grey-text">
+                    <h5>Outwear</h5>
+                  </a>
+                  <h5>
+                    <strong>
+                      <a href="#" class="dark-grey-text">mug</a>
+                    </strong>
+                  </h5>
+                  <h4 class="font-weight-bold blue-text">
+                    <strong>{{ var.price }}$</strong>
+                  </h4>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Submit Item Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Review Item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="POST">
+          <div class="modal-body text-center">
+            <h4 class="h4">{{ variation.item.name }} ({{ variation.item.category.name}})</h4>
+            <img class="img-review" src="{{ variation.item.image.url }}">
+            <div class="star-rating mb-4"> 
+                <span class="fa fa-star-o fa-lg"></span>
+                <span class="fa fa-star-o fa-lg"></span>
+                <span class="fa fa-star-o fa-lg"></span>
+                <span class="fa fa-star-o fa-lg"></span>
+                <span class="fa fa-star-o fa-lg"></span>
+              {% if user_has_reviewed %}
+                <span hidden class="item-rating">{{ user_review.rating }}</span>
+              {% endif %}
+              
+      
+              <input type="hidden" id="rating-value" name="rating-value" value="0">
+            </div>
+              {% csrf_token %}
+              {{ review_form }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-md my-0 p" data-dismiss="modal">Cancel</button>
+            {% if user_has_reviewed %}
+              <button type="input" id="submit-review-edit" class="btn btn-secondary btn-md my-0 p">Submit Review</button>
+            {% else %}
+              <button type="input" id="submit-review" class="btn btn-secondary btn-md my-0 p" disabled>Submit Review</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

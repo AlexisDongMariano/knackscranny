@@ -5,11 +5,14 @@
 const stars = document.querySelectorAll('.star-rating .fa');
 const rating = document.querySelector('#rating-value');
 const submit = document.querySelector('#submit-review');
-const reviewRating1 = document.querySelector('.rating-1');
-const reviewRating2 = document.querySelector('.rating-2');
-const reviewRating3 = document.querySelector('.rating-3');
-const reviewRating4 = document.querySelector('.rating-4');
-const reviewRating5 = document.querySelector('.rating-5');
+// const submit = document.querySelector('#submit-review');
+const reviewRating1 = document.querySelectorAll('.rating-1');
+const reviewRating2 = document.querySelectorAll('.rating-2');
+const reviewRating3 = document.querySelectorAll('.rating-3');
+const reviewRating4 = document.querySelectorAll('.rating-4');
+const reviewRating5 = document.querySelectorAll('.rating-5');
+// GET rating inside the review modal
+let itemRatingValue = document.querySelector('.item-rating'); 
 
 
 // ==============================
@@ -21,6 +24,7 @@ const reviewRating5 = document.querySelector('.rating-5');
 // ==============================
 //         GLOBAL FUNCTIONS
 // ==============================
+
 function setRating(index) {
     stars.forEach((star,i) => {
         if(i <= index){
@@ -32,6 +36,7 @@ function setRating(index) {
             star.classList.add('fa-star-o');
         }
     });  
+
     rating.value = index+1;
 }
 
@@ -39,6 +44,14 @@ function setRating(index) {
 // ==============================
 //         RUNTIME LOGIC
 // ==============================
+
+if (itemRatingValue){
+    itemRatingValue = parseInt(itemRatingValue.innerText);
+    setRating(itemRatingValue-1);
+    console.log('item rating value:', itemRatingValue);
+}
+    
+
 starClicked = false;
 stars.forEach((star, i) => {
     star.addEventListener('click', e => {
@@ -46,59 +59,69 @@ stars.forEach((star, i) => {
         setRating(stars[i].index);
         starClicked = true;
 
-
-        submit.disabled = false;
+        if (submit)
+            submit.disabled = false;
     });
 });
 
-submit.disabled = true;
+if (submit)
+    submit.disabled = true;
 
     
 
-
 if(reviewRating1){
-    reviewRating1.innerHTML = `
+    reviewRating1.forEach(rating => {
+        rating.innerHTML = `
         <span class="fa fa-star"></span>
         <span class="fa fa-star-o"></span>
         <span class="fa fa-star-o"></span>
         <span class="fa fa-star-o"></span>
         <span class="fa fa-star-o"></span>`
+    });
 }
 
 if(reviewRating2){
-    reviewRating2.innerHTML = `
-        <span class="fa fa-star "></span>
-        <span class="fa fa-star "></span>
-        <span class="fa fa-star-o "></span>
-        <span class="fa fa-star-o "></span>
-        <span class="fa fa-star-o "></span>`
+    reviewRating2.forEach(rating => {
+        rating.innerHTML = `
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star-o"></span>
+        <span class="fa fa-star-o"></span>
+        <span class="fa fa-star-o"></span>`
+    });
 }
 
 if(reviewRating3){
-    reviewRating3.innerHTML = `
+    reviewRating3.forEach(rating => {
+        rating.innerHTML = `
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star-o"></span>
         <span class="fa fa-star-o"></span>`
+    });
 }
 
 if(reviewRating4){
-    reviewRating4.innerHTML = `
+    reviewRating4.forEach(rating => {
+        rating.innerHTML = `
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star"></span>
         <span class="fa fa-star-o"></span>`
+    });
 }
 
 if(reviewRating5){
-    reviewRating5.innerHTML = `
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>`
+    reviewRating5.forEach(rating => {
+        rating.innerHTML = `
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>`
+    });
 }
 
 

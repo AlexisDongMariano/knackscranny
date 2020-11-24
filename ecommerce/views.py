@@ -10,7 +10,7 @@ from users.models import Address, Customer
 
 
 
-def get_session(request):
+def get_session(request, user=None):
     '''get or create anonymous customer through request.session_key'''
     if not request.session.session_key:
         request.session.save()
@@ -24,6 +24,9 @@ def get_session(request):
     else:
         print('ANONYMOUS EXiSTS')
         print('ANONYMOUS SESSION_ID:', customer_session.session_id)
+        if user and customer_session.user:
+            customer_session = Customer(user=user)
+            customer_session.save()
     return customer_session
 
 
@@ -142,16 +145,18 @@ def item(request, item_id, variation_name):
     item = Item.objects.filter(id=item_id).first()
     customer = query_customer(request)
     reviews = ItemReview.objects.filter(item=item)
-    user_has_reviewed = reviews.filter(customer=customer).exists()
+    # user_has_reviewed = reviews.filter(customer=customer).exists()
+    user_review = reviews.filter(customer=customer)
 
     if request.method == 'GET':
-        review_form = ItemReviewForm()
+        review_form = ItemReviewForm(instance=user_review.first())
         variation = Variation.objects.filter(item=item, name=variation_name).first()
         variation_images = VariationImage.objects.filter(variation=variation)
         variations = Variation.objects.filter(item=item)
 
         other_items = Item.objects.all().exclude(id=item.id)[:3]
-        print('USER', customer, ' has reviewed', user_has_reviewed)
+        # print('USER', customer, ' has reviewed', user_has_reviewed)
+        print('USER', customer, ' has reviewed', user_review.exists())
         context = {
             'variation': variation,
             'variation_images': variation_images,
@@ -159,22 +164,23 @@ def item(request, item_id, variation_name):
             'other_items': other_items,
             'review_form': review_form,
             'reviews': reviews,
-            'user_has_reviewed': user_has_reviewed
+            # 'user_has_reviewed': user_has_reviewed
+            'user_has_reviewed': user_review.exists()
         }
 
-    elif request.method == 'POST':
-        if user_has_reviewed:
-            messages.error(request, f'You have already reviewed the item')
-        else:
-            form = ItemReviewForm(data=request.POST)
-            rating = request.POST.get('rating-value')
+        if user_review.exists():
+            context['user_review'] = user_review.first()
 
-            if form.is_valid():
-                new_review = form.save(commit=False)
-                new_review.customer = customer
-                new_review.item = item
-                new_review.rating = rating
-                new_review.save()
+    elif request.method == 'POST':
+        form = ItemReviewForm(instance=user_review.first(), data=request.POST)
+        rating = request.POST.get('rating-value')
+
+        if form.is_valid():
+            new_review = form.save(commit=False)
+            new_review.customer = customer
+            new_review.item = item
+            new_review.rating = rating
+            new_review.save()
 
         return redirect('ecommerce:item', item_id, variation_name)
 

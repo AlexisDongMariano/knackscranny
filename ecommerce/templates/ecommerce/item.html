@@ -72,66 +72,6 @@
         </div>
       </div>
 
-      <!-- Item Variation Modal -->
-      <div class="modal fade" id="variationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Select Variation</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <div class="modal-body">
-              <div class="container-fluid">
-                <div class="row">
-                  {% for var in variations %}
-                  <div class="col-md-4">
-                    <div class="card my-3">
-
-                      <!--Card image-->
-                      <div class="view overlay mt-4">
-                        <!-- <img src="{{ test.image.url }}" class="card-img-top" alt=""> -->
-                        <img src="{{ var.variationimage_set.first.image.url }}" class="card-img-top" alt="">
-                        <a href="{% url 'ecommerce:item' var.item.id var.name %}" >
-                          <div class="mask rgba-white-slight"></div>
-                        </a>
-                      </div>
-                      <!--Card image-->
-                      <div class="card-body text-center">
-                        <!--Category & Title-->
-                        <a href="" class="grey-text">
-                          <h5>Outwear</h5>
-                        </a>
-                        <h5>
-                          <strong>
-                            <a href="#" class="dark-grey-text">mug</a>
-                          </strong>
-                        </h5>
-                        <h4 class="font-weight-bold blue-text">
-                          <strong>{{ var.price }}$</strong>
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                  {% endfor %}
-
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
       <hr>
 
       <div class="row d-flex justify-content-center wow fadeIn">
@@ -155,6 +95,7 @@
 
       <hr>
 
+      <!-- CUSTOMER REVIEWS -->
       <div class="row d-flex justify-content-center wow fadeIn">
         <div class="col-md-6 text-center">
           <h4 class="my-4 h4">Customer Reviews</h4>
@@ -163,49 +104,16 @@
           {% endif %}
           {% if not user_has_reviewed %}
             <button class="btn btn-outline-secondary btn-md my-0 p" data-toggle="modal" data-target="#reviewModal">Write a Review</button>
+          {% else %}
+            <button class="btn btn-outline-secondary btn-md my-0 p" data-toggle="modal" data-target="#reviewModal">Edit Review</button>
           {% endif %}
-          
         </div>
       </div>
-      <!-- Submit Item Review Modal -->
-      <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Review Item</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form method="POST">
-              <div class="modal-body text-center">
-                <h4 class="h4">{{ variation.item.name }} ({{ variation.item.category.name}})</h4>
-                <img class="img-review" src="{{ variation.item.image.url }}">
-                <div class="star-rating mb-4"> 
-                  <span class="fa fa-star-o fa-lg"></span>
-                  <span class="fa fa-star-o fa-lg"></span>
-                  <span class="fa fa-star-o fa-lg"></span>
-                  <span class="fa fa-star-o fa-lg"></span>
-                  <span class="fa fa-star-o fa-lg"></span>
-                  <input type="hidden" id="rating-value" name="rating-value" value="0">
-                </div>
-
-                
-                  {% csrf_token %}
-                  {{ review_form }}
-                
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-white btn-md my-0 p" data-dismiss="modal">Cancel</button>
-                <button type="input" id="submit-review" class="btn btn-secondary btn-md my-0 p" disabled>Submit Review</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      
+      {% include "ecommerce/item-modals.html" %}
 
       <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-10 my-4">
           {% if reviews %}
             {% include "ecommerce/item-reviews.html" %}
           {% endif %}
@@ -213,7 +121,6 @@
       </div>
 
       
-
       <!-- <div class="row wow fadeIn">
         <div class="col-lg-4 col-md-12 mb-4">
           <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
