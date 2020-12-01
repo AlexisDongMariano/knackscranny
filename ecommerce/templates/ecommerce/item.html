@@ -85,7 +85,7 @@
       <!-- OTHER ITEMS -->
       <div class="row">
         {% for item in other_items %}
-        <div class="col-lg-4 col-md-12 mb-4 text-center">
+        <div class="col-lg-4 col-md-8 mb-4 text-center">
           <a href="{% url 'ecommerce:item' item.id 'regular' %}">
             <img src="{{ item.image.url }}" class="img-fluid other-items" alt="">
           </a>
@@ -112,14 +112,19 @@
       
       {% include "ecommerce/item-modals.html" %}
 
-      <div class="row justify-content-center">
-        <div class="col-md-10 my-4">
-          {% if reviews %}
-            {% include "ecommerce/item-reviews.html" %}
-          {% endif %}
+      {% if reviews %}
+        <div class="row justify-content-center">
+          <div class="col-md-4 my-4 text-center">
+            <div class="card">
+              <img src="{{ main_item.image.url }}" class="img-fluid other-items mx-auto" alt="">
+              test
+            </div>
+          </div>
+          <div class="col-md-8 my-4">
+              {% include "ecommerce/item-reviews.html" %}
+          </div>
         </div>
-      </div>
-
+      {% endif %}
       
       <!-- <div class="row wow fadeIn">
         <div class="col-lg-4 col-md-12 mb-4">

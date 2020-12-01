@@ -165,7 +165,8 @@ def item(request, item_id, variation_name):
             'review_form': review_form,
             'reviews': reviews,
             # 'user_has_reviewed': user_has_reviewed
-            'user_has_reviewed': user_review.exists()
+            'user_has_reviewed': user_review.exists(),
+            'main_item': item
         }
 
         if user_review.exists():
