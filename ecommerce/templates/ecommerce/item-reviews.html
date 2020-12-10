@@ -1,6 +1,6 @@
 <!-- <div class="col-md-10 my-4"> -->
   <div class="card wow fadeIn">
-    {% for review in reviews %}
+    {% for review in page_obj %}
     <div class="media mt-3 mx-4">
       
         <img class="mr-3 rounded-circle img-reviewer" src="{{ review.customer.image.url }}" alt="Generic placeholder image">

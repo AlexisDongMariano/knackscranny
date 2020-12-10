@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils import timezone
 from PIL import Image
+from math import floor
 from users.models import Customer
 
 
@@ -56,6 +57,18 @@ class Item(models.Model):
             output_size = (431,372)
             img.thumbnail(output_size)
             img.save(self.image.path)
+    
+    @property
+    def get_review_count(self):
+        '''return the review count'''
+        return len(self.itemreview_set.all())
+
+    @property
+    def get_rating(self):
+        '''return the floor average reviews of the item'''
+        reviews = self.itemreview_set.all()
+        total = floor(sum([review.rating for review in reviews])/len(reviews))
+        return total
 
 
 class Variation(models.Model):

@@ -144,7 +144,7 @@ def item(request, item_id, variation_name):
     '''item details and variations'''
     item = Item.objects.filter(id=item_id).first()
     customer = query_customer(request)
-    reviews = ItemReview.objects.filter(item=item)
+    reviews = ItemReview.objects.filter(item=item).order_by('-date_updated')    # sort by latest review add/update
     # user_has_reviewed = reviews.filter(customer=customer).exists()
     user_review = reviews.filter(customer=customer)
 
@@ -155,15 +155,16 @@ def item(request, item_id, variation_name):
         variations = Variation.objects.filter(item=item)
 
         other_items = Item.objects.all().exclude(id=item.id)[:3]
-        # print('USER', customer, ' has reviewed', user_has_reviewed)
-        print('USER', customer, ' has reviewed', user_review.exists())
+        page_obj = paginate(request, reviews)
+
         context = {
             'variation': variation,
             'variation_images': variation_images,
             'variations': variations,
             'other_items': other_items,
             'review_form': review_form,
-            'reviews': reviews,
+            # 'reviews': reviews,
+            'page_obj': page_obj,
             # 'user_has_reviewed': user_has_reviewed
             'user_has_reviewed': user_review.exists(),
             'main_item': item

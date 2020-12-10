@@ -50,6 +50,11 @@ body,
   padding-right: 0 !important;
 }
 
+.no-padding-p {
+  margin: 0;
+  padding: 0;
+}
+
 .anchor{
   position: relative;
   padding-top: 100px;
@@ -288,6 +293,9 @@ a .list-group-item, .item-label, .item-label:hover {
   /* margin-right: 1px; */
 }
 
+.item-rating {
+  font-size: 1.5rem;
+}
 
 /* STRIPE SPECIFIC */
 /**
