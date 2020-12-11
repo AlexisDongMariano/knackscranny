@@ -20,7 +20,8 @@ def register(request):
                 form.save() # saving the User model first
                 # create Customer object and assign fields
                 user = User.objects.filter(username=form.cleaned_data.get('username')).first()
-                customer = get_session(request, user) # get customer via session key or create if new
+                # get customer via session key or create if new
+                customer = get_session(request, user)
                 customer.user = user
                 customer.first_name = form.cleaned_data.get('first_name')
                 customer.last_name = form.cleaned_data.get('last_name')
@@ -78,10 +79,17 @@ def profile(request):
 def addresses(request):
     '''update the shipping and billing address of the customer'''
     customer = Customer.objects.filter(user=request.user).first()
-    shipping_address = Address.objects.filter(customer=customer, address_type='S',
-        default=True).first()
-    billing_address = Address.objects.filter(customer=customer, address_type='B',
-        default=True).first()
+    # shipping_address = Address.objects.filter(customer=customer, address_type='S',
+    #     default=True).first()
+    # billing_address = Address.objects.filter(customer=customer, address_type='B',
+    #     default=True).first()
+
+    # if not shipping_address:
+    shipping_address, created = Address.objects.get_or_create(customer=customer,
+        address_type='S', default=True)
+    billing_address, created = Address.objects.get_or_create(customer=customer,
+        address_type='B', default=True)
+    
 
     if request.method == 'GET':
         s_form = ShippingAddressUpdateForm(instance=shipping_address, prefix='shipping')

@@ -60,7 +60,8 @@ def save_address(customer, address_fields):
             'zip_code': address_fields[3]
         }
         address, created = Address.objects.update_or_create(
-            customer=customer, address_type=address_fields[4], default=True, defaults=values_to_update)
+            customer=customer, address_type=address_fields[4], default=True, 
+            defaults=values_to_update)
     else:
         address = Address(
             customer = customer,
@@ -78,7 +79,8 @@ def save_address(customer, address_fields):
 def search(q):
     '''return items using the search term (q) from the fields: name, description, and fk category'''
     print('SEARCH ITEM INITIATED')
-    return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(category__name__icontains=q)).order_by('-date_updated')
+    return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q)
+        | Q(category__name__icontains=q)).order_by('-date_updated')
 
 
 def filter_items(filters):
@@ -400,10 +402,3 @@ def checkout(request):
             messages.error(request, "Error")
 
         return redirect('ecommerce:checkout')
-
-
-
-
-
-
-

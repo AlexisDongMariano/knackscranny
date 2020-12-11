@@ -110,13 +110,13 @@
             </div>
             <!-- Use saved shipping address -->
             {% if shipping_address %}
-            <div class="custom-control custom-checkbox">
-              {{ form.chk_use_default_shipping.errors }}
-              {{ form.chk_use_default_shipping }}
-              <label class="custom-control-label" for="{{ form.chk_use_default_shipping.id_for_label }}">
-                Use saved shipping address ({{ shipping_address.address1|truncatechars:20 }})
-              </label>
-            </div>
+              <div class="custom-control custom-checkbox">
+                {{ form.chk_use_default_shipping.errors }}
+                {{ form.chk_use_default_shipping }}
+                <label class="custom-control-label" for="{{ form.chk_use_default_shipping.id_for_label }}">
+                  Use saved shipping address ({{ shipping_address.address1|truncatechars:20 }})
+                </label>
+              </div>
             {% endif %}
             <!-- <hr> -->
             <!-- BILLING ADDRESS -->
@@ -159,15 +159,16 @@
               </div>
               <!-- Use saved billing address -->
               {% if billing_address %}
-              <div class="custom-control custom-checkbox">
-                {{ form.chk_use_default_billing.errors }}
-                {{ form.chk_use_default_billing }}
-                <label class="custom-control-label" for="{{ form.chk_use_default_billing.id_for_label }}">
-                  Use saved billing address ({{ billing_address.address1|truncatechars:20 }})
-                </label>
-              </div>
+                <div class="custom-control custom-checkbox">
+                  {{ form.chk_use_default_billing.errors }}
+                  {{ form.chk_use_default_billing }}
+                  <label class="custom-control-label" for="{{ form.chk_use_default_billing.id_for_label }}">
+                    Use saved billing address ({{ billing_address.address1|truncatechars:20 }})
+                  </label>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
+              
            
             <!-- PAYMENT OPTIONS -->
             <h5 class="mt-5 text-center">Payment Options</h5>
