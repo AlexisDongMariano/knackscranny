@@ -16,7 +16,7 @@ class Payment(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return str(self.customer.id) + '_' + self.payment_method
+        return str(self.id) + '_' + self.payment_method
 
 
 class Coupon(models.Model):

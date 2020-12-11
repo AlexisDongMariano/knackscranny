@@ -32,7 +32,7 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 13.(Sep-25-2020) U2.I1: Maybe add Refund model and view?
 
-14.(Sep-24-2020) U2.I1 --> 100% DONE (Oct-11-2020): Work on the User's profile page
+$14.(Sep-24-2020) U2.I1 --> 100% DONE (Oct-11-2020): Work on the User's profile page
     > add id tag in every orders/payments so that we can add an href pointing to each other
 
 15.(Oct-09-2020) U2.I1: figure out and/or add the stages of the order when order status is changed in the admin page
@@ -44,13 +44,13 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
     > change the filter text in the UI to indicate that filter is active
     > display in the UI the text results for (search term), (filters checked)
 
-17.(Oct-19-2020) U1.I1: --> 100% DONE (Oct-20-2020): fix the signals in items when updating the item labels
+$17.(Oct-19-2020) U1.I1: --> 100% DONE (Oct-20-2020): fix the signals in items when updating the item labels
 
-18.(Oct-23-2020) U1.I1: --> 100% DONE (Oct-27-2020): implement pagination
+$18.(Oct-23-2020) U1.I1: --> 100% DONE (Oct-27-2020): implement pagination
 
 19.(Nov-13-2020) U1.I1: Add a checking in the Profile section for modifying username
 
-20.(Nov-13-2020) U1.I1 --> 99% DONE (Nov-24-2020): Continue the add review functionality
+$20.(Nov-13-2020) U1.I1 --> 100% DONE (Dec-09-2020): Continue the add review functionality
     > Display the review including the rating as stars (maybe make js for this gui) --> 100% DONE
     > Make sure that one customer can only make one review --> 100% DONE
     > make a checking in client that ensures rating is filled before submitting the review (js could be used) --> 100% DONE
@@ -104,3 +104,10 @@ TODO list NOT labeled in view
 MISC TODO
 =========
 sendemail.TODO (Sep-14-2020): configure sending email and use
+
+
+=====
+NOTES
+=====
+1.(Dec-10-2020): Should allow deletion of users but deactivate instead of delete so that we have a record of the orders and avoid breaking of things
+    especially in the order models. Return back the order admin

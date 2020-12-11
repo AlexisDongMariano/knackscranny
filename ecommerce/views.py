@@ -81,7 +81,7 @@ def search(q):
     return Item.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(category__name__icontains=q)).order_by('-date_updated')
 
 
-def filterItems(filters):
+def filter_items(filters):
     '''return items filtered by the checkboxes in home'''
     q = Q()
     for label in filters:
@@ -127,7 +127,7 @@ def home(request, page_type=None):
         q = 'Search'
 
     # apply filter based on query
-    items = filterItems(filters).order_by('-date_updated')
+    items = filter_items(filters).order_by('-date_updated')
     # apply pagination
     page_obj = paginate(request, items)
 
@@ -144,7 +144,8 @@ def item(request, item_id, variation_name):
     '''item details and variations'''
     item = Item.objects.filter(id=item_id).first()
     customer = query_customer(request)
-    reviews = ItemReview.objects.filter(item=item).order_by('-date_updated')    # sort by latest review add/update
+    # sort by latest review add/update
+    reviews = ItemReview.objects.filter(item=item).order_by('-date_updated')
     # user_has_reviewed = reviews.filter(customer=customer).exists()
     user_review = reviews.filter(customer=customer)
 
@@ -205,6 +206,7 @@ def cart(request):
 # view_type 1: from item view
 # view_type 2: from cart view
 def add_to_cart(request, variation_id, view_type):
+    '''add to cart functionality'''
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
         item_inventory = item.inventory
@@ -230,11 +232,11 @@ def add_to_cart(request, variation_id, view_type):
 
         if view_type == 1:
             return redirect('ecommerce:item', item.item.id, item.name)
-        elif view_type == 2:
-            return redirect('ecommerce:cart')
+        return redirect('ecommerce:cart')
 
 
 def minus_from_cart(request, variation_id):
+    '''decrement 1 from the single item from the cart'''
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
         customer = query_customer(request)
@@ -251,11 +253,11 @@ def minus_from_cart(request, variation_id):
         else:
             order_item.delete()
             messages.warning(request, 'Item is removed from the cart!')
-            
         return redirect('ecommerce:cart')
 
 
 def delete_cart_item(request, variation_id):
+    '''delete the item from the cart'''
     if request.method == 'POST':
         item = Variation.objects.filter(id=variation_id).first()
         customer = query_customer(request)
@@ -267,6 +269,7 @@ def delete_cart_item(request, variation_id):
 
 
 def checkout(request):
+    '''checkout form'''
     customer = query_customer(request)
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
     print('CUSTOMER ID:', customer.id)
@@ -286,7 +289,7 @@ def checkout(request):
                 'coupon_form': coupon_form,
                 'display_coupon_form': True
             }
-            
+
             if shipping_address.exists():
                 print('SHIPPING ADDRESS EXISTS')
                 context['shipping_address'] = shipping_address.first()
@@ -298,7 +301,7 @@ def checkout(request):
         else:
             messages.warning(request, f'You do not have an active order')
             return redirect('ecommerce:cart')
-    
+
     elif request.method == 'POST':
         form = CheckoutForm(request.POST)
         print('CHECKOUT DATA:', request.POST)
@@ -315,10 +318,12 @@ def checkout(request):
                 customer.contact2 = form.cleaned_data.get('contact2')
                 customer.save()
                 print('Customer details saved')
-            
+
             # Shipping Address
             same_address = form.cleaned_data.get('chk_same_address')
-            # if saved shipping address is checked. Checkbox will only show if the default shipping address is found
+
+            # if saved shipping address is checked. Checkbox will only show if the default
+            #  shipping address is found
             if form.cleaned_data.get('chk_use_default_shipping'):
                 # double checking, might delete this extra check
                 if shipping_address.exists():
@@ -333,8 +338,9 @@ def checkout(request):
                 shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
                 address_type = 'S'
                 save_shipping = form.cleaned_data.get('chk_save_shipping_info')
-                temp_address = [shipping_address1, shipping_address2, shipping_country, shipping_zip_code, address_type, save_shipping]
-                
+                temp_address = [shipping_address1, shipping_address2, shipping_country, 
+                    shipping_zip_code, address_type, save_shipping]
+
                 if not is_field_valid(temp_address):
                     messages.error(request, f'Please fill in shipping details.')
                     return redirect('ecommerce:checkout')
@@ -342,7 +348,7 @@ def checkout(request):
 
             order.save()
             print('ORDER WAS SAVED')
-         
+
             # Billing Address
             save_billing = form.cleaned_data.get('chk_save_billing_info')
             if same_address:
@@ -355,10 +361,12 @@ def checkout(request):
                 billing_country = order.shipping_address.country
                 billing_zip_code = order.shipping_address.zip_code
                 address_type = 'B'
-                save_billing = save_billing
-                temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]
+                temp_address = [billing_address1, billing_address2, billing_country,
+                    billing_zip_code, address_type, save_billing]
                 order.billing_address = save_address(customer, temp_address)
-            # if saved billing address is checked. Checkbox will only show if the default billing address is found
+
+            # if saved billing address is checked. Checkbox will only show if the
+            # default billing address is found
             elif form.cleaned_data.get('chk_use_default_billing'):
                 # double checking, might delete this extra check
                 if billing_address.exists():
@@ -373,7 +381,8 @@ def checkout(request):
                 billing_country = form.cleaned_data.get('billing_country')
                 billing_zip_code = form.cleaned_data.get('billing_zip_code')
                 address_type = 'B'
-                temp_address = [billing_address1, billing_address2, billing_country, billing_zip_code, address_type, save_billing]
+                temp_address = [billing_address1, billing_address2, billing_country,
+                    billing_zip_code, address_type, save_billing]
 
                 if not is_field_valid(temp_address):
                     messages.error(request, f'Please fill in billing details.')

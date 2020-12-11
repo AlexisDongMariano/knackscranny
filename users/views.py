@@ -76,9 +76,12 @@ def profile(request):
 
 @login_required
 def addresses(request):
+    '''update the shipping and billing address of the customer'''
     customer = Customer.objects.filter(user=request.user).first()
-    shipping_address = Address.objects.filter(customer=customer, address_type='S', default=True).first()
-    billing_address = Address.objects.filter(customer=customer, address_type='B', default=True).first()
+    shipping_address = Address.objects.filter(customer=customer, address_type='S',
+        default=True).first()
+    billing_address = Address.objects.filter(customer=customer, address_type='B',
+        default=True).first()
 
     if request.method == 'GET':
         s_form = ShippingAddressUpdateForm(instance=shipping_address, prefix='shipping')
@@ -89,10 +92,12 @@ def addresses(request):
             'b_form': b_form,
         }
         return render(request, 'users/addresses.html', context)
-    
+
     elif request.method == 'POST':
-        s_form = ShippingAddressUpdateForm(request.POST, prefix='shipping', instance=shipping_address)
-        b_form = BillingAddressUpdateForm(request.POST,  prefix='billing', instance=billing_address)
+        s_form = ShippingAddressUpdateForm(request.POST, prefix='shipping',
+            instance=shipping_address)
+        b_form = BillingAddressUpdateForm(request.POST,  prefix='billing',
+            instance=billing_address)
 
         if s_form.is_valid() and b_form.is_valid():
             s_form.save()
