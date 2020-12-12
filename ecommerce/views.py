@@ -214,7 +214,8 @@ def add_to_cart(request, variation_id, view_type):
         item_inventory = item.inventory
 
         if item_inventory <= 0:
-            messages.error(request, 'Sorry, this item is out of stock. You may go to contact us for item requests.')
+            messages.error(request, 'Sorry, this item is out of stock. You may go to contact us \
+                for item requests.')
         else:
             customer = query_customer(request)
             order, created = Order.objects.get_or_create(customer=customer, is_ordered=False)
@@ -222,15 +223,18 @@ def add_to_cart(request, variation_id, view_type):
 
             print(item_inventory - (order_item.quantity + 1))
             if item_inventory < (order_item.quantity + 1):
-                messages.error(request, f'Only {item_inventory} stock(s) left for this item. You may go to contact us for item requests.')
+                messages.error(request, f'Only {item_inventory} stock(s) left for this item. \
+                    You may go to contact us for item requests.')
             else:
                 order_item.quantity = F('quantity')+1
                 order_item.save()
 
                 if created:
-                    messages.info(request, 'Item is successfully added! Review cart for more details.')
+                    messages.info(request, 'Item is successfully added! Review cart for more \
+                        details.')
                 else:
-                    messages.info(request, 'Item quantity is updated! Review cart for more details.')
+                    messages.info(request, 'Item quantity is updated! Review cart for more \
+                        details.')
 
         if view_type == 1:
             return redirect('ecommerce:item', item.item.id, item.name)

@@ -5,6 +5,7 @@ from ecommerce.views import query_customer
 from django.conf import settings as conf_settings
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db.models import F
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -146,14 +147,34 @@ def stripe_payment(request):
             return redirect('ecommerce:home')
 
 
-def check_coupon_validity(coupon_qs, customer):
+def check_current_coupon(order, coupon):
+    '''called if there is a current coupon that is being replaced by a valid new coupon.
+        basically, we are modifying the order instance that is passed by reference'''
+    if order.coupon is not coupon and order.coupon is not None:
+        # quantity = Coupon##################
+        order.coupon.quantity = F('quantity')+1
+        order.coupon.save()
+        order.coupon = None
+        order.save()
+
+
+def check_coupon_validity(coupon_qs, customer, order):
     '''check the validity of the coupon code
         return types:
         1: success, coupon should be applied
         2: invalid coupon code (code does not exists in the db)
         3: invalid (code already applied)'''
-
+    coupon = coupon_qs.first()
     if coupon_qs.exists():
+        # if a coupon has quantity field filled, return invalid if the quantity is 0 or less
+        # else, the coupon is applied in the customer order and coupon quantity is decremented
+        if coupon.quantity is not None:
+            if coupon.quantity < 1:
+                return 2
+            # else:
+            #     coupon.quantity = F('quantity')-1
+            #     coupon.save()
+
         # check if the customer already applied the coupon
         customer_orders = Order.objects.filter(customer=customer, is_ordered=True)
         for customer_order in customer_orders:
@@ -161,13 +182,23 @@ def check_coupon_validity(coupon_qs, customer):
             if customer_order.coupon:
                 if customer_order.coupon.code:
                     return 3
+
+        # replace and update the quantity of the current coupon first if existing
+        check_current_coupon(order, coupon_qs.first())
+        coupon.quantity = F('quantity')-1
+        coupon.save()
         return 1
     return 2
 
 
 @require_POST
 def add_coupon(request):
-    '''add discount coupon to the order'''
+    '''add discount coupon to the order
+        1) Get the current coupon applied if it exists. If the coupon code is being replaced,
+            update the quantity +1 of the old coupon.
+        2) Check if the coupon being applied exists, quantity is more than 0, and less than the
+            expiration date if the latter 2 properties exists.
+        3) Update the quantity'''
     customer = query_customer(request)
     order = Order.objects.filter(customer=customer, is_ordered=False).first()
     form = CouponForm(request.POST)
@@ -175,7 +206,8 @@ def add_coupon(request):
     if form.is_valid():
         code = form.cleaned_data.get('code')
         coupon_qs = Coupon.objects.filter(code=code)
-        coupon_validity = check_coupon_validity(coupon_qs, customer)
+        check_current_coupon(order, coupon_qs.first())
+        coupon_validity = check_coupon_validity(coupon_qs, customer, order)
 
         if coupon_validity == 1:
             order.coupon = coupon_qs.first()
@@ -186,22 +218,4 @@ def add_coupon(request):
         else:
             messages.error(request, f'You have already used {code} code')
         return redirect('ecommerce:checkout')
-
-    #     if coupon_qs.exists():
-    #         # check if the customer already applied the coupon
-    #         customer_orders = Order.objects.filter(customer=customer, is_ordered=True)
-    #         for customer_order in customer_orders:
-    #             # if a coupon existed in the customer orders, refresh the page and inform
-    #             if customer_order.coupon:
-    #                 if customer_order.coupon.code:
-    #                     messages.error(request, f'You have already used {code} code')
-    #                     return redirect('ecommerce:checkout')
-
-    #         # save and use the coupon code if it exists and first time use
-    #         order.coupon = coupon_qs.first()
-    #         order.save()
-    #         messages.info(request, f'Promo code successfully applied')
-    #     else:
-    #         messages.error(request, f'Invalid promo code')
-    # return redirect('ecommerce:checkout')
         

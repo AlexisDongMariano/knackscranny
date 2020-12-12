@@ -26,7 +26,8 @@ $9.(Sep-21-2020) U2.I1 --> 100% DONE (Sep-23-2020): work on the # of cart items 
 
 10.(Sep-21-2020) U2.I1: work on the login, registration page
 
-11.(Sep-24-2020) U2.I1: Add quantity to the coupon and logic in the code
+!11.(Sep-24-2020) U2.I1: --> 95% (Dec-11-2020): Add quantity to the coupon and logic in the code
+    > Check if the coupon is not expired, if expiration date is filled
 
 12.(Sep-25-2020) U2.I1: Modify Order Status admin page
 
@@ -111,3 +112,4 @@ NOTES
 =====
 1.(Dec-10-2020): Should allow deletion of users but deactivate instead of delete so that we have a record of the orders and avoid breaking of things
     especially in the order models. Return back the order admin
+2.(Dec-11-2020): Should NOT delete the coupon codes for reference, if it should be disabled, just set the quantity to zero or expiration date
