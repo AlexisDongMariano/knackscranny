@@ -206,7 +206,7 @@ def add_coupon(request):
     if form.is_valid():
         code = form.cleaned_data.get('code')
         coupon_qs = Coupon.objects.filter(code=code)
-        check_current_coupon(order, coupon_qs.first())
+        # check_current_coupon(order, coupon_qs.first())
         coupon_validity = check_coupon_validity(coupon_qs, customer, order)
 
         if coupon_validity == 1:

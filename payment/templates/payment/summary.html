@@ -18,13 +18,30 @@
     ${{ order.get_cart_subtotal }}
   </li>
   {% if order.coupon %}
-  <li class="list-group-item d-flex justify-content-between bg-light">
-    <div class="text-success">
-      <h6 class="my-0">Promo code</h6>
-      <small>{{ order.coupon.code }}</small>
+  <li class="list-group-item bg-light">
+    <div class="row text-success">
+      <div class="col-6">
+        <h6 class="my-0">Promo code</h6>
+      </div>
+      <div class="col-6 text-right">
+        <a data-toggle="modal" href="#delete-cart-item{{ item.item.id }}" style='color: red;'>
+          <i class="fas fa-times float-right"></i>
+          <!-- <small>remove</small> -->
+        </a>
+      </div>
     </div>
+    <div class="row text-success">
+      <div class="col-6">
+        <small>{{ order.coupon.code }}</small>
+      </div>
+      <div class="col-6 text-right">
+        {{ order.get_discount }}
+      </div>
+    </div>
+
+
     
-    <span class="text-success">{{ order.get_discount }}</span>
+    
   </li>
   {% endif %}
   <li class="list-group-item d-flex justify-content-between">
@@ -47,4 +64,6 @@
     </div>
   </div>
 </form>
+
+
 {% endif %}
