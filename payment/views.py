@@ -219,3 +219,19 @@ def add_coupon(request):
             messages.error(request, f'You have already used {code} code')
         return redirect('ecommerce:checkout')
         
+
+@require_POST
+def remove_coupon(request, order_id):
+    '''Remove the coupon code from the checkout remove coupon modal'''
+
+    order = Order.objects.filter(id=order_id).first()
+
+    if order.coupon:
+        order.coupon.quantity = F('quantity')+1
+        order.coupon.save()
+        order.coupon = None
+        order.save()
+        messages.info(request, f'Promo code successfully removed')
+    else:
+        messages.error(request, f'Invalid coupon or an error has occurred')
+    return redirect('ecommerce:checkout')

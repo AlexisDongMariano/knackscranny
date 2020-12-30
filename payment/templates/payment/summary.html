@@ -18,31 +18,26 @@
     ${{ order.get_cart_subtotal }}
   </li>
   {% if order.coupon %}
-  <li class="list-group-item bg-light">
-    <div class="row text-success">
-      <div class="col-6">
-        <h6 class="my-0">Promo code</h6>
+    <li class="list-group-item bg-light">
+      <div class="row text-success">
+        <div class="col-6">
+          <h6 class="my-0">Promo code</h6>
+        </div>
+        <div class="col-6 text-right">
+          <a data-toggle="modal" href="#remove-coupon" style='color: red;'>
+            <i class="fas fa-times float-right"></i>
+          </a>
+        </div>
       </div>
-      <div class="col-6 text-right">
-        <a data-toggle="modal" href="#delete-cart-item{{ item.item.id }}" style='color: red;'>
-          <i class="fas fa-times float-right"></i>
-          <!-- <small>remove</small> -->
-        </a>
+      <div class="row text-success">
+        <div class="col-6">
+          <small>{{ order.coupon.code }}</small>
+        </div>
+        <div class="col-6 text-right">
+          {{ order.get_discount }}
+        </div>
       </div>
-    </div>
-    <div class="row text-success">
-      <div class="col-6">
-        <small>{{ order.coupon.code }}</small>
-      </div>
-      <div class="col-6 text-right">
-        {{ order.get_discount }}
-      </div>
-    </div>
-
-
-    
-    
-  </li>
+    </li>
   {% endif %}
   <li class="list-group-item d-flex justify-content-between">
     <span>Total (CAD)</span>
@@ -51,19 +46,42 @@
 </ul>
 
 {% if display_coupon_form %}
-<form class="card p-2" action="{% url 'payment:add-coupon' %}" method="POST">
-  {% csrf_token %}
-  <div class="input-group">
-    <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
-      aria-describedby="basic-addon2"> -->
-      {{ coupon_form.code.errors }}
-      {{ coupon_form.code }}
-      <!-- <label for="{{ form.code.id_for_label }}">Address</label> -->
-    <div class="input-group-append">
-      <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+  <form class="card p-2" action="{% url 'payment:add-coupon' %}" method="POST">
+    {% csrf_token %}
+    <div class="input-group">
+      <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
+        aria-describedby="basic-addon2"> -->
+        {{ coupon_form.code.errors }}
+        {{ coupon_form.code }}
+        <!-- <label for="{{ form.code.id_for_label }}">Address</label> -->
+      <div class="input-group-append">
+        <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+      </div>
+    </div>
+  </form>
+{% endif %}
+
+<!-- Remove Coupon Modal -->
+<div class="modal fade" id="remove-coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Remove Coupon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="word-wrap">Do you want to remove the coupon code <strong>{{ order.coupon.code }}</strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        <form action="{% url 'payment:remove-coupon' order.id %}" method="POST" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-secondary" type="submit">Remove</button>
+        </form>
+      </div>
     </div>
   </div>
-</form>
+</div>
 
-
-{% endif %}

@@ -21,8 +21,10 @@ class Order(models.Model):
     '''Basically this is the Cart'''
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     reference_code = models.CharField(max_length=20, blank=True, null=True)
-    shipping_address = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
-    billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+    shipping_address = models.ForeignKey(Address, related_name='shipping_address', 
+        on_delete=models.SET_NULL, blank=True, null=True)
+    billing_address = models.ForeignKey(Address, related_name='billing_address', 
+        on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
