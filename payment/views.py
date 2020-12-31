@@ -22,6 +22,30 @@ def generate_reference_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
+def update_order_items(order):
+    '''update the quantity of order items (Item Variations)'''
+    order_items = order.orderitem_set.all()
+
+    print('UPDATING ORDER ITEMS')
+    
+
+
+    for order_item in order_items:
+        if order_item.quantity <= order_item.item.inventory:
+            order_item.item.inventory = F('inventory')-order_item.quantity
+            print(f'order_item.item.inventory: {order_item.item.inventory}')
+            print(f'order_item.quantity: {order_item.quantity}')
+            print('INVENTORY UPDATED')
+        else:
+            raise Exception(f'There are only {order_item.item.inventory} stock(s) left for \
+            {order_item.item.item.name} {order_item.item.name}')
+    
+    # save each order_item instance in the order
+    for order_item in order_items:
+        order_item.item.save()
+        print('Variation inventory saved')
+        
+
 # process_type 1 = create customer
 # process_type 2 = create charge
 def stripe_process(request, process_type, stripe_customer=None, amount_total=None):
@@ -134,6 +158,8 @@ def stripe_payment(request):
             order.reference_code = generate_reference_code()
             order.save()
 
+            update_order_items(order)
+
             # creating order status model with Processing as default
             order_status = OrderStatus.objects.create(order=order)
         except Exception as e:
@@ -223,7 +249,6 @@ def add_coupon(request):
 @require_POST
 def remove_coupon(request, order_id):
     '''Remove the coupon code from the checkout remove coupon modal'''
-
     order = Order.objects.filter(id=order_id).first()
 
     if order.coupon:

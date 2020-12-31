@@ -80,7 +80,7 @@ TODO list labeled in view
 =============================
 TODO list NOT labeled in view
 =============================
-1.(Sep-14-2020): subtract the value of orderItem quantity to the variationItem inventory when the transaction is successful
+$1.(Sep-14-2020): --> 100% DONE (Dec-30-2020): subtract the value of orderItem quantity to the variationItem inventory when the transaction is successful
 
 2.(Sep-14-2020) --> 50% DONE (Sep-17-2020): create a CustomerProxy model or something in place of Customer(User) so that we can use this if the user is anonymous
     > check or get the sessions value for the anonymous user
