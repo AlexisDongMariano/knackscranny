@@ -37,7 +37,6 @@
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a href="{% url 'ecommerce:cart' %}" class="nav-link waves-effect" title="Cart">
               {% if request|cart_items_count %}
@@ -47,6 +46,8 @@
               <!-- <span class="clearfix d-none d-sm-inline-block"> Cart </span> -->
             </a>
           </li>
+          
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a href="{% url 'users:profile' %}" class="nav-link waves-effect" title="{{ user.username }}">
               <i class="fas fa-user"></i>

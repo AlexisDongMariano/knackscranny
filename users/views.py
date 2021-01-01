@@ -38,8 +38,11 @@ def register(request):
 
 @login_required
 def profile(request):
+    '''View of the Customer's field that is linked to the User model
+        Can also edit the fields in this view with email and username
+        checking'''
     customer = Customer.objects.filter(user=request.user).first()
-    if request.method == 'GET':  
+    if request.method == 'GET':
         form = CustomerUpdateForm(instance=customer)
         u_form = UserUpdateForm(instance=request.user)
         context = {
@@ -56,23 +59,31 @@ def profile(request):
         u_form = UserUpdateForm(request.POST, instance=request.user)
 
         email_input = form.data.get('email')
+        username_input = u_form.data.get('username')
 
+        # check if email is already registered
         if customer.email != email_input and User.objects.filter(email=email_input).exists():
             messages.error(request, f'Email already exists!')    
             return redirect('users:profile')
-        else:
-            if u_form.is_valid() and form.is_valid():
-                # update the User model instance from the customer form
-                new_u_form = u_form.save(commit=False)
-                new_u_form.email = email_input
-                new_u_form.first_name = form.cleaned_data.get('first_name')
-                new_u_form.last_name = form.cleaned_data.get('last_name')
+        
+        # check if username is already registered
+        if customer.user.username != username_input and \
+            User.objects.filter(username=username_input).exists():
+            messages.error(request, f'Username already exists!')
+            return redirect('users:profile')
+        
+        if u_form.is_valid() and form.is_valid():
+            # update the User model instance from the customer form
+            new_u_form = u_form.save(commit=False)
+            new_u_form.email = email_input
+            new_u_form.first_name = form.cleaned_data.get('first_name')
+            new_u_form.last_name = form.cleaned_data.get('last_name')
 
-                new_u_form.save()
-                form.save()
-                messages.success(request, f'Account has been updated!')    
+            new_u_form.save()
+            form.save()
+            messages.success(request, f'Account has been updated!')    
 
-                return redirect('users:profile')
+            return redirect('users:profile')
 
 
 @login_required

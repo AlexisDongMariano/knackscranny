@@ -26,16 +26,9 @@ def update_order_items(order):
     '''update the quantity of order items (Item Variations)'''
     order_items = order.orderitem_set.all()
 
-    print('UPDATING ORDER ITEMS')
-    
-
-
     for order_item in order_items:
         if order_item.quantity <= order_item.item.inventory:
             order_item.item.inventory = F('inventory')-order_item.quantity
-            print(f'order_item.item.inventory: {order_item.item.inventory}')
-            print(f'order_item.quantity: {order_item.quantity}')
-            print('INVENTORY UPDATED')
         else:
             raise Exception(f'There are only {order_item.item.inventory} stock(s) left for \
             {order_item.item.item.name} {order_item.item.name}')
@@ -43,7 +36,6 @@ def update_order_items(order):
     # save each order_item instance in the order
     for order_item in order_items:
         order_item.item.save()
-        print('Variation inventory saved')
         
 
 # process_type 1 = create customer
@@ -189,7 +181,8 @@ def check_coupon_validity(coupon_qs, customer, order):
         return types:
         1: success, coupon should be applied
         2: invalid coupon code (code does not exists in the db)
-        3: invalid (code already applied)'''
+        3: invalid (code already applied)
+        4: expired code'''
     coupon = coupon_qs.first()
     if coupon_qs.exists():
         # if a coupon has quantity field filled, return invalid if the quantity is 0 or less
@@ -197,16 +190,18 @@ def check_coupon_validity(coupon_qs, customer, order):
         if coupon.quantity is not None:
             if coupon.quantity < 1:
                 return 2
-            # else:
-            #     coupon.quantity = F('quantity')-1
-            #     coupon.save()
+        
+        if coupon.date_expiration is not None:
+            if coupon.date_expiration < timezone.now():
+                return 4
 
         # check if the customer already applied the coupon
         customer_orders = Order.objects.filter(customer=customer, is_ordered=True)
+        
         for customer_order in customer_orders:
             # if a coupon existed in the customer orders, refresh the page and inform
             if customer_order.coupon:
-                if customer_order.coupon.code:
+                if customer_order.coupon.code == coupon.code:
                     return 3
 
         # replace and update the quantity of the current coupon first if existing
@@ -241,8 +236,10 @@ def add_coupon(request):
             messages.info(request, f'Promo code successfully applied')
         elif coupon_validity == 2:
             messages.error(request, f'Invalid promo code')
-        else:
+        elif coupon_validity == 3:
             messages.error(request, f'You have already used {code} code')
+        elif coupon_validity == 4:
+            messages.error(request, f'Promo {code} code entered has expired')
         return redirect('ecommerce:checkout')
         
 
