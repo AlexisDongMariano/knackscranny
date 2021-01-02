@@ -80,14 +80,17 @@
                   </div>
                 </div>
                 
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button class="btn btn-secondary btn-lg btn-block" type="button" data-toggle="modal" data-target="#delete-profile">Delete Profile</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Update Profile</button>
+                  </div>
+                </div>
               </form>
             </div>
-            
-            
           </div>
-          
-          
         </div>
       </div>
       <!-- SIDEBAR -->
@@ -108,8 +111,31 @@
         </ul>
       </div>
     </div>
-
-
   </div>
 </main>
+
+
+<!-- DELETE PROFILE MODAL -->
+<div class="modal fade" id="delete-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your profile?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        <form class="inline-flex" action="{% url 'users:profile-delete'%}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

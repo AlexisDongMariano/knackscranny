@@ -1,7 +1,7 @@
 from .forms import UserRegisterForm, CustomerUpdateForm, UserUpdateForm, ShippingAddressUpdateForm, BillingAddressUpdateForm
 from .models import Customer, Address
 from ecommerce.models import Order
-from ecommerce.views import get_session
+from ecommerce.views import get_session, paginate
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -129,11 +129,14 @@ def addresses(request):
 @login_required
 def orders(request):
     customer = Customer.objects.filter(user=request.user).first()
-    orders = Order.objects.filter(customer=customer, is_ordered=True)
+    orders = Order.objects.filter(customer=customer, is_ordered=True).order_by('-ordered_date')
+    # apply pagination
+    page_obj = paginate(request, orders)
+
     if request.method == 'GET':
 
         context = {
-            'orders': orders,
+            'page_obj': page_obj,
         }
         return render(request, 'users/orders.html', context)
 
@@ -141,10 +144,24 @@ def orders(request):
 @login_required
 def payments(request):
     customer = Customer.objects.filter(user=request.user).first()
-    orders = Order.objects.filter(customer=customer, is_ordered=True)
+    # orders = Order.objects.filter(customer=customer, is_ordered=True)
+    orders = Order.objects.filter(customer=customer, is_ordered=True).order_by('-ordered_date')
+    page_obj = paginate(request, orders)
+
     if request.method == 'GET':
 
         context = {
-            'orders': orders,
+          'page_obj': page_obj,
         }
         return render(request, 'users/payments.html', context)
+
+
+@login_required
+def profile_delete(request):
+    """Deactivate the user"""
+    if request.method == 'POST':
+        user = request.user
+        user.is_active = False
+        user.save()
+        messages.success(request, f'Account deleted!')
+        return redirect('login')

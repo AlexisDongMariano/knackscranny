@@ -9,11 +9,10 @@
     <div class="row">
       <div class="col-md-8 mb-4">
         <div class="card">
-          {% for order in orders %}
+          {% for order in page_obj %}
           <div class="card mx-2 my-3">
             <div class="px-4 py-4">
               
-                
               <div class="row">
                 <div class="col-md-6">
                   Reference No. <a id="{{ order.reference_code}}" class="anchor" href="/orders/#{{ order.reference_code }}">{{ order.reference_code}}</a> 
@@ -94,4 +93,27 @@
 
   </div>
 </main>
+
+<!-- PAGINATION -->
+<div class="row justify-content-center">
+  {% if page_obj.paginator.count > 8%}
+    {% if page_obj.has_previous %}
+        <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page=1">First</a>
+        <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+  
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a class="btn btn-secondary mb-4 btn-sm test" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+  
+    {% if page_obj.has_next %}
+        <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-secondary mb-4 btn-sm test" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+  {% endif %}
+  </div>
 {% endblock content %}

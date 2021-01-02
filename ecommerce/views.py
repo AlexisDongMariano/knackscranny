@@ -92,7 +92,7 @@ def filter_items(filters):
 
 
 def paginate(request, items):
-    '''Paginate items in home, show 8 items per page'''
+    '''Paginate items/elements, show 8 items per page'''
     paginator = Paginator(items, 8)
     page_number = request.GET.get('page')
     print('paginator is called')

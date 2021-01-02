@@ -15,7 +15,6 @@
                 <h5 class="text-center">Shipping Address</h5>
                 {% csrf_token %}
                 
-                
                 <div class="row my-4">
                   <div class="col-md-12">
                     {{ s_form.address1.errors }}
@@ -76,7 +75,9 @@
                   </div>
                 </div>
 
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+                <button class="btn btn-secondary btn-lg btn-block" type="submit">
+                  Update Addresses
+                </button>
 
               </form>
             </div>

@@ -1,47 +1,47 @@
 <section class="text-center mb-4">
-    <div class="row wow fadeIn">
-    
-      {% for item in page_obj %}
-      <!--DONG-->
-      
-      <div class="col-lg-3 col-md-6 mb-4 item-label-{{ item.item_label }}">
-        <div class="card">
+  <div class="row wow fadeIn">
 
-          <!--Card image-->
-          <div class="view overlay">
-            <img src="{{ item.image.url }}" class="card-img-top"
-              alt="">
-            <a>
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
-          <!--Card image-->
-          <div class="card-body text-center">
-            <!--Category & Title-->
-            <a href="" class="grey-text">
-              <h5>{{ item.category.name|title }}</h5>
-            </a>
-            <h5>
-              <strong>
-                <a href="{% url 'ecommerce:item' item.id 'regular' %}" class="dark-grey-text">{{ item.name|truncatechars:20 }}
-                  {% if item.item_label != "NA" %}
-                  <span class="badge badge-pill danger-color">
-                    {{ item.get_item_label_display }}
-                  </span>
-                  {% endif %}
-                </a>
-              </strong>
-            </h5>
+    {% for item in page_obj %}
+    <!--DONG-->
 
-            <h4 class="font-weight-bold blue-text">
-              <strong>{{ item.price }}$</strong>
-            </h4>
+    <div class="col-lg-3 col-md-6 mb-4 item-label-{{ item.item_label }}">
+      <div class="card">
 
-          </div>
+        <!--Card image-->
+        <div class="view overlay">
+          <img src="{{ item.image.url }}" class="card-img-top" alt="">
+          <a>
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+        <!--Card image-->
+        <div class="card-body text-center">
+          <!--Category & Title-->
+          <a href="" class="grey-text">
+            <h5>{{ item.category.name|title }}</h5>
+          </a>
+          <h5>
+            <strong>
+              <a href="{% url 'ecommerce:item' item.id 'regular' %}" class="dark-grey-text">
+                {{ item.name|truncatechars:20 }}
+                {% if item.item_label != "NA" %}
+                <span class="badge badge-pill danger-color">
+                  {{ item.get_item_label_display }}
+                </span>
+                {% endif %}
+              </a>
+            </strong>
+          </h5>
+
+          <h4 class="font-weight-bold blue-text">
+            <strong>{{ item.price }}$</strong>
+          </h4>
+
         </div>
       </div>
-      <!--DONG-->
-      {% endfor %}
-
     </div>
-  </section>
+    <!--DONG-->
+    {% endfor %}
+
+  </div>
+</section>
