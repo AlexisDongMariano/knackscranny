@@ -64,6 +64,10 @@ $22.(Jan-01-2021) U2.I1: --> 100% DONE (Jan-01-2021): Add pagination in orders a
 
 $23.(Jan-01-2021) U2.I1: --> 100% DONE (Jan-01-2021): Center all pagination
 
+!24.(Jan-01-2021) U2.I1: Add a backup image for deleted or missing images for all models that has image fields
+
+25.(Jan-01-2021) U2.U1: find a way to have a link to go the main item list instead of going to landing page
+
 
 =========================
 TODO list labeled in view
