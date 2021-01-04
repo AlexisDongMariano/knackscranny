@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django_countries.fields import CountryField
 from PIL import Image
 
@@ -45,6 +46,13 @@ class Customer(models.Model):
             output_size = (300,300)
             img.thumbnail(output_size)
             img.save(self.image.path)
+    
+    def image_tag(self):
+        '''display the image in admin panel'''
+        return mark_safe('<img src="/media/%s" width="100" />' % (self.image))
+    
+    # column name
+    image_tag.short_description = 'Image'
 
 
 class Address(models.Model):

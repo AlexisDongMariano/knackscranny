@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Address, Customer
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 
@@ -28,5 +29,39 @@ class AddressAdmin(admin.ModelAdmin):
     # **customer is a model instance, so we have to get other field from that, in our case,
     # the User model has the username field
 
+
+class CustomerAdmin(admin.ModelAdmin): 
+    def user(self, obj):
+        return mark_safe('<a href="%s">%s</a>' % (
+                reverse('admin:users_customer_change', args=(obj.customer.id,)), obj.customer
+            ))
+    
+    def col_image_tag(self, obj):
+        return format_html('<img src="{}" width="70" />'.format(obj.image.url))
+    
+    user.admin_order_field = 'user'
+    user.short_description = 'user'
+
+    list_display = [
+        'id',
+        'user',
+        'first_name',
+        'last_name',
+        'email',
+        'contact1',
+        'contact2',
+        'col_image_tag'
+    ]
+
+    list_display_links = [
+        'id'
+    ]
+
+    list_filter = ['date_added', 'date_updated']
+    search_fields = ['user__username', 'user__first_name',
+        'user__last_name', 'user__id'] 
+    readonly_fields = ['image_tag']
+
+
 admin.site.register(Address, AddressAdmin)
-admin.site.register(Customer)
+admin.site.register(Customer, CustomerAdmin)

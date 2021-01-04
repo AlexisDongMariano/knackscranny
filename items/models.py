@@ -1,6 +1,7 @@
 # Create your models here.
 from django.db import models
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from PIL import Image
 from math import floor
 from users.models import Customer
@@ -69,6 +70,13 @@ class Item(models.Model):
         reviews = self.itemreview_set.all()
         total = floor(sum([review.rating for review in reviews])/len(reviews))
         return total
+    
+    def image_tag(self):
+        '''display the image in admin panel'''
+        return mark_safe('<img src="/media/%s" width="100" />' % (self.image))
+    
+    # column name
+    image_tag.short_description = 'Image'
 
 
 class Variation(models.Model):
@@ -108,12 +116,16 @@ class VariationImage(models.Model):
     variation = models.ForeignKey(Variation, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, default='default')
     alias = models.CharField(max_length=150, blank=True, unique=True)
-    image = image = models.ImageField(default=f'default_variation.png', upload_to='item_variation_pics')
+    image = image = models.ImageField(default=f'default_variation.png', 
+        upload_to='item_variation_pics')
+    date_added = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.alias
 
     def save(self, *args, **kwargs):
+        ''' On save, update some fields and delete obselete image'''
         #* deletes the previous image when updated
         if VariationImage.objects.filter(id=self.id).exists(): # do if the user/profile exists
             this = VariationImage.objects.filter(id=self.id).first()
@@ -122,8 +134,12 @@ class VariationImage(models.Model):
                 this.image.delete(save=False)
                 print('IMAGE DELETED')
         #*
-        # ''' On save, update name '''
+        # ''' On save, update name and date_updated'''
         self.alias = self.variation.alias + '_' + self.name
+        if not self.id:
+            self.date_added = timezone.now()
+        self.date_updated = timezone.now()
+
         super(VariationImage, self).save(*args, **kwargs)
         
         img = Image.open(self.image.path)
@@ -131,6 +147,13 @@ class VariationImage(models.Model):
             output_size = (525, 350)
             img.thumbnail(output_size)
             img.save(self.image.path)
+    
+    def image_tag(self):
+        '''display the image in admin panel'''
+        return mark_safe('<img src="/media/%s" width="150" />' % (self.image))
+    
+    # column name
+    image_tag.short_description = 'Image'
 
 
 class ItemReview(models.Model):

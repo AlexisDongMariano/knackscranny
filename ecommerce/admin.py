@@ -64,13 +64,16 @@ class OrderAdmin(admin.ModelAdmin):
         'is_ordered',
         'ordered_date',
     ]
+    
     list_display_links = [
         'id'
     ]
-    list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added', 'coupon', 'shipping_address__country']
-    search_fields = ['customer__user__username', 'coupon__code', 'shipping_address__address1',
-        'shipping_address__address2', 'shipping_address__zip_code', 'billing_address__address1',
-        'billing_address__address2', 'billing_address__zip_code']
+    list_filter = ['payment', 'is_ordered', 'ordered_date', 'date_added', 'coupon',
+        'shipping_address__country']
+    search_fields = ['customer__user__username', 'customer__user__first_name',
+        'customer__user__last_name', 'customer__user__id', 'coupon__code',
+        'shipping_address__address1', 'shipping_address__address2', 'shipping_address__zip_code',
+        'billing_address__address1', 'billing_address__address2', 'billing_address__zip_code']
 
 
 class OrderItemAdmin(admin.ModelAdmin):
