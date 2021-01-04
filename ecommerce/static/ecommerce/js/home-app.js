@@ -8,6 +8,7 @@ const chkbox_show_nw = document.querySelector("input[value=NW]");
 const chkbox_show_sl = document.querySelector("input[value=SL]");
 const chkbox_show_bs = document.querySelector("input[value=BS]");
 const chkbox_show_sd = document.querySelector("input[value=SD]");
+const link_clear_filters = document.querySelector(".clear-filters");
 
 
 // ==============================
@@ -41,6 +42,17 @@ chkbox_show_bs.addEventListener('change', e => {
 
 chkbox_show_sd.addEventListener('change', e => {
     setFilter('SD');
+});
+
+// clear the filters from the localStorage level and refresh the page
+link_clear_filters.addEventListener('click', e => {
+    filterQueries.NW = false;
+    filterQueries.SL = false;
+    filterQueries.BS = false;
+    filterQueries.SD = false;
+
+    saveFilter(itemsQuery);
+    location.assign(`${location.pathname}${generateSearchUrl(2)}`);
 });
 
 

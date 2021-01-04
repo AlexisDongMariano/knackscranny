@@ -34,6 +34,7 @@
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Collections</a>
             <div class="dropdown-menu dropdown-menu-right">
               <a class="dropdown-item" href="{% url 'ecommerce:home' 'collections' %}">All Collections</a>
+              <div class="dropdown-divider"></div>
               {% for collection_category in collection_categories %}
               <a class="dropdown-item" href="#">{{ collection_category.name }}</a>
               {% endfor %}
@@ -72,7 +73,11 @@
                 <input class="item-label" type="checkbox" name="item-label" value="SD">
                 Sold
               </a>
-              <!-- <div class="dropdown-divider"></div> -->
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item clear-filters">
+                <!-- <input class="item-label" type="checkbox" name="item-label" value="SD"> -->
+                Clear Filters
+              </a>
 
               <!-- <a class="btn btn-outline-secondary mb-4 btn-sm btn-item-label" href="">Filter</a> -->
 

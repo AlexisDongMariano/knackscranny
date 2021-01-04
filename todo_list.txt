@@ -68,9 +68,11 @@ $23.(Jan-01-2021) U2.I1: --> 100% DONE (Jan-01-2021): Center all pagination
 
 25.(Jan-01-2021) U2.U1: find a way to have a link to go the main item list instead of going to landing page
 
-26.(Jan-03-2021) U2.U1: add an option to clear searches/filters, clear all filters
+26.(Jan-03-2021) U2.U1: --> 50% DONE (Jan-04-2020): add an option to clear searches/filters, clear all filters
 
-27.(Jan-03-2021) U2.U1: display the discount price if exists
+$27.(Jan-03-2021) U2.U1: --> 100% DONE (Jan-03-2020): display the discount price if exists
+
+28.(Jan-04-2021) U2.U1: Check the checkout and other functionalities if user anonymous
 
 =========================
 TODO list labeled in view
@@ -120,6 +122,10 @@ MISC TODO
 =========
 sendemail.TODO (Sep-14-2020): configure sending email and use
 
+=====
+BUGS
+=====
+1.(Jan-04-2020): Check the Search, seems it's not working
 
 =====
 NOTES

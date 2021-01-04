@@ -105,6 +105,14 @@ a:active, a:focus, a:visited {
 }
 
 
+/******************************/
+/*          GLOBAL            */
+/******************************/
+
+.color-pink {
+  color: #f7bbcb;
+}
+
 /* TEXT COLORS */
 .text-warning {
   color: #f0ad4e;  
@@ -133,8 +141,9 @@ a .list-group-item, .item-label, .item-label:hover {
 }
 
 
-/* LANDING PAGE */
-/****************/
+/******************************/
+/*       LANDING PAGE         */
+/******************************/
 .title-container {
   position: relative;
   /* height: 80vh; */

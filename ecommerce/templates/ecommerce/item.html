@@ -37,23 +37,37 @@
           <div class="p-4">
             <div class="mb-3">
               <a href="">
-                <span class="badge purple mr-1">Category 2</span>
+                <span class="badge purple mr-1">{{ main_item.category|title }}</span>
               </a>
-              <a href="">
+              <!-- <a href="">
                 <span class="badge blue mr-1">New</span>
               </a>
               <a href="">
                 <span class="badge red mr-1">Bestseller</span>
-              </a>
+              </a> -->
+              {% if variation.item_label == "NW"%}
+                <a href="">
+                  <span class="badge blue mr-1">{{ variation.get_item_label_display }}</span>
+                </a>
+              {% else %}
+                <a href="">
+                  <span class="badge red mr-1">{{ variation.get_item_label_display }}</span>
+                </a>
+              {% endif %}
             </div>
-
+            
+            
             <p class="lead">
-              <span class="mr-1">
-                <del>$200</del>
-              </span>
-              <span>$100</span>
+              {% if variation.price_discount %}
+                <span class="mr-1">
+                  <del>${{ variation.price }}</del>
+                </span>
+                <span>${{ variation.price_discount }}</span>
+              {% else %}
+                <span>${{ variation.price }}</span>
+              {% endif %}
             </p>
-            <p class="lead font-weight-bold">{{ variation.item.name }} ({{ variation.name }})</p>
+            <p class="lead font-weight-bold">{{ variation.item.name|title }} ({{ variation.name|title }})</p>
             <p>{{ variation.description }}</p>
             
             <!-- Button trigger modal -->
@@ -64,9 +78,15 @@
               {% csrf_token %}
               <!-- Default input -->
               <!-- <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px"> -->
-              <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
+              {% if variation.inventory == 0 or variation.item_label == "SD" %}
+                <button class="btn btn-primary btn-md my-0 p" type="submit" disabled>Add to cart
+                  <i class="fas fa-shopping-cart ml-1"></i>
+                </button>
+              {% else %}
+                <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
+                  <i class="fas fa-shopping-cart ml-1"></i>
+                </button>
+              {% endif %}
             </form>
           </div>
         </div>

@@ -59,7 +59,8 @@ class CustomerAdmin(admin.ModelAdmin):
 
     list_filter = ['date_added', 'date_updated']
     search_fields = ['user__username', 'user__first_name',
-        'user__last_name', 'user__id'] 
+        'user__last_name', 'user__id', 'session_id', 'first_name', 'last_name', 'email', 'image',
+        'contact1', 'contact2', 'image'] 
     readonly_fields = ['image_tag']
 
 

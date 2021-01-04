@@ -34,7 +34,11 @@
           </h5>
 
           <h4 class="font-weight-bold blue-text">
-            <strong>{{ item.price }}$</strong>
+            {% if item.price_discount %}
+              <strong class="text-danger">${{ item.price_discount }}</strong>
+            {% else %}
+              <strong>${{ item.price }}</strong>
+            {% endif %}
           </h4>
 
         </div>
