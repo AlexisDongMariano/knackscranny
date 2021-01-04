@@ -68,6 +68,9 @@ $23.(Jan-01-2021) U2.I1: --> 100% DONE (Jan-01-2021): Center all pagination
 
 25.(Jan-01-2021) U2.U1: find a way to have a link to go the main item list instead of going to landing page
 
+26.(Jan-03-2021) U2.U1: add an option to clear searches/filters, clear all filters
+
+27.(Jan-03-2021) U2.U1: display the discount price if exists
 
 =========================
 TODO list labeled in view
