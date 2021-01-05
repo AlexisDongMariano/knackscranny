@@ -83,12 +83,12 @@ def search(q):
         | Q(category__name__icontains=q)).order_by('-date_updated')
 
 
-def filter_items(filters):
+def filter_items(items, filters):
     '''return items filtered by the checkboxes in home'''
     q = Q()
     for label in filters:
         q = q | Q(item_label__icontains=label)
-    return Item.objects.filter(q)
+    return items.filter(q)
 
 
 def paginate(request, items):
@@ -129,7 +129,8 @@ def home(request, page_type=None):
         q = 'Search'
 
     # apply filter based on query
-    items = filter_items(filters).order_by('-date_updated')
+    items = filter_items(items, filters).order_by('-date_updated')
+
     # apply pagination
     page_obj = paginate(request, items)
 

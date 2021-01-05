@@ -125,7 +125,7 @@ sendemail.TODO (Sep-14-2020): configure sending email and use
 =====
 BUGS
 =====
-1.(Jan-04-2020): Check the Search, seems it's not working
+$1.(Jan-04-2021): --> FIXED (Jan-04-2021): Check the Search, seems it's not working
 
 =====
 NOTES
